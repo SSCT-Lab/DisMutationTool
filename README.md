@@ -1,5 +1,7 @@
 # DisMutationTool
 
+ [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 ## Overview
 
 This tool is designed for mutation testing of distributed systems, aiming to ensure robustness and fault tolerance by introducing controlled mutations and observing the system's ability to handle them. This testing approach helps developers identify weaknesses in fault handling and recovery processes.

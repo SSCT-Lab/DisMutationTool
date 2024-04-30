@@ -28,15 +28,15 @@ public class RandomRunner {
      */
     public void run() {
         List<Mutant> mutantLs = mutantManager.getMutantLs();
-        // 删除mutantLs中，Mutant的originalPath重复的元素，只保留第一个
-        for (int i = 0; i < mutantLs.size(); i++) {
-            for (int j = i + 1; j < mutantLs.size(); j++) {
-                if (mutantLs.get(i).getOriginalPath().equals(mutantLs.get(j).getOriginalPath())) {
-                    mutantLs.remove(j);
-                    j--;
-                }
-            }
-        }
+//        // 删除mutantLs中，Mutant的originalPath重复的元素，只保留第一个
+//        for (int i = 0; i < mutantLs.size(); i++) {
+//            for (int j = i + 1; j < mutantLs.size(); j++) {
+//                if (mutantLs.get(i).getOriginalPath().equals(mutantLs.get(j).getOriginalPath())) {
+//                    mutantLs.remove(j);
+//                    j--;
+//                }
+//            }
+//        }
 
         // 选取mutantManager中的一定百分比的变异体进行测试
         int mutantNum = mutantManager.getMutantLs().size();

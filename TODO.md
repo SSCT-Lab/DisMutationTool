@@ -9,7 +9,8 @@
 - 关于等效变异体
   - Trivial Compiler Equivalence: A Large Scale Empirical Study of a Simple, Fast and Effective Equivalent Mutant Detection Technique
 
-
+## TODO
+- 将upcast的异常类型添加到方法签名方能通过编译
 
 ## 变异算子列表
 

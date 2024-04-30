@@ -4,7 +4,7 @@ public class Config {
 
 
 
-    public static final String PROJECT_PATH = "/home/zdc/code/ideaRemote/distributed-mutation-tool";
+    public static final String PROJECT_PATH = "/home/zdc/code/DisMutationTool";
     public static final String MUTANT_PATH = PROJECT_PATH + "/mutants";
     public static final String ORIGINAL_PATH = PROJECT_PATH + "/original";
     public static final String TEST_RESOURCES_PATH = PROJECT_PATH + "/src/test/resources";

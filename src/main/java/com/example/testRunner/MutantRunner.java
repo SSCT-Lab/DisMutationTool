@@ -70,8 +70,6 @@ public class MutantRunner {
                     System.out.println(line);
                 }
             }
-
-
             int exitCode = process.waitFor();
 
             // 打印脚本执行结果

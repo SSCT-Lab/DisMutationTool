@@ -8,6 +8,8 @@ public enum MutatorType {
     RUL, // remove unlock
     RSB, // remove synchronized block
 
+    UNE, // upcast network exception
+
 
 
 

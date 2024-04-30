@@ -1,6 +1,7 @@
 package com.example.mutantGen;
 
 import com.example.mutantGen.mutators.*;
+import com.example.mutantGen.mutators.network.*;
 
 public class MutatorFactory {
     public static MutantGen getMutator(MutatorType type) {
@@ -17,6 +18,8 @@ public class MutatorFactory {
                 return new RUL();
             case RSB:
                 return new RSB();
+            case UNE:
+                return new UNE();
             default:
                 return null;
         }

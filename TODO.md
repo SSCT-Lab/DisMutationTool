@@ -2,6 +2,13 @@
   - 如果一个测试代码覆盖了被变异的类，就选择运行它
 - 关于运行测试
   - maven invoker
+- 报告收集
+  - 每一份报告包含：
+      - 变异后的文件（文件名包含算子名称）
+      - 测试输出
+- 关于等效变异体
+  - Trivial Compiler Equivalence: A Large Scale Empirical Study of a Simple, Fast and Effective Equivalent Mutant Detection Technique
+
 
 
 ## 变异算子列表

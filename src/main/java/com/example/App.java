@@ -64,11 +64,11 @@ public class App {
 
         MutantManager mutantManager = MutantManager.builder()
                 .setProject(zkProject)
-                .setMutator(MutatorType.RSB)
+                .setMutator(MutatorType.UNE)
                 .build();
         mutantManager.generateMutants();
 
-        RandomRunner randomRunner = new RandomRunner(mutantManager, 0.7);
+        RandomRunner randomRunner = new RandomRunner(mutantManager, 1);
         randomRunner.run();
     }
 }

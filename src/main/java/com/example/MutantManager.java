@@ -23,7 +23,7 @@ public class MutantManager {
     private final Project project;
     private final Set<MutatorType> mutatorSet;
     private List<Mutant> mutantLs = new ArrayList<>();
-    private Map<String, Map<MutatorType, List<Mutant>>> mutantMap = new HashMap<>();
+    private Map<String, Map<MutatorType, List<Mutant>>> mutantMap = new HashMap<>(); // key: originalPath, value: [key: mutatorType, value: mutants]
 
     public static Builder builder() {
         return new Builder();
@@ -43,6 +43,7 @@ public class MutantManager {
         for (String srcFile : srcFileLs) {
             for (MutatorType mutator : mutatorSet) {
                 List<Mutant> mutants = MutatorFactory.getMutator(mutator).execute(srcFile);
+
                 // 处理内容完全相同的变异体
                 Set<String> fileToDelete = new HashSet<>();
                 for (int i = 0; i < mutants.size(); i++) {

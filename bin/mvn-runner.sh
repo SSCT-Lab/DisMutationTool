@@ -29,8 +29,8 @@ skip_test_class="$3"
 cd "$mvn_path" || exit 1
 
 # 拼接输出重定向文件路径
-output_dir="/home/zdc/code/ideaRemote/distributed-mutation-tool/testOutputs"
-project_dir="/home/zdc/code/distributedSystems/zk/apache-zookeeper-3.5.8/zookeeper-server"
+output_dir="/home/zdc/code/DisMutationTool/testOutputs" # TODO 可变参数
+project_dir="/home/zdc/code/distributedSystems/zk/apache-zookeeper-3.5.8/zookeeper-server" # TODO 可变参数
 output_path="$output_dir/$output_file"
 
 # 创建输出目录
@@ -79,7 +79,7 @@ do
         if [ "$seconds" -gt "$timeout" ]; then
             echo "mvn 进程已超时，结束"
             kill "$mvn_pid"  # 结束 mvn 进程
-            sleep 30
+            sleep 50
             exit 1
         fi
     fi

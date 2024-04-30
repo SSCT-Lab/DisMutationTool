@@ -90,6 +90,8 @@ public class MutantRunner {
             // 撤销变异
             logger.info("撤销变异体代码...");
             FileUtil.copyFileToTargetDir(mutant.getOriginalCopyPath(), FileUtil.getFileDir(originalFilePath), originalFileName);
+            // 变异文件、测试结果复制到输出目录的<mutator>子目录下
+            FileUtil.copyFileToTargetDir(mutant.getMutatedPath(), Config.OUTPUTS_PATH + "/" + mutant.getMutatorType(), mutatedFileName);
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {

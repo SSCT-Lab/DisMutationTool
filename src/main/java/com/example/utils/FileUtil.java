@@ -253,14 +253,15 @@ public class FileUtil {
             List<String> file2Lines = Files.readAllLines(new File(file2Path).toPath(), StandardCharsets.UTF_8);
             Patch<String> patch = DiffUtils.diff(file1Lines, file2Lines);
 
+            System.out.println("diff " + file1Path + " " + file2Path);
+            System.out.println("***************");
+
             for (Delta<String> delta : patch.getDeltas()) {
                 int origStart = delta.getOriginal().getPosition() + 1;
                 int origEnd = origStart + delta.getOriginal().size() - 1;
                 int revisedStart = delta.getRevised().getPosition() + 1;
                 int revisedEnd = revisedStart + delta.getRevised().size() - 1;
 
-                System.out.println("diff " + file1Path + " " + file2Path);
-                System.out.println("***************");
                 System.out.println("*** " + origStart + "," + origEnd + " ****");
                 for (Object line : delta.getOriginal().getLines()) {
                     System.out.println("- " + line);

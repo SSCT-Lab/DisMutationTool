@@ -20,6 +20,8 @@ public class MutatorFactory {
                 return new RSB();
             case UNE:
                 return new UNE();
+            case RRC:
+                return new RRC();
             default:
                 return null;
         }

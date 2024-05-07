@@ -1,4 +1,4 @@
-package com.example.mutantGen.mutators;
+package com.example.mutantGen.mutators.network;
 
 import com.example.mutantGen.Mutant;
 import com.example.mutantGen.MutantGen;
@@ -27,9 +27,9 @@ import java.util.List;
  * Modify Socket Timeout
  *
  * */
-public class MST extends MutantGen {
+public class MNT extends MutantGen {
     public static final MutatorType mutator = MutatorType.MST;
-    private static final Logger logger = LogManager.getLogger(MST.class);
+    private static final Logger logger = LogManager.getLogger(MNT.class);
     private static final int FACTOR = 10;
 
     public List<Mutant> execute(String originalFilePath) {
@@ -62,7 +62,21 @@ public class MST extends MutantGen {
                                 && methodCallExpr.getArguments().size() == 2
                                 && methodCallExpr.getArguments().get(1).calculateResolvedType().isNumericType()) {
                             mutantNo += 1;
-                            Mutant mutant = genMutant(originalFilePath, methodCallExpr, mutantNo, cu);
+                            Mutant mutant = genMutant(originalFilePath, methodCallExpr, mutantNo, cu, 1);
+                            res.add(mutant);
+                        }
+                    } catch (UnsolvedSymbolException e) { // 防止引用到项目的其他文件导致解析失败
+                        logger.info("UnsolvedSymbolException in methodCallExpr - " + methodCallExpr);
+                    }
+                } else if (methodCallExpr.getName().asString().equals("setSoTimeout")) {
+                    try {
+                        ResolvedMethodDeclaration resolvedMethodDeclaration = methodCallExpr.resolve();
+                        String packageAndClassName = resolvedMethodDeclaration.getPackageName() + "." + resolvedMethodDeclaration.getClassName();
+                        if (packageAndClassName.equals("java.net.Socket") || packageAndClassName.equals("java.net.ServerSocket")
+                                && methodCallExpr.getArguments().size() == 1
+                                && methodCallExpr.getArguments().get(1).calculateResolvedType().isNumericType()) {
+                            mutantNo += 1;
+                            Mutant mutant = genMutant(originalFilePath, methodCallExpr, mutantNo, cu, 0);
                             res.add(mutant);
                         }
                     } catch (UnsolvedSymbolException e) { // 防止引用到项目的其他文件导致解析失败
@@ -82,13 +96,13 @@ public class MST extends MutantGen {
 
 
     private Mutant genMutant(String originalFilePath, MethodCallExpr methodCallExpr, int mutantNo, CompilationUnit
-            cu) {
+            cu, int argPos) {
         // 暂存methodCallExpr的第一个参数
-        Expression originalArg = methodCallExpr.getArguments().get(1);
+        Expression originalArg = methodCallExpr.getArguments().get(argPos);
         // 暂存原始参数
         Expression originalArgClone = originalArg.clone();
         // 修改方法调用
-        methodCallExpr.setArgument(1, new BinaryExpr(
+        methodCallExpr.setArgument(argPos, new BinaryExpr(
                 new EnclosedExpr(originalArg),
                 new LongLiteralExpr(String.valueOf(FACTOR)),
                 BinaryExpr.Operator.DIVIDE));
@@ -100,7 +114,7 @@ public class MST extends MutantGen {
         logger.info("Generating mutant: " + mutantName);
         FileUtil.writeToFile(LexicalPreservingPrinter.print(cu), mutantPath);
         // 撤销修改
-        methodCallExpr.setArgument(1, originalArgClone);
+        methodCallExpr.setArgument(argPos, originalArgClone);
         return new Mutant(lineNo, mutator, originalFilePath, mutantPath);
     }
 

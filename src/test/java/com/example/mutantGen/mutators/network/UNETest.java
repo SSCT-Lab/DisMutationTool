@@ -5,7 +5,6 @@ import com.example.Project;
 import com.example.TestUtils;
 import com.example.mutantGen.Mutant;
 import com.example.mutantGen.MutatorType;
-import com.example.mutantGen.mutators.MSTTest;
 import com.example.utils.FileUtil;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -18,7 +17,7 @@ public class UNETest {
     static Project zkProject;
     static MutantManager mutantManager;
 
-    private static final Logger logger = LogManager.getLogger(MSTTest.class);
+    private static final Logger logger = LogManager.getLogger(MNTTest.class);
 
     @BeforeClass
     public static void setUp() {

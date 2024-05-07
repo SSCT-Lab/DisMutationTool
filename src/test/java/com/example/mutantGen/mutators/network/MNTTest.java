@@ -1,4 +1,4 @@
-package com.example.mutantGen.mutators;
+package com.example.mutantGen.mutators.network;
 
 import com.example.MutantManager;
 import com.example.Project;
@@ -13,11 +13,11 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-public class MSTTest {
+public class MNTTest {
     static Project zkProject;
     static MutantManager mutantManager;
 
-    private static final Logger logger = LogManager.getLogger(MSTTest.class);
+    private static final Logger logger = LogManager.getLogger(MNTTest.class);
 
     @BeforeClass
     public static void setUp() {

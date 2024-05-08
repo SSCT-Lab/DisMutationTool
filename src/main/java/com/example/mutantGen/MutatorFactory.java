@@ -1,6 +1,7 @@
 package com.example.mutantGen;
 
 import com.example.mutantGen.mutators.*;
+import com.example.mutantGen.mutators.concurrency.RCS;
 import com.example.mutantGen.mutators.network.*;
 
 public class MutatorFactory {
@@ -10,20 +11,22 @@ public class MutatorFactory {
                 return new RFB();
             case MWT:
                 return new MWT();
-            case MST:
-                return new MNT();
             case RFET:
                 return new RFET();
             case RUL:
                 return new RUL();
-            case RSB:
-                return new RSB();
-            case UNE:
-                return new UNE();
-            case RRC:
-                return new RRC();
+            // network
             case MNR:
                 return new MNR();
+            case MNT:
+                return new MNT();
+            case RRC:
+                return new RRC();
+            case UNE:
+                return new UNE();
+            // concurrency
+            case RCS:
+                return new RCS();
             default:
                 return null;
         }

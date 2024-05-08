@@ -22,7 +22,7 @@ public class MNTTest {
     @BeforeClass
     public static void setUp() {
         TestUtils.clearMutantAndOriginalDir();
-        mutantManager = TestUtils.generateZKMutantManager(MutatorType.MST);
+        mutantManager = TestUtils.generateZKMutantManager(MutatorType.MNT);
         zkProject = mutantManager.getProject();
     }
 

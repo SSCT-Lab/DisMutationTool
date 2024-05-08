@@ -28,7 +28,7 @@ import java.util.List;
  *
  * */
 public class MNT extends MutantGen {
-    public static final MutatorType mutator = MutatorType.MST;
+    public static final MutatorType mutator = MutatorType.MNT;
     private static final Logger logger = LogManager.getLogger(MNT.class);
     private static final int FACTOR = 10;
 

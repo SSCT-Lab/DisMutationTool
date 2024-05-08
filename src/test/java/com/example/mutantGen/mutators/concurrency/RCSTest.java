@@ -1,4 +1,4 @@
-package com.example.mutantGen.mutators;
+package com.example.mutantGen.mutators.concurrency;
 
 import com.example.MutantManager;
 import com.example.Project;
@@ -11,17 +11,16 @@ import org.apache.logging.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-
-public class RSBTest {
+public class RCSTest {
     static Project zkProject;
     static MutantManager mutantManager;
 
-    private static final Logger logger = LogManager.getLogger(RSBTest.class);
+    private static final Logger logger = LogManager.getLogger(RCSTest.class);
 
     @BeforeClass
     public static void setUp() {
         TestUtils.clearMutantAndOriginalDir();
-        mutantManager = TestUtils.generateZKMutantManager(MutatorType.RSB);
+        mutantManager = TestUtils.generateZKMutantManager(MutatorType.RCS);
         zkProject = mutantManager.getProject();
     }
 

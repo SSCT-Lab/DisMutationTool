@@ -22,6 +22,8 @@ public class MutatorFactory {
                 return new UNE();
             case RRC:
                 return new RRC();
+            case MNR:
+                return new MNR();
             default:
                 return null;
         }

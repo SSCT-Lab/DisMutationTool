@@ -11,21 +11,21 @@ import org.apache.logging.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class RCSTest {
+public class NCSTest {
     static Project zkProject;
     static MutantManager mutantManager;
 
-    private static final Logger logger = LogManager.getLogger(RCSTest.class);
+    private static final Logger logger = LogManager.getLogger(NCSTest.class);
 
     @BeforeClass
     public static void setUp() {
         TestUtils.clearMutantAndOriginalDir();
-        mutantManager = TestUtils.generateZKMutantManager(MutatorType.RCS);
+        mutantManager = TestUtils.generateZKMutantManager(MutatorType.NCS);
         zkProject = mutantManager.getProject();
     }
 
     @Test
-    public void testGenRCSMutant() {
+    public void testGenNCSMutant() {
         mutantManager.generateMutants();
         // 打印文件的diff
         logger.info("Print diff for mutants");

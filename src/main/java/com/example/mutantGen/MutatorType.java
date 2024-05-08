@@ -14,6 +14,7 @@ public enum MutatorType {
 
     // ---------------concurrency----------------
     RCS, // remove critical sections
+    NCS, // narrow down critical sections
 
     // RLUL, // remove lock and unlock
     // RINT, //TODO remove exception throw statements in if (Obj == NULL) statements

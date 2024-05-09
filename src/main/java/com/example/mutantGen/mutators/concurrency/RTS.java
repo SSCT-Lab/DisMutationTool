@@ -43,7 +43,7 @@ public class RTS extends MutantGen {
                         lockStack.push(j);
                     } else if (methodName.equals("unlock") && !scope.isEmpty()) {
                         if(lockStack.isEmpty()) {
-                            logger.error("Unlock without lock at file" + originalFilePath + " " + methodCallExpr.getRange().get());
+                            logger.warn("Unlock without lock at file" + originalFilePath + " " + methodCallExpr.getRange().get());
                             continue;
                         }
                         int lockMethodCallExprIndex = lockStack.pop();

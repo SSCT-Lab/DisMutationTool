@@ -29,15 +29,6 @@ public class TestUtils {
         return zkProject;
     }
 
-    public static MutantManager generateZKMutantManager() {
-        MutantManager mutantManager = MutantManager.builder()
-                .setProject(generateZKProject())
-                .setMutator(MutatorType.RFB)
-                .setMutator(MutatorType.MWT)
-                .build();
-        return mutantManager;
-    }
-
     public static MutantManager generateZKMutantManager(MutatorType mutatorType) {
         MutantManager mutantManager = MutantManager.builder()
                 .setProject(generateZKProject())

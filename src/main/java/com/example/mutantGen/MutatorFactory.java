@@ -29,6 +29,8 @@ public class MutatorFactory {
                 return new RCS();
             case NCS:
                 return new NCS();
+            case SCS:
+                return new SCS();
             default:
                 return null;
         }

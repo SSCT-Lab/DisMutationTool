@@ -71,26 +71,6 @@ public class NCS extends MutantGen {
                     res.add(new Mutant(synchronizedStmtCopy.getRange().get().begin.line, mutator, originalFilePath, mutantPath));
                 }
 
-
-//                if (totalStatements > 2) {
-//                    int third = totalStatements / 3;
-//                    BlockStmt outsideBlock = new BlockStmt(); // 用于存放移出的代码
-//                    for (int k = totalStatements - third; k < totalStatements; k++) {
-//                        outsideBlock.addStatement(block.getStatement(k));
-//                    }
-//                    for (int k = totalStatements - third; k < totalStatements; k++) {
-//                        block.remove(block.getStatement(totalStatements - third));
-//                    }
-//                    // 将移出的代码插入到 synchronized 代码块之后
-//                    // methodDeclarationCopy.getBody().get().addStatement(methodDeclaration.getBody().get().getStatements().indexOf(synchronizedStmt) + 1, outsideBlock);
-//                    // 写入变异体文件
-//                    mutantNo++;
-//                    String mutantName = FileUtil.getFileName(originalFilePath) + "_" + mutator + "_" + mutantNo + ".java";
-//                    String mutantPath = new File(Config.MUTANT_PATH).getAbsolutePath() + "/" + mutantName;
-//                    logger.info("Generating mutant: " + mutantName);
-//                    FileUtil.writeToFile(LexicalPreservingPrinter.print(cuCopy), mutantPath);
-//                    res.add(new Mutant(synchronizedStmtCopy.getRange().get().begin.line, mutator, originalFilePath, mutantPath));
-//                }
             }
         }
 

@@ -8,9 +8,15 @@
       - 测试输出
 - 关于等效变异体
   - Trivial Compiler Equivalence: A Large Scale Empirical Study of a Simple, Fast and Effective Equivalent Mutant Detection Technique
+  
 
 ## TODO
 - 将upcast的异常类型添加到方法签名方能通过编译
+- 编译器优化，直接比较编译后的字节码
+  - mvn clean compile
+  - 关于编译失败的问题 -> mvn invoker
+- 完善变异体和测试报告收集代码
+- 测试多个算子协同工作的情况
 
 ## 变异算子列表
 

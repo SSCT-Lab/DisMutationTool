@@ -1,0 +1,68 @@
+package com.example.mutantGen.mutators.concurrency;
+
+import com.example.mutantGen.Mutant;
+import com.example.mutantGen.MutantGen;
+import com.example.mutantGen.MutatorType;
+import com.example.utils.Config;
+import com.example.utils.FileUtil;
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.SynchronizedStmt;
+import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+public class SCS extends MutantGen {
+    private static final Logger logger = LogManager.getLogger(SCS.class);
+    public static final MutatorType mutator = MutatorType.SCS;
+
+    @Override
+    public List<Mutant> execute(String originalFilePath) {
+        List<Mutant> res = new ArrayList<>();
+        parse(originalFilePath);
+        List<SynchronizedStmt> synchronizedStmts = cu.findAll(SynchronizedStmt.class);
+
+        int mutantNo = 0;
+        for (int i = 0; i < synchronizedStmts.size(); i++) {
+            // 在cuCopy上进行修改
+            CompilationUnit cuCopy = generateCuCopy(originalFilePath);
+            SynchronizedStmt synchronizedStmtCopy = cuCopy.findAll(SynchronizedStmt.class).get(i);
+            BlockStmt block = synchronizedStmtCopy.getBody();
+            int totalStatements = block.getStatements().size();
+            if (totalStatements > 1) {
+                int splitIndex = totalStatements / 2;
+                BlockStmt firstBlock = new BlockStmt();
+                BlockStmt secondBlock = new BlockStmt();
+                for (int k = 0; k < splitIndex; k++) {
+                    firstBlock.addStatement(block.getStatement(k));
+                }
+                for (int k = splitIndex; k < totalStatements; k++) {
+                    secondBlock.addStatement(block.getStatement(k));
+                }
+                SynchronizedStmt syn1 = new SynchronizedStmt(); // 分裂后的第一个syn
+                syn1.setExpression(synchronizedStmtCopy.getExpression());
+                syn1.setBody(firstBlock);
+                SynchronizedStmt syn2 = new SynchronizedStmt(); // 分裂后的第二个syn
+                syn2.setExpression(synchronizedStmtCopy.getExpression());
+                syn2.setBody(secondBlock);
+                BlockStmt splitBlock = new BlockStmt().addStatement(syn1).addStatement(syn2);
+                synchronizedStmtCopy.replace(splitBlock);
+
+                //写入变异体文件
+                mutantNo++;
+                String mutantName = FileUtil.getFileName(originalFilePath) + "_" + mutator + "_" + mutantNo + ".java";
+                String mutantPath = new File(Config.MUTANT_PATH).getAbsolutePath() + "/" + mutantName;
+                logger.info("Generating mutant: " + mutantName);
+                FileUtil.writeToFile(LexicalPreservingPrinter.print(cuCopy), mutantPath);
+                res.add(new Mutant(synchronizedStmtCopy.getRange().get().begin.line, mutator, originalFilePath, mutantPath));
+            }
+        }
+
+
+        return res;
+    }
+}

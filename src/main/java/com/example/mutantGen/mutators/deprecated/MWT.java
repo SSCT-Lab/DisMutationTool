@@ -1,4 +1,4 @@
-package com.example.mutantGen.mutators;
+package com.example.mutantGen.mutators.deprecated;
 
 import com.example.mutantGen.Mutant;
 import com.example.mutantGen.MutantGen;

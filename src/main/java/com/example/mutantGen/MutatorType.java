@@ -13,6 +13,7 @@ public enum MutatorType {
     UNE, // upcast network exception
 
     // ---------------concurrency----------------
+    BCS, // broaden critical sections
     RCS, // remove critical sections
     NCS, // narrow down critical sections
     SCS, // split critical sections

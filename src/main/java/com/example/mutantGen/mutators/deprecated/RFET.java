@@ -1,4 +1,4 @@
-package com.example.mutantGen.mutators;
+package com.example.mutantGen.mutators.deprecated;
 
 import com.example.mutantGen.Mutant;
 import com.example.mutantGen.MutantGen;
@@ -12,14 +12,10 @@ import com.github.javaparser.ast.stmt.ThrowStmt;
 import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
-import com.github.javaparser.symbolsolver.JavaSymbolSolver;
-import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
-import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

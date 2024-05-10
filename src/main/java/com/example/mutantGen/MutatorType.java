@@ -18,6 +18,9 @@ public enum MutatorType {
     SCS, // split critical sections
     RTS, // remove concurrency thread's synchronization
     UCE, // upcast concurrency exception
+    MCT, // modify concurrency timeout
+
+    // ---------------consistency----------------
 
     // RLUL, // remove lock and unlock
     // RINT, //TODO remove exception throw statements in if (Obj == NULL) statements

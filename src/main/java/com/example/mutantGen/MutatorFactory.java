@@ -35,6 +35,8 @@ public class MutatorFactory {
                 return new RTS();
             case UCE:
                 return new UCE();
+            case MCT:
+                return new MCT();
             default:
                 return null;
         }

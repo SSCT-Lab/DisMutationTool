@@ -1,4 +1,4 @@
-package com.example.mutantGen.mutators;
+package com.example.mutantGen.mutators.deprecated;
 
 import com.example.MutantManager;
 import com.example.Project;
@@ -13,21 +13,21 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-public class MWTTest {
+public class RFBTest {
     static Project zkProject;
     static MutantManager mutantManager;
 
-    private static final Logger logger = LogManager.getLogger(MutantManager.class);
+    private static final Logger logger = LogManager.getLogger(RFBTest.class);
 
     @BeforeClass
     public static void setUp() {
         TestUtils.clearMutantAndOriginalDir();
-        mutantManager = TestUtils.generateZKMutantManager(MutatorType.MWT);
+        mutantManager = TestUtils.generateZKMutantManager(MutatorType.RFB);
         zkProject = mutantManager.getProject();
     }
 
     @Test
-    public void testGenRFBMutant() throws IOException {
+    public void testGenMSTMutant() throws IOException {
         mutantManager.generateMutants();
         // 打印文件的diff
         logger.info("Print diff for mutants");

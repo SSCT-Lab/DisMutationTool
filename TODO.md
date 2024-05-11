@@ -11,16 +11,18 @@
   
 
 ## TODO
-- 将upcast的异常类型添加到方法签名方能通过编译
+- upcast方法签名编译失败问题
 - 编译器优化，直接比较编译后的字节码
-  - mvn clean compile
-  - 关于编译失败的问题 -> mvn invoker
 - 完善变异体和测试报告收集代码
 - 测试多个算子协同工作的情况
-- 整理Upcast算子的重复代码
-- java.lang.IllegalArgumentException: File system element for parameter 'directory' does not exist: '/Users/zhaodongchen/Code/DisMutationTool/mutants'
-  - original
-  - testOutputs
+
+- 代码clean up & fix
+  - 初始化clean之前判断目录
+  - 写入变异体文件方法抽象
+  - 整理Upcast算子的重复代码
+
+- ant脚本编写
+- mvn脚本修改
 
 ## 变异算子列表
 

@@ -96,12 +96,9 @@ public class RCF extends MutantGen {
                                 IfStmt ifStmtCopy = cuCopy.findAll(IfStmt.class).get(i);
                                 ifStmtCopy.replace(ifStmtCopy.getThenStmt());
 
-                                mutantNo++;
-                                String mutantName = FileUtil.getFileName(originalFilePath) + "_" + mutator + "_" + mutantNo + ".java";
-                                String mutantPath = new File(Config.MUTANT_PATH).getAbsolutePath() + "/" + mutantName;
-                                logger.info("Generating mutant: " + mutantName);
-                                FileUtil.writeToFile(LexicalPreservingPrinter.print(cuCopy), mutantPath);
-                                res.add(new Mutant(ifStmtCopy.getRange().get().begin.line, mutator, originalFilePath, mutantPath));
+                                // 写入变异体文件
+                                int lineNo = ifStmtCopy.getBegin().get().line;
+                                res.add(generateMutantAndSaveToFile(++mutantNo, lineNo, mutator, originalFilePath, cuCopy));
                             }
                         }
                     } catch (UnsolvedSymbolException e) {

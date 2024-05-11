@@ -1,5 +1,7 @@
 package com.example.mutantGen;
 
+import com.example.utils.Config;
+import com.example.utils.FileUtil;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
@@ -9,6 +11,7 @@ import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeS
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -53,6 +56,15 @@ public abstract class MutantGen {
             logger.error("Error parsing file " + originalFilePath);
             return null;
         }
+    }
+
+    // 根据传入信息，生成变异体并保存到文件
+    protected Mutant generateMutantAndSaveToFile(int mutantNo, int lineNo, MutatorType mutatorType, String originalPath, CompilationUnit cu){
+        String mutantName = FileUtil.getFileName(originalPath) + "_" + mutatorType + "_" + mutantNo + ".java";
+        String mutantPath = new File(Config.MUTANT_PATH).getAbsolutePath() + "/" + mutantName;
+        logger.info("Generating " + mutatorType + " mutant: " + mutantName);
+        FileUtil.writeToFile(LexicalPreservingPrinter.print(cu), mutantPath);
+        return new Mutant(lineNo, mutatorType, originalPath, mutantPath);
     }
 
     public abstract List<Mutant> execute(String originalFilePath);

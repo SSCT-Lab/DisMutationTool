@@ -115,10 +115,6 @@ public class MCT extends MutantGen {
                 new LongLiteralExpr(String.valueOf(FACTOR)),
                 BinaryExpr.Operator.DIVIDE));
         // 写入变异体
-        String mutantName = FileUtil.getFileName(originalFilePath) + "_" + mutator + "_" + mutantNo + ".java";
-        String mutantPath = new File(Config.MUTANT_PATH).getAbsolutePath() + "/" + mutantName;
-        logger.info("Generating mutant: " + mutantName);
-        FileUtil.writeToFile(LexicalPreservingPrinter.print(cuCopy), mutantPath);
-        return new Mutant(methodCallExprCopy.getRange().get().begin.line, mutator, originalFilePath, mutantPath);
+        return generateMutantAndSaveToFile(mutantNo, methodCallExprCopy.getRange().get().begin.line, mutator, originalFilePath, cuCopy);
     }
 }

@@ -56,12 +56,9 @@ public class BCS extends MutantGen {
                         parentBlockCopy.remove(parentBlockCopy.getStatements().get(index + 1));
                     }
                     // 写入变异体文件
-                    mutantNo++;
-                    String mutantName = FileUtil.getFileName(originalFilePath) + "_" + mutator + "_" + mutantNo + ".java";
-                    String mutantPath = new File(Config.MUTANT_PATH).getAbsolutePath() + "/" + mutantName;
-                    logger.info("Generating mutant: " + mutantName);
-                    FileUtil.writeToFile(LexicalPreservingPrinter.print(cuCopy), mutantPath);
-                    res.add(new Mutant(synchronizedStmtCopy.getRange().get().begin.line, mutator, originalFilePath, mutantPath));
+                    int lineNo = synchronizedStmtCopy.getRange().get().begin.line;
+                    Mutant mutant = generateMutantAndSaveToFile(++mutantNo, lineNo , mutator, originalFilePath, cuCopy);
+                    res.add(mutant);
                 }
             }
         }

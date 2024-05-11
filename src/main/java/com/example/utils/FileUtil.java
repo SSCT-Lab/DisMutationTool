@@ -22,82 +22,6 @@ public class FileUtil {
 
     private static final Logger logger = LogManager.getLogger(FileUtil.class);
 
-//    /**
-//     * 替换文件，将targetFilePath文件替换为sourceFilePath文件
-//     *
-//     * @param targetFilePath 目标文件路径
-//     * @param sourceFilePath 源文件路径
-//     */
-//    private static void replaceFile(String sourceFilePath, String targetFilePath) throws FileNotFoundException {
-//        File sourceFile = new File(sourceFilePath);
-//        File targetFile = new File(targetFilePath);
-//        if (targetFile.exists() && sourceFile.exists()) {
-//            targetFile.delete();
-//            sourceFile.renameTo(targetFile);
-//            logger.info("Replace file: " + targetFilePath);
-//        } else {
-//            logger.error("File not exist: " + targetFilePath + " or " + sourceFilePath);
-//            throw new FileNotFoundException();
-//        }
-//    }
-//
-//    /**
-//     * 复制文件到目标文件夹，若目标文件夹不存在则创建
-//     *
-//     * @param filePath  文件路径
-//     * @param targetDir 目标文件夹
-//     */
-//    private static void copyFileToTargetDir(String filePath, String targetDir) throws FileNotFoundException {
-//        File file = new File(filePath);
-//        // targetDir若不存在，则创建
-//        File targetDirFile = new File(targetDir);
-//        if (!targetDirFile.exists()) {
-//            targetDirFile.mkdirs();
-//        }
-//        if (file.exists()) {
-//            File targetFile = new File(targetDir + File.separator + file.getName());
-//            if (targetFile.exists()) {
-//                logger.info("File already exists, replace it: " + targetFile.getAbsolutePath());
-//                targetFile.delete();
-//            }
-//            file.renameTo(targetFile);
-//            logger.info("Copy file: " + filePath);
-//        } else {
-//            logger.error("File not exist: " + filePath);
-//            throw new FileNotFoundException();
-//        }
-//    }
-//
-
-
-
-
-//    /**
-//     * 在根路径中查找是否存在指定文件
-//     *
-//     * @param filename 目标文件名(并非路径)
-//     * @param rootDir  根路径
-//     * @return 文件的绝对路径，若不存在则返回null
-//     */
-//    private static String searchFileFromRootDir(String filename, String rootDir) {
-//        File file = new File(rootDir);
-//        if (file.isDirectory()) {
-//            File[] files = file.listFiles();
-//            for (File f : files) {
-//                if (f.isDirectory()) {
-//                    String result = FileUtil.searchFileFromRootDir(filename, f.getAbsolutePath());
-//                    if (result != null) {
-//                        return result;
-//                    }
-//                } else {
-//                    if (f.getName().equals(filename)) {
-//                        return f.getAbsolutePath();
-//                    }
-//                }
-//            }
-//        }
-//        return null;
-//    }
 
     /**
      * This method is used to get a list of file paths from a given root directory based on a provided pattern.
@@ -221,9 +145,6 @@ public class FileUtil {
         }
     }
 
-//    public static void copyFileToTargetDir(String sourcePath, String targetPath){
-//        copyFileToTargetDir(sourcePath, FileUtil.getFileDir(targetPath), FileUtil.getFileName(targetPath));
-//    }
 
     /**
      * 将字符串写入文件

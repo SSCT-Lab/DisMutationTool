@@ -3,17 +3,13 @@ package com.example.mutantGen.mutators.concurrency;
 import com.example.mutantGen.Mutant;
 import com.example.mutantGen.MutantGen;
 import com.example.mutantGen.MutatorType;
-import com.example.utils.Config;
-import com.example.utils.FileUtil;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.SynchronizedStmt;
-import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

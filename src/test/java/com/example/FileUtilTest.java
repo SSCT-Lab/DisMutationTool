@@ -2,14 +2,15 @@ package com.example;
 
 import com.example.utils.Config;
 import com.example.utils.FileUtil;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class FileUtilTest {
-    Logger logger = Logger.getLogger(FileUtilTest.class);
+    private static final Logger logger = LogManager.getLogger(FileUtilTest.class);
 
     @Test
     public void testGetFileDir() {

@@ -6,8 +6,8 @@ import com.example.TestUtils;
 import com.example.mutantGen.Mutant;
 import com.example.mutantGen.MutatorType;
 import com.example.utils.FileUtil;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

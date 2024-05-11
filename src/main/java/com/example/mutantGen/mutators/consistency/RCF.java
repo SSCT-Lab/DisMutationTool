@@ -3,19 +3,15 @@ package com.example.mutantGen.mutators.consistency;
 import com.example.mutantGen.Mutant;
 import com.example.mutantGen.MutantGen;
 import com.example.mutantGen.MutatorType;
-import com.example.utils.Config;
-import com.example.utils.FileUtil;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.stmt.IfStmt;
-import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 

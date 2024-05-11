@@ -44,43 +44,25 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
-            <version>LATEST</version> <!-- 使用最新版本 -->
+            <version>LATEST</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>LATEST</version> <!-- 使用最新版本 -->
+            <version>LATEST</version>
         </dependency>
-
-
-<!--        <dependency>-->
-<!--            <groupId>org.zdc.people</groupId>-->
-<!--            <artifactId>mavenJunitExample</artifactId>-->
-<!--            <version>1.0-SNAPSHOT</version>-->
-<!--            <classifier>tests</classifier>-->
-<!--            <type>test-jar</type>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
-
-        <dependency>
-            <groupId>org.apache.zookeeper</groupId>
-            <artifactId>zookeeper</artifactId>
-            <version>3.5.8</version>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.zookeeper</groupId>
-            <artifactId>zookeeper</artifactId>
-            <version>3.5.8</version>
-        </dependency>
-
 
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-invoker-plugin</artifactId>
             <version>3.6.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.32</version>
+            <scope>provided</scope>
         </dependency>
 
 

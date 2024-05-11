@@ -12,6 +12,14 @@ public class TestUtils {
 
     public static void clearMutantAndOriginalDir() {
         try {
+            // 如果没有这三个文件夹，就创建
+            if(!new File(Config.MUTANT_PATH).exists())
+                new File(Config.MUTANT_PATH).mkdirs();
+            if(!new File(Config.ORIGINAL_PATH).exists())
+                new File(Config.ORIGINAL_PATH).mkdirs();
+            if(!new File(Config.OUTPUTS_PATH).exists())
+                new File(Config.OUTPUTS_PATH).mkdirs();
+
             FileUtils.cleanDirectory(new File(Config.MUTANT_PATH));
             FileUtils.cleanDirectory(new File(Config.ORIGINAL_PATH));
             FileUtils.cleanDirectory(new File(Config.OUTPUTS_PATH));

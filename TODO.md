@@ -18,6 +18,9 @@
 - 完善变异体和测试报告收集代码
 - 测试多个算子协同工作的情况
 - 整理Upcast算子的重复代码
+- java.lang.IllegalArgumentException: File system element for parameter 'directory' does not exist: '/Users/zhaodongchen/Code/DisMutationTool/mutants'
+  - original
+  - testOutputs
 
 ## 变异算子列表
 

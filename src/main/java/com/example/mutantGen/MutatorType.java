@@ -22,6 +22,8 @@ public enum MutatorType {
     MCT, // modify concurrency timeout
 
     // ---------------consistency----------------
+    RCF, // remove consistency files' checks
+    UFE, // upcast consistency files' exception
 
     // RLUL, // remove lock and unlock
     // RINT, //TODO remove exception throw statements in if (Obj == NULL) statements

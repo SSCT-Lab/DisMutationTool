@@ -3,6 +3,7 @@ package com.example.mutantGen;
 import com.example.mutantGen.mutators.concurrency.*;
 import com.example.mutantGen.mutators.deprecated.*;
 import com.example.mutantGen.mutators.network.*;
+import com.example.mutantGen.mutators.consistency.*;
 
 public class MutatorFactory {
     public static MutantGen getMutator(MutatorType type) {
@@ -39,6 +40,11 @@ public class MutatorFactory {
                 return new MCT();
             case BCS:
                 return new BCS();
+            // consistency
+            case RCF:
+                return new RCF();
+//            case UFE:
+//                return new UFE();
             default:
                 return null;
         }

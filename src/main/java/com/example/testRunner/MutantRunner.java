@@ -1,6 +1,6 @@
 package com.example.testRunner;
 
-import com.example.mutantGen.Mutant;
+import com.example.mutator.Mutant;
 import com.example.utils.Config;
 import com.example.utils.FileUtil;
 import org.apache.commons.io.FileUtils;

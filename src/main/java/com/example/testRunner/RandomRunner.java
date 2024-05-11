@@ -1,7 +1,7 @@
 package com.example.testRunner;
 
 import com.example.MutantManager;
-import com.example.mutantGen.Mutant;
+import com.example.mutator.Mutant;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

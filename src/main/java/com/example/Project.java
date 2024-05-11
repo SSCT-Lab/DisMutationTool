@@ -1,5 +1,6 @@
 package com.example;
 
+import com.example.mutator.MutatorType;
 import com.example.utils.FileUtil;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
@@ -23,7 +24,9 @@ public class Project {
     private final List<String> srcFileLs; // src目录下的java文件列表
     private final List<String> testFileLs; // 要执行的junit测试，.java文件
     private final List<String> excludedTests; // 要排除的测试名称
+    private final List<MutatorType> mutators; // 变异算子列表
     private final ProjectType projectType;
+    private final String buildOutputPath; // 编译输出路径，用于进行字节码比较
 
     private Project(ProjectBuilder builder) {
         this.basePath = builder.basePath;
@@ -32,6 +35,8 @@ public class Project {
         this.testFileLs = builder.testFileLs;
         this.excludedTests = builder.excludedTests;
         this.projectType = builder.projectType;
+        this.mutators = builder.mutators;
+        this.buildOutputPath = builder.buildOutputPath;
     }
 
     public static ProjectBuilder builder() {
@@ -44,7 +49,9 @@ public class Project {
         private List<String> srcFileLs;
         private List<String> testFileLs;
         private final List<String> excludedTests = new ArrayList<>();
+        private final List<MutatorType> mutators = new ArrayList<>();
         ProjectType projectType = ProjectType.MAVEN;
+        private String buildOutputPath;
 
         public ProjectBuilder setBasePath(String basePath) {
             this.basePath = basePath;
@@ -84,6 +91,18 @@ public class Project {
             this.projectType = projectType;
             return this;
         }
+
+        public ProjectBuilder setMutator(MutatorType mutator) {
+            this.mutators.add(mutator);
+            return this;
+        }
+
+        public ProjectBuilder buildOutputDirName(String targetName) {
+            this.buildOutputPath = this.basePath + "/" + targetName;
+            return this;
+        }
+
+
 
         public Project build() {
             return new Project(this);

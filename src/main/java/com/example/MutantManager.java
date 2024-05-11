@@ -1,8 +1,8 @@
 package com.example;
 
-import com.example.mutantGen.Mutant;
-import com.example.mutantGen.MutatorType;
-import com.example.mutantGen.MutatorFactory;
+import com.example.mutator.Mutant;
+import com.example.mutator.MutatorType;
+import com.example.mutator.MutatorFactory;
 import com.example.utils.FileUtil;
 import lombok.Getter;
 import org.apache.commons.io.FileUtils;
@@ -22,7 +22,7 @@ public class MutantManager {
     private final Set<MutatorType> mutatorSet;
     private final List<Mutant> mutantLs = new ArrayList<>();
     private final Map<String, Map<MutatorType, List<Mutant>>> mutantMap = new HashMap<>(); // key: originalPath, value: [key: mutatorType, value: mutants]
-    public static Builder builder() {
+    static Builder builder() {
         return new Builder();
     }
 

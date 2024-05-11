@@ -19,6 +19,7 @@ public class Config {
 
     // Directory for storing the original code before mutation.
     public static final String ORIGINAL_PATH = PROJECT_PATH + "/original";
+    public static final String ORIGINAL_BYTECODE_PATH = PROJECT_PATH + "/originalBytecode";
 
     // Directory for storing test resources within the project.
     public static final String TEST_RESOURCES_PATH = PROJECT_PATH + "/src/test/resources";

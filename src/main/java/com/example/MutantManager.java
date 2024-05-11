@@ -24,7 +24,6 @@ public class MutantManager {
     private final Set<MutatorType> mutatorSet;
     private List<Mutant> mutantLs = new ArrayList<>();
     private Map<String, Map<MutatorType, List<Mutant>>> mutantMap = new HashMap<>(); // key: originalPath, value: [key: mutatorType, value: mutants]
-
     public static Builder builder() {
         return new Builder();
     }

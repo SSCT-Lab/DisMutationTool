@@ -4,6 +4,7 @@ import com.example.Project;
 import com.example.mutator.Mutant;
 import com.example.utils.Config;
 import com.example.utils.FileUtil;
+import com.example.utils.MutantUtil;
 import org.apache.maven.shared.invoker.*;
 
 import java.io.File;
@@ -76,11 +77,22 @@ public class EquivalentMutantFilter {
     private void compileAndCompareEachMutant(List<Mutant> mutants){
         for(Mutant mutant: mutants){
             // 装载变异体
-            // TODO 抽象
+            MutantUtil.loadMutant(mutant);
             // compile
             boolean compileSuccess = compileSource();
+
+            if(!compileSuccess){
+                logger.error("mutant compile failed: " + mutant.getMutatedPath());
+                MutantUtil.unloadMutant(mutant);
+                continue;
+            }
             // extract bytecode
+
+
             // compare
+
+            // 撤销装载
+            MutantUtil.unloadMutant(mutant);
         }
     }
 

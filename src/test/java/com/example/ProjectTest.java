@@ -1,8 +1,6 @@
 package com.example;
 
-import com.example.utils.Config;
 import com.example.utils.FileUtil;
-import com.example.utils.MutationUtils;
 import org.junit.Before;
 import org.junit.Test;
 

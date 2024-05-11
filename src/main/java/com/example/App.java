@@ -14,13 +14,7 @@ public class App {
 
     public static void main(String[] args) {
         // clean up
-        try {
-            FileUtils.cleanDirectory(new File(Config.MUTANT_PATH));
-            FileUtils.cleanDirectory(new File(Config.ORIGINAL_PATH));
-            FileUtils.cleanDirectory(new File(Config.OUTPUTS_PATH));
-        } catch (Exception e) {
-            throw new RuntimeException();
-        }
+        setUp();
 
         mutateZK();
 
@@ -61,7 +55,6 @@ public class App {
                 .withTestPattern(".*/src/test/.*Test\\.java")
                 .build();
 
-
         MutantManager mutantManager = MutantManager.builder()
                 .setProject(zkProject)
                 .setMutator(MutatorType.UNE)
@@ -70,5 +63,21 @@ public class App {
 
         RandomRunner randomRunner = new RandomRunner(mutantManager, 1);
         randomRunner.run();
+    }
+
+    private static void setUp(){
+        try {
+            if(!new File(Config.MUTANT_PATH).exists())
+                new File(Config.MUTANT_PATH).mkdirs();
+            if(!new File(Config.ORIGINAL_PATH).exists())
+                new File(Config.ORIGINAL_PATH).mkdirs();
+            if(!new File(Config.OUTPUTS_PATH).exists())
+                new File(Config.OUTPUTS_PATH).mkdirs();
+            FileUtils.cleanDirectory(new File(Config.MUTANT_PATH));
+            FileUtils.cleanDirectory(new File(Config.ORIGINAL_PATH));
+            FileUtils.cleanDirectory(new File(Config.OUTPUTS_PATH));
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 }

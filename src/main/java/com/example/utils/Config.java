@@ -8,7 +8,7 @@ public class Config {
     // Root directory for the code.
     // /Users/zhaodongchen/Code/distributedSystems
     // /home/zdc/code/distributedSystems
-    public static final String ROOT_PATH="/Users/zhaodongchen/Code";
+    public static final String ROOT_PATH="/home/zdc/code";
 
     // Base directory for the DisMutationTool project.
     public static final String PROJECT_PATH = ROOT_PATH+"/DisMutationTool";

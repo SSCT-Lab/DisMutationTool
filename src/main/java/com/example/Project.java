@@ -1,6 +1,7 @@
 package com.example;
 
 import com.example.utils.FileUtil;
+import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -8,48 +9,42 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Getter
 public class Project {
+
+    public enum ProjectType {
+        MAVEN, ANT
+    }
 
     private static final Logger logger = LogManager.getLogger(Project.class);
 
-    private final String BASE_PATH;
+    private final String basePath;
     private final List<String> allFileLs; // 所有java文件列表
     private final List<String> srcFileLs; // src目录下的java文件列表
     private final List<String> testFileLs; // 要执行的junit测试，.java文件
+    private final List<String> excludedTests; // 要排除的测试名称
+    private final ProjectType projectType;
 
-
-    private Project(String basePath, List<String> allFileLs, List<String> srcFileLs, List<String> testFileLs) {
-        this.BASE_PATH = basePath;
-        this.allFileLs = allFileLs;
-        this.srcFileLs = srcFileLs;
-        this.testFileLs = testFileLs;
-    }
-
-    public String getBasePath() {
-        return BASE_PATH;
-    }
-
-    public List<String> getAllFileLs() {
-        return allFileLs;
-    }
-
-    public List<String> getSrcFileLs() {
-        return srcFileLs;
-    }
-
-    public List<String> getTestFileLs() {
-        return testFileLs;
+    private Project(ProjectBuilder builder) {
+        this.basePath = builder.basePath;
+        this.allFileLs = builder.allFileLs;
+        this.srcFileLs = builder.srcFileLs;
+        this.testFileLs = builder.testFileLs;
+        this.excludedTests = builder.excludedTests;
+        this.projectType = builder.projectType;
     }
 
     public static ProjectBuilder builder() {
         return new ProjectBuilder();
     }
 
-    static class ProjectBuilder {
+    public static class ProjectBuilder {
         private String basePath;
         private List<String> allFileLs;
         private List<String> srcFileLs;
         private List<String> testFileLs;
+        private final List<String> excludedTests = new ArrayList<>();
+        ProjectType projectType = ProjectType.MAVEN;
 
         public ProjectBuilder setBasePath(String basePath) {
             this.basePath = basePath;
@@ -80,14 +75,18 @@ public class Project {
             return this;
         }
 
-        public ProjectBuilder excludeTest(String pattern) {
-            this.testFileLs = this.testFileLs.stream().filter(file -> !file.matches(pattern)).collect(Collectors.toList());
+        public ProjectBuilder excludeTest(String testName) {
+            this.excludedTests.add(testName);
             return this;
         }
 
+        public ProjectBuilder setProjectType(ProjectType projectType) {
+            this.projectType = projectType;
+            return this;
+        }
 
         public Project build() {
-            return new Project(basePath, allFileLs, srcFileLs, testFileLs);
+            return new Project(this);
         }
     }
 

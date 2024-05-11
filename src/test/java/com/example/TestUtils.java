@@ -1,6 +1,5 @@
 package com.example;
 
-import com.example.mutantGen.Mutant;
 import com.example.mutantGen.MutatorType;
 import com.example.utils.Config;
 import org.apache.commons.io.FileUtils;

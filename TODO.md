@@ -19,7 +19,7 @@
 - 代码clean up & fix
   - (done) 初始化clean之前判断目录
   - (done) 写入变异体文件方法抽象
-  - 整理Upcast算子的重复代码
+  - (done) 整理Upcast算子的重复代码
 
 - ant脚本编写
 - mvn脚本修改

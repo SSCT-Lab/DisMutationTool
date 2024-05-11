@@ -65,10 +65,7 @@ public class RTS extends MutantGen {
         lockMethodCallExpr.removeForced();
         unlockMethodCallExpr.removeForced();
         //写入变异体文件
-        String mutantName = FileUtil.getFileName(originalFilePath) + "_" + mutator + "_" + mutantNo + ".java";
-        String mutantPath = new File(Config.MUTANT_PATH).getAbsolutePath() + "/" + mutantName;
-        logger.info("Generating mutant: " + mutantName);
-        FileUtil.writeToFile(LexicalPreservingPrinter.print(cuCopy), mutantPath);
-        return  new Mutant(lockMethodCallExpr.getRange().get().begin.line, mutator, originalFilePath, mutantPath);
+        int lineNo = lockMethodCallExpr.getRange().get().begin.line;
+        return generateMutantAndSaveToFile(mutantNo, lineNo, mutator, originalFilePath, cuCopy);
     }
 }

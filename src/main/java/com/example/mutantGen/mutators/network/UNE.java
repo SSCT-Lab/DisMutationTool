@@ -153,14 +153,8 @@ public class UNE extends MutantGen {
                             throwStmtInCopy.getExpression().asObjectCreationExpr().setType("IOException");
 
                             // 写入文件
-                            mutantNo++;
-                            String mutantName = FileUtil.getFileName(originalFilePath) + "_" + mutator + "_" + mutantNo + ".java";
-                            String mutantPath = new File("./mutants/").getAbsolutePath() + "/" + mutantName;
-                            logger.info("Generating mutant: " + mutantName);
-                            FileUtil.writeToFile(LexicalPreservingPrinter.print(cuCopy), mutantPath);
-                            // 生成变异体对象
-                            Mutant mutant = new Mutant(throwStmt.getRange().get().begin.line, mutator, originalFilePath, mutantPath);
-                            res.add(mutant);
+                            int lineNo = throwStmtInCopy.getRange().get().begin.line;
+                            res.add(generateMutantAndSaveToFile(++mutantNo, lineNo, mutator, originalFilePath, cuCopy));
                         }
                     }
                 } catch (UnsolvedSymbolException e) { // 防止引用到项目的其他文件导致解析失败

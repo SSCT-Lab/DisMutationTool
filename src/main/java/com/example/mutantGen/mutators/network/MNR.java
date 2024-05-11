@@ -52,7 +52,8 @@ public class MNR extends MutantGen {
                             removeMethodCall = true;
                         }
                     }
-                    if (packageAndClassName.equals("ServerSocketChannel") && (methodCallExpr.getName().asString().equals("isConnected") || methodCallExpr.getName().asString().equals("isConnectionPending"))) {
+                    if (packageAndClassName.equals("ServerSocketChannel")
+                            && (methodCallExpr.getName().asString().equals("isConnected") || methodCallExpr.getName().asString().equals("isConnectionPending"))) {
                         removeMethodCall = true;
                     }
                 } catch (UnsolvedSymbolException e) {
@@ -62,21 +63,15 @@ public class MNR extends MutantGen {
 
                 if (removeMethodCall) {
                     // 生成变异体
-                    // 在拷贝cu上删除close方法
+                    // 在拷贝cu上进行修改
                     CompilationUnit cuCopy = generateCuCopy(originalFilePath);
                     IfStmt ifStmtCopy = cuCopy.findAll(IfStmt.class).get(i);
                     ifStmtCopy.setCondition(new BooleanLiteralExpr(true));
 
                     // TODO 判断删除之后，if的condition是否为空，如果为空则删除整个if
                     // 写入文件
-                    mutantNo++;
-                    String mutantName = FileUtil.getFileName(originalFilePath) + "_" + mutator + "_" + mutantNo + ".java";
-                    String mutantPath = new File("./mutants/").getAbsolutePath() + "/" + mutantName;
-                    logger.info("Generating mutant: " + mutantName);
-                    FileUtil.writeToFile(LexicalPreservingPrinter.print(cuCopy), mutantPath);
-                    // 生成变异体对象
-                    Mutant mutant = new Mutant(ifStmt.getRange().get().begin.line, mutator, originalFilePath, mutantPath);
-                    res.add(mutant);
+                    int lineNo = ifStmt.getRange().get().begin.line;
+                    res.add(generateMutantAndSaveToFile(++mutantNo, lineNo, mutator, originalFilePath, cuCopy));
                 }
             }
         }

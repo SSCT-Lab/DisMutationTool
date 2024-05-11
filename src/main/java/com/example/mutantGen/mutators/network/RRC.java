@@ -45,26 +45,15 @@ public class RRC extends MutantGen {
                             if (packageAndClassName.equals("java.net.Socket") || packageAndClassName.equals("java.net.ServerSocket")) { // 判断close方法的调用者是否是Socket或ServerSocket TODO 其他shutdown方法
                                 // 生成变异体
                                 // 在拷贝cu上删除close方法
-                                CompilationUnit cuCopy = StaticJavaParser.parse(new File(originalFilePath));
-                                LexicalPreservingPrinter.setup(cuCopy); // 尽可能保留原始格式
+                                CompilationUnit cuCopy = generateCuCopy(originalFilePath);
                                 MethodCallExpr methodCallExprInCopy = cuCopy.findAll(TryStmt.class).get(i).getFinallyBlock().get().findAll(MethodCallExpr.class).get(j);
                                 methodCallExprInCopy.removeForced();
-
                                 // 写入文件
-                                mutantNo++;
-                                String mutantName = FileUtil.getFileName(originalFilePath) + "_" + mutator + "_" + mutantNo + ".java";
-                                String mutantPath = new File("./mutants/").getAbsolutePath() + "/" + mutantName;
-                                logger.info("Generating mutant: " + mutantName);
-                                FileUtil.writeToFile(LexicalPreservingPrinter.print(cuCopy), mutantPath);
-                                // 生成变异体对象
-                                Mutant mutant = new Mutant(methodCallExpr.getRange().get().begin.line, mutator, originalFilePath, mutantPath);
-                                res.add(mutant);
+                                int lineNo = methodCallExprInCopy.getRange().get().begin.line;
+                                res.add(generateMutantAndSaveToFile(++mutantNo, lineNo, mutator, originalFilePath, cuCopy));
                             }
                         } catch (UnsolvedSymbolException e) {
                             // logger.info("Unsolved 'close' SymbolException in methodCallExpr - " + throwStmt.getExpression().asObjectCreationExpr().getType());
-
-                        } catch (FileNotFoundException e) {
-                            throw new RuntimeException(e);
                         }
                     }
                 }

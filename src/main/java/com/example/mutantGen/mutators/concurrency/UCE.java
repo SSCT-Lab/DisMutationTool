@@ -100,7 +100,7 @@ public class UCE extends MutantGen {
                                             break;
                                         }
                                     }
-                                    if(!hasIOE){
+                                    if (!hasIOE) {
                                         methodDecl.addThrownException(new com.github.javaparser.ast.type.ClassOrInterfaceType("Exception"));
                                     }
 //                                    // 无论是否已经声明抛出IOException，都添加IOException
@@ -126,7 +126,7 @@ public class UCE extends MutantGen {
                                                 break;
                                             }
                                         }
-                                        if(!hasIOE){
+                                        if (!hasIOE) {
                                             constructorDecl.addThrownException(new com.github.javaparser.ast.type.ClassOrInterfaceType("Exception"));
                                         }
                                     }
@@ -140,14 +140,8 @@ public class UCE extends MutantGen {
                             throwStmtInCopy.getExpression().asObjectCreationExpr().setType("Exception");
 
                             // 写入文件
-                            mutantNo++;
-                            String mutantName = FileUtil.getFileName(originalFilePath) + "_" + mutator + "_" + mutantNo + ".java";
-                            String mutantPath = new File("./mutants/").getAbsolutePath() + "/" + mutantName;
-                            logger.info("Generating mutant: " + mutantName);
-                            FileUtil.writeToFile(LexicalPreservingPrinter.print(cuCopy), mutantPath);
-                            // 生成变异体对象
-                            Mutant mutant = new Mutant(throwStmt.getRange().get().begin.line, mutator, originalFilePath, mutantPath);
-                            res.add(mutant);
+                            int lineNo = throwStmtInCopy.getBegin().get().line;
+                            res.add(generateMutantAndSaveToFile(++mutantNo, lineNo, mutator, originalFilePath, cuCopy));
                         }
                     }
                 } catch (UnsolvedSymbolException e) { // 防止引用到项目的其他文件导致解析失败

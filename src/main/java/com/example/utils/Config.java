@@ -6,7 +6,9 @@ package com.example.utils;
  */
 public class Config {
     // Root directory for the code.
-    public static final String ROOT_PATH="/home/zdc/code";
+    // /Users/zhaodongchen/Code/distributedSystems
+    // /home/zdc/code/distributedSystems
+    public static final String ROOT_PATH="/Users/zhaodongchen/Code";
 
     // Base directory for the DisMutationTool project.
     public static final String PROJECT_PATH = ROOT_PATH+"/DisMutationTool";
@@ -36,6 +38,4 @@ public class Config {
     // Directory where test outputs are stored.
     public static final String OUTPUTS_PATH = PROJECT_PATH + "/testOutputs";
 
-    // Temporary directory for intermediate files generated during testing.
-    public static final String TMP_PATH = PROJECT_PATH + "/tmp";
 }

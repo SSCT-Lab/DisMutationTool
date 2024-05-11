@@ -27,6 +27,7 @@ replay_pid*
 mutants/*
 original/*
 testOutputs/*
+originalBytecode/*
 tmp/
 target/
 .DS_Store

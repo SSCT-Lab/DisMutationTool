@@ -1,6 +1,6 @@
 package com.example;
 
-import com.example.mutantGen.MutatorType;
+import com.example.mutator.MutatorType;
 import org.junit.Before;
 import org.junit.Test;
 

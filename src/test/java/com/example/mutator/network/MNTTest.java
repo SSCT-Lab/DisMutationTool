@@ -1,6 +1,6 @@
-package com.example.mutator.mutators.network;
+package com.example.mutator.network;
 
-import com.example.gen.MutantManager;
+import com.example.MutantManager;
 import com.example.Project;
 import com.example.TestUtils;
 import com.example.mutator.Mutant;

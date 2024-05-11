@@ -48,7 +48,7 @@ public class EquivalentMutantFilter {
         String tarPath = Config.ORIGINAL_BYTECODE_PATH;
         List<String> classFiles = FileUtil.getFilesBasedOnPattern(srcPath, ".*\\.class");
         for (String classFile : classFiles) {
-            String fileName = FileUtil.getFileName(classFile);
+            String fileName = FileUtil.getFileName(classFile) + ".class";
             FileUtil.copyFileToTargetDir(classFile, tarPath, fileName);
         }
     }

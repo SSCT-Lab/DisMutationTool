@@ -43,8 +43,8 @@ public class MutatorFactory {
             // consistency
             case RCF:
                 return new RCF();
-//            case UFE:
-//                return new UFE();
+            case UFE:
+                return new UFE();
             default:
                 return null;
         }

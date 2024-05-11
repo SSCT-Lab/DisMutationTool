@@ -28,11 +28,18 @@ public abstract class UpcastExceptionOperator extends MutantGen {
     protected static String targetExceptionClassName = "";
     protected static MutatorType mutator;
 
+    protected boolean continueProcess(CompilationUnit cu) {
+        return true;
+    }
+
     @Override
     public List<Mutant> execute(String originalFilePath) {
         targetExceptionClassName = targetException.substring(targetException.lastIndexOf(".") + 1);
         List<Mutant> res = new ArrayList<>();
         parse(originalFilePath);
+        if (!continueProcess(cu)) { // 文件过滤器，UFE使用
+            return res;
+        }
         // 遍历所有throw
         List<ThrowStmt> throwStmts = cu.findAll(ThrowStmt.class);
         int mutantNo = 0;
@@ -84,7 +91,7 @@ public abstract class UpcastExceptionOperator extends MutantGen {
                     }
                 } else {
                     Optional<ConstructorDeclaration> constructorDeclaration = throwStmtCopy.findAncestor(ConstructorDeclaration.class);
-                    if(! constructorDeclaration.isPresent()){
+                    if (!constructorDeclaration.isPresent()) {
                         logger.warn("failed to find methodDeclaration or constructorDeclaration in throwStmt!");
                         continue;
                     }

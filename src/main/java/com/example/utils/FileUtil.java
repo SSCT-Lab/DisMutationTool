@@ -129,7 +129,7 @@ public class FileUtil {
 
         // 判断是否存在同名文件
         if (targetFile.exists()) {
-            logger.info("File already exists, replace it: " + targetFile.getAbsolutePath());
+            logger.info("File already exists, replacing it: " + targetFile.getAbsolutePath());
             targetFile.delete();
         }
 
@@ -141,7 +141,7 @@ public class FileUtil {
                 fos.write(buffer, 0, length);
             }
         } catch (IOException e) {
-            logger.info("Error occurred while copying file: " + e.getMessage());
+            logger.error("Error occurred while copying file: " + e.getMessage());
         }
     }
 

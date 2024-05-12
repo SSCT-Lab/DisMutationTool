@@ -52,7 +52,7 @@ public class App {
         Project zkProject = Project.builder()
                 .setBasePath(Config.ZK_PROJECT_PATH)
                 .setProjectType(Project.ProjectType.MAVEN)
-                .setMutator(MutatorType.MNT)
+                .setMutator(MutatorType.MNR)
                 .excludeDir("build")
                 .withSrcPattern(".*/src/main/.*\\.java")
                 .withTestPattern(".*/src/test/.*Test\\.java")

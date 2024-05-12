@@ -40,10 +40,8 @@ public class MutantGenerator {
         }
 
         mutants = deleteIdenticalMutants(mutants);
-
-        // 收集原始字节码
         EquivalentMutantFilter equivalentMutantFilter = new EquivalentMutantFilter(project);
-        equivalentMutantFilter.filterMutants();
+        mutants = equivalentMutantFilter.filterMutants(mutants);
     }
 
     private List<Mutant> deleteIdenticalMutants(List<Mutant> mutants) {

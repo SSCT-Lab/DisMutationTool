@@ -26,6 +26,7 @@ public class MutantUtil {
         String originalFilePath = mutant.getOriginalPath();
         String originalFileName = FileUtil.getFileName(originalFilePath) + ".java";
         logger.info("Undo mutating " + originalFileName + "...");
-        FileUtil.copyFileToTargetDir(originalFilePath, FileUtil.getFileDir(originalFilePath), originalFileName);
+        FileUtil.copyFileToTargetDir(mutant.getOriginalCopyPath(), FileUtil.getFileDir(originalFilePath), originalFileName);
+
     }
 }

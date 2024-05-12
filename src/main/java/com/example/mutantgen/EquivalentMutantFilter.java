@@ -8,8 +8,11 @@ import com.example.utils.MutantUtil;
 import org.apache.maven.shared.invoker.*;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 
 import org.apache.logging.log4j.LogManager;
@@ -25,14 +28,14 @@ public class EquivalentMutantFilter {
         this.project = project;
     }
 
-    public void filterMutants() {
+    public List<Mutant> filterMutants(List<Mutant> mutants) {
         boolean originalCompileSuccess = compileSource();
-        if(!originalCompileSuccess){
+        if (!originalCompileSuccess) {
             logger.error("original code compile failed");
             throw new RuntimeException("original code compile failed");
         }
         copyOriginalBytecode();
-
+        return compileAndCompareEachMutant(mutants);
     }
 
     private boolean compileSource() {
@@ -61,7 +64,7 @@ public class EquivalentMutantFilter {
     }
 
     // 将srcPath中.class文件复制到tarPath中
-    private void copyOriginalBytecode(){
+    private void copyOriginalBytecode() {
         String srcPath = project.getBuildOutputPath();
         String tarPath = Config.ORIGINAL_BYTECODE_PATH;
         List<String> classFiles = FileUtil.getFilesBasedOnPattern(srcPath, ".*\\.class");
@@ -71,31 +74,63 @@ public class EquivalentMutantFilter {
         }
     }
 
-    // TODO compile for each mutant, extract bytecode with filename$ or filename.class
+    // compile each mutant, extract bytecode with filename$ or filename.class
     // find them in originalBytecode, and compare those files
 
-    private void compileAndCompareEachMutant(List<Mutant> mutants){
-        for(Mutant mutant: mutants){
+    private List<Mutant> compileAndCompareEachMutant(List<Mutant> mutants) {
+        List<Integer> toDelete = new ArrayList<>();
+        for (int i = 0; i < mutants.size(); i++) {
+            Mutant mutant = mutants.get(i);
             // 装载变异体
             MutantUtil.loadMutant(mutant);
-            // compile
+            // 编译装载后的代码
             boolean compileSuccess = compileSource();
-
-            if(!compileSuccess){
+            if (!compileSuccess) { // 编译失败，保留变异体，跳过后续步骤，之后运行会保存编译失败的文件
                 logger.error("mutant compile failed: " + mutant.getMutatedPath());
                 MutantUtil.unloadMutant(mutant);
                 continue;
             }
-            // extract bytecode
+            // 获取变异体的文件名前缀，匹配字节码文件
+            String namePrefix = FileUtil.getFileName(mutant.getOriginalPath());
+            logger.info("Searching bytecode files for" + FileUtil.getFileName(mutant.getOriginalPath()) + ".java");
 
+            String pattern = ".*" + Pattern.quote(namePrefix) + "(?:\\$[^.]+)?\\.class$";
 
-            // compare
-
+            List<String> originalBytecodeFiles = FileUtil.getFilesBasedOnPattern(Config.ORIGINAL_BYTECODE_PATH, pattern).stream().sorted().collect(Collectors.toList());
+            List<String> mutatedBytecodeFiles = FileUtil.getFilesBasedOnPattern(project.getBuildOutputPath(), pattern).stream().sorted().collect(Collectors.toList());
+            for (String filename : originalBytecodeFiles) {
+                logger.info("\t" + FileUtil.getFileName(filename) + ".class");
+            }
+            // 比较两个list中，同名文件字节码是否相同
+            boolean isEquivalent = true;
+            for (int j = 0; j < originalBytecodeFiles.size(); j++) {
+                String originalBytecodeFile = originalBytecodeFiles.get(j);
+                String mutatedBytecodeFile = mutatedBytecodeFiles.get(j);
+                if (!FileUtil.getFileName(originalBytecodeFile).equals(FileUtil.getFileName(mutatedBytecodeFile))) {
+                    throw new RuntimeException("Bytecode files not corresponding: " + originalBytecodeFile + " " + mutatedBytecodeFile);
+                }
+                logger.info("Comparing " + (originalBytecodeFile) + " and " + (mutatedBytecodeFile));
+                if (!FileUtil.isFileIdentical(originalBytecodeFile, mutatedBytecodeFile)) {
+                    logger.info("Mutant " + FileUtil.getFileName(mutant.getMutatedPath()) + " is not equivalent to original code");
+                    isEquivalent = false;
+                    break;
+                }
+            }
+            if (isEquivalent) {
+                toDelete.add(i);
+            }
             // 撤销装载
             MutantUtil.unloadMutant(mutant);
         }
+        // 删除等价变异体
+        List<Mutant> res = new ArrayList<>();
+        for (int i = 0; i < mutants.size(); i++) {
+            if (!toDelete.contains(i)) {
+                res.add(mutants.get(i));
+            }
+        }
+        return mutants;
     }
-
 
 
 }

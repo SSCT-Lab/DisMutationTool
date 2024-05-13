@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.*;
 
 @Getter
+@Deprecated
 public class MutantManager {
 
     private static final Logger logger = LogManager.getLogger(MutantManager.class);

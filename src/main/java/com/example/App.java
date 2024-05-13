@@ -2,6 +2,7 @@ package com.example;
 
 import com.example.mutantgen.MutantGenerator;
 import com.example.mutator.MutatorType;
+import com.example.testRunner.AllRunner;
 import com.example.utils.Config;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
@@ -53,15 +54,18 @@ public class App {
                 .setBasePath(Config.ZK_PROJECT_PATH)
                 .setProjectType(Project.ProjectType.MAVEN)
                 .setMutator(MutatorType.MNR)
-                .setMutator(MutatorType.MNT)
+//                .setMutator(MutatorType.MNT)
                 .excludeDir("build")
                 .withSrcPattern(".*/src/main/.*\\.java")
                 .withTestPattern(".*/src/test/.*Test\\.java")
                 .buildOutputDirName("target/classes")
                 .build();
 
-        MutantGenerator mutantGenerator = new MutantGenerator(zkProject);
-        mutantGenerator.generateMutants();
+//        MutantGenerator mutantGenerator = new MutantGenerator(zkProject);
+//        mutantGenerator.generateMutants();
+
+        AllRunner allRunner = new AllRunner(zkProject);
+        allRunner.run();
     }
 
     private static void setUp(){

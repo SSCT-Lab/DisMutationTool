@@ -33,7 +33,8 @@ public class MutantGenerator {
         }
     }
 
-    public void generateMutants() {
+    public List<Mutant> generateMutants() {
+        logger.info("\n\nPHASE: Generate ALL mutants for project: " + project.getBasePath() + " ...\n\n");
         // 生成所有变异体
         List<String> srcFileLs = project.getSrcFileLs();
         for (String srcFile : srcFileLs) {
@@ -41,9 +42,14 @@ public class MutantGenerator {
                 mutants.addAll(MutatorFactory.getMutator(mutator).execute(srcFile));
             }
         }
+
         // 删除内容相同的变异体
+        logger.info("\n\nPHASE: Removing identical mutants...\n\n");
         deleteIdenticalMutants();
+
+
         // 删除等价变异体
+        logger.info("\n\nPHASE: Removing equivalent mutants...\n\n");
         EquivalentMutantFilter equivalentMutantFilter = new EquivalentMutantFilter(project);
         mutants = equivalentMutantFilter.filterMutants(mutants);
 
@@ -67,6 +73,7 @@ public class MutantGenerator {
                 logger.info("\t" + mutator + " count: " + mutantMap.get(srcFile).get(mutator).size());
             }
         }
+        return mutants;
     }
 
     private void deleteIdenticalMutants() {

@@ -27,14 +27,16 @@ skip_test_class="$3"
 # 设置超时时间
 timeout=10  # 10 分钟
 
+touch "$output_file"
+
 # 切换到 mvn 路径
 cd "$mvn_path" || exit 1
 
 # 开始执行 mvn clean test，并将输出重定向到临时文件
 if [ -z "$skip_test_class" ]; then
-    mvn clean > "$output_file" & # TODO
+    mvn clean test > "$output_file" &
 else
-    mvn clean -Dtest=!$skip_test_class > "$output_file" &
+    mvn clean test -Dtest=!$skip_test_class > "$output_file" &
 fi
 
 # 获取 mvn 进程的 PID

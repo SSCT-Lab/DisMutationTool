@@ -11,9 +11,9 @@ import java.util.List;
 /*
     临时，用于随机选择当前的一定百分比的变异体进行测试
  */
+@Deprecated
 public class RandomRunner {
     private static final Logger logger = LogManager.getLogger(RandomRunner.class);
-
     private final MutantManager mutantManager;
     private double mutantPercentage = 0.1; // 选择变异体的百分比
 

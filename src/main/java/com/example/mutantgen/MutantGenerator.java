@@ -28,9 +28,6 @@ public class MutantGenerator {
     public MutantGenerator(Project project) {
         this.project = project;
         this.mutatorSet = project.getMutators();
-        if(mutatorSet.isEmpty()) {
-            mutatorSet.addAll(Arrays.asList(MutatorType.values()));
-        }
     }
 
     public List<Mutant> generateMutants() {

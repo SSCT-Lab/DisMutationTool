@@ -6,10 +6,7 @@ import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
@@ -39,6 +36,10 @@ public class Project {
         this.projectType = builder.projectType;
         this.mutators = builder.mutators;
         this.buildOutputPath = builder.buildOutputPath;
+        // TODO  如果没有设置变异算子，则默认使用所有的变异算子
+        if(this.mutators.isEmpty()){
+            this.mutators.addAll(Arrays.asList(MutatorType.values()));
+        }
     }
 
     public static ProjectBuilder builder() {

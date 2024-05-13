@@ -7,7 +7,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
@@ -24,7 +26,7 @@ public class Project {
     private final List<String> srcFileLs; // src目录下的java文件列表
     private final List<String> testFileLs; // 要执行的junit测试，.java文件
     private final List<String> excludedTests; // 要排除的测试名称
-    private final List<MutatorType> mutators; // 变异算子列表
+    private final Set<MutatorType> mutators; // 变异算子列表
     private final ProjectType projectType;
     private final String buildOutputPath; // 编译输出路径，用于进行字节码比较
 
@@ -49,7 +51,7 @@ public class Project {
         private List<String> srcFileLs;
         private List<String> testFileLs;
         private final List<String> excludedTests = new ArrayList<>();
-        private final List<MutatorType> mutators = new ArrayList<>();
+        private final Set<MutatorType> mutators = new HashSet<>();
         ProjectType projectType = ProjectType.MAVEN;
         private String buildOutputPath;
 

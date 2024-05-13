@@ -34,6 +34,8 @@ public class Config {
 
     // Path to the script used for running Maven commands.
     public static final String SCRIPT_PATH = PROJECT_PATH + "/bin/mvn-runner.sh";
+    public static final String MVN_SCRIPT_PATH = PROJECT_PATH + "/bin/mvn-runner-no-breaking.sh";
+    public static final String ANT_SCRIPT_PATH = PROJECT_PATH + "/bin/ant-runner-no-breaking.sh"; // TODO
 
     // Directory where test outputs are stored.
     public static final String OUTPUTS_PATH = PROJECT_PATH + "/testOutputs";

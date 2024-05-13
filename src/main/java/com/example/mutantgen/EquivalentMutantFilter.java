@@ -5,9 +5,11 @@ import com.example.mutator.Mutant;
 import com.example.utils.Config;
 import com.example.utils.FileUtil;
 import com.example.utils.MutantUtil;
+import org.apache.commons.io.FileUtils;
 import org.apache.maven.shared.invoker.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -76,7 +78,6 @@ public class EquivalentMutantFilter {
 
     // compile each mutant, extract bytecode with filename$ or filename.class
     // find them in originalBytecode, and compare those files
-
     private List<Mutant> compileAndCompareEachMutant(List<Mutant> mutants) {
         List<Integer> toDelete = new ArrayList<>();
         for (int i = 0; i < mutants.size(); i++) {
@@ -123,6 +124,17 @@ public class EquivalentMutantFilter {
             MutantUtil.unloadMutant(mutant);
         }
         // 删除等价变异体
+        for(int i: toDelete){
+            String path = mutants.get(i).getMutatedPath();
+            try {
+                logger.info("Removing equivalent mutant: " + mutants.get(i).getMutatedPath());
+                FileUtils.delete(new File(path));
+            } catch (IOException e){
+                throw new RuntimeException("Failed to delete file: " + path);
+            }
+        }
+
+        // 更新结果
         List<Mutant> res = new ArrayList<>();
         for (int i = 0; i < mutants.size(); i++) {
             if (!toDelete.contains(i)) {

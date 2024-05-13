@@ -14,7 +14,7 @@ public class MutantUtil {
         String mutatedFileName = FileUtil.getFileName(mutatedFilePath) + ".java";
         String originalFilePath = mutant.getOriginalPath();
         String originalFileName = FileUtil.getFileName(originalFilePath) + ".java";
-        logger.info("Mutating " + originalFileName + " with " + mutatedFileName + "...");
+        logger.info("======================Mutating " + originalFileName + " with " + mutatedFileName + "...======================");
         // 打印文件的diff
         logger.info("Diff between original file" + mutatedFileName + " and mutant file" + originalFileName + ":");
         FileUtil.fileDiff(mutant.getMutatedPath(), mutant.getOriginalPath());

@@ -38,8 +38,15 @@ public class MutantRunner {
         try {
             long startTime = System.currentTimeMillis();
             String scriptPath = project.getProjectType() == Project.ProjectType.MAVEN ? Config.MVN_SCRIPT_PATH : Config.ANT_SCRIPT_PATH;
-            String outputFilePath = Config.OUTPUTS_PATH + "/" + mutant.getMutatorType() + "/" + FileUtil.getFileName(mutatedFilePath) + ".txt";
-            ProcessBuilder processBuilder = new ProcessBuilder("bash", scriptPath,outputFilePath, project.getBasePath(), "");
+            String outputDir = Config.OUTPUTS_PATH + "/" + mutant.getMutatorType();
+            // 如果outputDir不存在，则创建
+            File outputDirFile = new File(outputDir);
+            if (!outputDirFile.exists()) {
+                outputDirFile.mkdirs();
+            }
+            String outputFilePath = outputDir + "/" + FileUtil.getFileName(mutatedFilePath) + ".txt";
+            logger.info("运行测试脚本: " + scriptPath + " " + outputFilePath + " " + project.getBasePath() + " ");
+            ProcessBuilder processBuilder = new ProcessBuilder("bash", scriptPath, outputFilePath, project.getBasePath(), "");
             processBuilder.redirectErrorStream(true); // 合并标准输出和错误输出
             Process process = processBuilder.start();
             int exitCode = process.waitFor();
@@ -59,9 +66,8 @@ public class MutantRunner {
             logger.error("执行脚本时发生异常: " + e.getMessage(), e);
         } finally {
             // 撤销变异
-            logger.info("撤销变异体代码...");
             MutantUtil.unloadMutant(mutant);
-            // 变异文件、测试结果复制到输出目录的<mutator>子目录下
+            // 变异文件复制到输出目录的<mutator>子目录下
             FileUtil.copyFileToTargetDir(mutant.getMutatedPath(), Config.OUTPUTS_PATH + "/" + mutant.getMutatorType(), mutatedFileName);
             try {
                 Thread.sleep(2000);

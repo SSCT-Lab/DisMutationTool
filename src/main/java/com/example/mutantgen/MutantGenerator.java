@@ -17,34 +17,59 @@ import java.util.*;
 
 @Getter
 public class MutantGenerator {
-    private final Project project;
     private static final Logger logger = LogManager.getLogger(MutantManager.class);
+
+    private final Project project;
+    private final Set<MutatorType> mutatorSet;
+    private List<Mutant> mutants = new ArrayList<>();
+    private final Map<String, Map<MutatorType, List<Mutant>>> mutantMap = new HashMap<>(); // key: originalPath, value: [key: mutatorType, value: mutants]
 
 
     public MutantGenerator(Project project) {
         this.project = project;
+        this.mutatorSet = project.getMutators();
+        if(mutatorSet.isEmpty()) {
+            mutatorSet.addAll(Arrays.asList(MutatorType.values()));
+        }
     }
 
     public void generateMutants() {
-        List<Mutant> mutants = new ArrayList<>();
-        List<MutatorType> mutatorTypes = project.getMutators();
-        if (mutatorTypes.isEmpty()) { // 说明全量运行，加入所有算子
-            mutatorTypes.addAll(Arrays.asList(MutatorType.values()));
-        }
         // 生成所有变异体
         List<String> srcFileLs = project.getSrcFileLs();
         for (String srcFile : srcFileLs) {
-            for (MutatorType mutator : mutatorTypes) {
+            for (MutatorType mutator : mutatorSet) {
                 mutants.addAll(MutatorFactory.getMutator(mutator).execute(srcFile));
             }
         }
-
-        mutants = deleteIdenticalMutants(mutants);
+        // 删除内容相同的变异体
+        deleteIdenticalMutants();
+        // 删除等价变异体
         EquivalentMutantFilter equivalentMutantFilter = new EquivalentMutantFilter(project);
         mutants = equivalentMutantFilter.filterMutants(mutants);
+
+        // 统计变异体信息
+        for (Mutant mutant : mutants) {
+            if (!mutantMap.containsKey(mutant.getOriginalPath())) {
+                mutantMap.put(mutant.getOriginalPath(), new HashMap<>());
+            }
+            if (!mutantMap.get(mutant.getOriginalPath()).containsKey(mutant.getMutatorType())) {
+                mutantMap.get(mutant.getOriginalPath()).put(mutant.getMutatorType(), new ArrayList<>());
+            }
+            mutantMap.get(mutant.getOriginalPath()).get(mutant.getMutatorType()).add(mutant);
+        }
+
+        // 打印mutant统计信息
+        logger.info("Generate completed");
+        logger.info("Total mutants: " + mutants.size());
+        for (String srcFile : mutantMap.keySet()) {
+            logger.info("File: " + srcFile);
+            for (MutatorType mutator : mutantMap.get(srcFile).keySet()) {
+                logger.info("\t" + mutator + " count: " + mutantMap.get(srcFile).get(mutator).size());
+            }
+        }
     }
 
-    private List<Mutant> deleteIdenticalMutants(List<Mutant> mutants) {
+    private void deleteIdenticalMutants() {
         Set<String> fileToDelete = new HashSet<>();
         for (int i = 0; i < mutants.size(); i++) {
             for (int j = i + 1; j < mutants.size(); j++) {
@@ -65,6 +90,5 @@ public class MutantGenerator {
                 throw new RuntimeException("Failed to delete file: " + path);
             }
         }
-        return mutants;
     }
 }

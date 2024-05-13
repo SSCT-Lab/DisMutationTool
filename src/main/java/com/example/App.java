@@ -53,6 +53,7 @@ public class App {
                 .setBasePath(Config.ZK_PROJECT_PATH)
                 .setProjectType(Project.ProjectType.MAVEN)
                 .setMutator(MutatorType.MNR)
+                .setMutator(MutatorType.MNT)
                 .excludeDir("build")
                 .withSrcPattern(".*/src/main/.*\\.java")
                 .withTestPattern(".*/src/test/.*Test\\.java")

@@ -14,7 +14,7 @@ import java.util.List;
 public class RandomRunner {
     private static final Logger logger = LogManager.getLogger(RandomRunner.class);
 
-    private MutantManager mutantManager;
+    private final MutantManager mutantManager;
     private double mutantPercentage = 0.1; // 选择变异体的百分比
 
     public RandomRunner(MutantManager mutantManager, double mutantPercentage) {
@@ -50,7 +50,7 @@ public class RandomRunner {
         }
         // 运行测试
         for (Mutant mutant: selectedMutants){
-            MutantRunner mutantRunner = new MutantRunner(mutant);
+            MutantRunner mutantRunner = new MutantRunner(mutant, mutantManager.getProject());
             mutantRunner.run();
         }
     }

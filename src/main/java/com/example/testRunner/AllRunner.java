@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 
 public class AllRunner {
-    private static final Logger logger = LogManager.getLogger(RandomRunner.class);
+    private static final Logger logger = LogManager.getLogger(AllRunner.class);
     private List<Mutant> mutantLs;
     private final Project project;
 

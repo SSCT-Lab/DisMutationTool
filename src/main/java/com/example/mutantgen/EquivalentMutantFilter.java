@@ -44,20 +44,21 @@ public class EquivalentMutantFilter {
         InvocationRequest request = new DefaultInvocationRequest();
         if (project.getProjectType() == Project.ProjectType.MAVEN) {
             String pomPath = project.getBasePath() + "/pom.xml";
-            logger.info("pomPath: " + pomPath);
             request.setPomFile(new File(pomPath));
             request.setGoals(Collections.singletonList("clean compile"));
             Invoker invoker = new DefaultInvoker();
+            // 设置自定义输出处理器
+             invoker.setOutputHandler(new CustomOutputHandler());
             try {
                 InvocationResult result = invoker.execute(request);
                 if (result.getExitCode() != 0) { // 编译失败
-                    result.getExecutionException().printStackTrace();
+                    // result.getExecutionException().printStackTrace();
                     return false;
                 }
                 return true;
             } catch (MavenInvocationException e) {
                 e.printStackTrace();
-                throw new RuntimeException("build failed");
+                throw new RuntimeException("build failed without exit code");
             }
         } else {
             // TODO ant?
@@ -87,18 +88,22 @@ public class EquivalentMutantFilter {
             // 编译装载后的代码
             boolean compileSuccess = compileSource();
             if (!compileSuccess) { // 编译失败，保留变异体，跳过后续步骤，之后运行会保存编译失败的文件
-                logger.error("mutant compile failed: " + mutant.getMutatedPath());
+                logger.error("BUILD FAILED FOR MUTANT: " + mutant.getMutatedPath());
                 MutantUtil.unloadMutant(mutant);
                 continue;
+            } else {
+                logger.info("BUILD SUCCESS FOR MUTANT: " + mutant.getMutatedPath());
             }
             // 获取变异体的文件名前缀，匹配字节码文件
             String namePrefix = FileUtil.getFileName(mutant.getOriginalPath());
             logger.info("Searching bytecode files for" + FileUtil.getFileName(mutant.getOriginalPath()) + ".java");
 
-            String pattern = ".*" + Pattern.quote(namePrefix) + "(?:\\$[^.]+)?\\.class$";
+            String pattern = "^" + Pattern.quote(namePrefix) + "(?:\\$[^.]+)?\\.class$";
 
-            List<String> originalBytecodeFiles = FileUtil.getFilesBasedOnPattern(Config.ORIGINAL_BYTECODE_PATH, pattern).stream().sorted().collect(Collectors.toList());
-            List<String> mutatedBytecodeFiles = FileUtil.getFilesBasedOnPattern(project.getBuildOutputPath(), pattern).stream().sorted().collect(Collectors.toList());
+            List<String> originalBytecodeFiles = FileUtil.getFilesBasedOnPattern(Config.ORIGINAL_BYTECODE_PATH, pattern);
+            List<String> mutatedBytecodeFiles = FileUtil.getFilesBasedOnPattern(project.getBuildOutputPath(), pattern);
+            Collections.sort(originalBytecodeFiles);
+            Collections.sort(mutatedBytecodeFiles);
             for (String filename : originalBytecodeFiles) {
                 logger.info("\t" + FileUtil.getFileName(filename) + ".class");
             }
@@ -118,6 +123,7 @@ public class EquivalentMutantFilter {
                 }
             }
             if (isEquivalent) {
+                logger.info("Equivalent mutant found: " + FileUtil.getFileName(mutant.getMutatedPath()) + " is equivalent to original code");
                 toDelete.add(i);
             }
             // 撤销装载
@@ -142,6 +148,14 @@ public class EquivalentMutantFilter {
             }
         }
         return mutants;
+    }
+
+    public class CustomOutputHandler implements InvocationOutputHandler {
+
+        @Override
+        public void consumeLine(String s) throws IOException {
+
+        }
     }
 
 

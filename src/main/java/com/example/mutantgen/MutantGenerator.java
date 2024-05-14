@@ -17,7 +17,7 @@ import java.util.*;
 
 @Getter
 public class MutantGenerator {
-    private static final Logger logger = LogManager.getLogger(MutantManager.class);
+    private static final Logger logger = LogManager.getLogger(MutantGenerator.class);
 
     private final Project project;
     private final Set<MutatorType> mutatorSet;
@@ -31,7 +31,7 @@ public class MutantGenerator {
     }
 
     public List<Mutant> generateMutants() {
-        logger.info("\n\nPHASE: Generate ALL mutants for project: " + project.getBasePath() + " ...\n\n");
+        logger.info("\n\nPHASE: Generate initial mutants for project: " + project.getBasePath() + " ...\n\n");
         // 生成所有变异体
         List<String> srcFileLs = project.getSrcFileLs();
         for (String srcFile : srcFileLs) {
@@ -39,6 +39,9 @@ public class MutantGenerator {
                 mutants.addAll(MutatorFactory.getMutator(mutator).execute(srcFile));
             }
         }
+
+        // 去重
+        mutants = new ArrayList<>(new HashSet<>(mutants));
 
         // 删除内容相同的变异体
         logger.info("\n\nPHASE: Removing identical mutants...\n\n");
@@ -70,16 +73,21 @@ public class MutantGenerator {
                 logger.info("\t" + mutator + " count: " + mutantMap.get(srcFile).get(mutator).size());
             }
         }
+
         return mutants;
     }
 
     private void deleteIdenticalMutants() {
         Set<String> fileToDelete = new HashSet<>();
         for (int i = 0; i < mutants.size(); i++) {
+            String path1 = mutants.get(i).getMutatedPath();
             for (int j = i + 1; j < mutants.size(); j++) {
-                String path1 = mutants.get(i).getMutatedPath();
                 String path2 = mutants.get(j).getMutatedPath();
                 if (FileUtil.isFileIdentical(path1, path2)) {
+                    logger.info("Identical mutants FOUND: " + path1 + " and " + path2);
+                    if(fileToDelete.contains(path1)){
+                        continue;
+                    }
                     fileToDelete.add(path2);
                 }
             }

@@ -50,6 +50,7 @@ public class App {
     }
 
     private static void mutateZK() {
+
         Project zkProject = Project.builder()
                 .setBasePath(Config.ZK_PROJECT_PATH)
                 .setProjectType(Project.ProjectType.MAVEN)
@@ -66,18 +67,29 @@ public class App {
                 .setMutator(MutatorType.MCT)
                 .setMutator(MutatorType.RCF)
                 .setMutator(MutatorType.UFE)
-
                 .excludeDir("build")
                 .withSrcPattern(".*/src/main/.*\\.java")
                 .withTestPattern(".*/src/test/.*Test\\.java")
                 .buildOutputDirName("target/classes")
                 .build();
 
-//        MutantGenerator mutantGenerator = new MutantGenerator(zkProject);
-//        mutantGenerator.generateMutants();
+//        Project zkProject = Project.builder()
+//                .setBasePath(Config.ZK_PROJECT_PATH)
+//                .setProjectType(Project.ProjectType.MAVEN)
+//                .setMutator(MutatorType.NCS)
+//                .excludeDir("build")
+//                .withSrcPattern(".*/src/main/.*\\.java")
+//                .withTestPattern(".*/src/test/.*Test\\.java")
+//                .buildOutputDirName("target/classes")
+//                .build();
 
-        AllRunner allRunner = new AllRunner(zkProject);
-        allRunner.run();
+
+
+        MutantGenerator mutantGenerator = new MutantGenerator(zkProject);
+        mutantGenerator.generateMutants();
+
+//        AllRunner allRunner = new AllRunner(zkProject);
+//        allRunner.run();
     }
 
     private static void setUp(){

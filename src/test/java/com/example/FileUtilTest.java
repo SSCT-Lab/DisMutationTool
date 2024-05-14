@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -31,7 +32,7 @@ public class FileUtilTest {
         String targetName = FileUtil.getFileName(filePath) + "_copy.java";
         FileUtil.copyFileToTargetDir(filePath, targetDir, targetName);
         // delete AuthTest.java
-        // new File(targetDir + "/" + targetName).delete();
+        new File(targetDir + "/" + targetName).delete();
     }
 
     @Test

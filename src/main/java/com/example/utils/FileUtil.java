@@ -41,7 +41,7 @@ public class FileUtil {
                     files.addAll(FileUtil.getFilesBasedOnPattern(f.getAbsolutePath(), pattern));
                 } else {
                     // 如果文件名称（包含路径）符合正则表达式，则加入到列表中
-                    if (f.getAbsolutePath().matches(pattern)) {
+                    if (f.getName().matches(pattern)) {
                         files.add(f.getAbsolutePath());
                     }
                 }
@@ -103,7 +103,7 @@ public class FileUtil {
             }
         } else {
             logger.error("File not exist: " + path);
-            return null;
+            throw new RuntimeException("File not exist: " + path);
         }
     }
 

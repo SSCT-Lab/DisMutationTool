@@ -52,7 +52,7 @@ public class Project {
         private List<String> srcFileLs;
         private List<String> testFileLs;
         private final List<String> excludedTests = new ArrayList<>();
-        private final Set<MutatorType> mutators = new HashSet<>();
+        private final Set<MutatorType> mutators = new TreeSet<>();
         ProjectType projectType = ProjectType.MAVEN;
         private String buildOutputPath;
 

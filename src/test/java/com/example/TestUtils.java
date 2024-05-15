@@ -44,5 +44,17 @@ public class TestUtils {
         return mutantManager;
     }
 
+    public static Project generateZKProject(MutatorType mutatorType) {
+        Project zkProject = Project.builder().setBasePath(Config.ZK_PROJECT_PATH)
+                .setMutator(mutatorType)
+                .setProjectType(Project.ProjectType.MAVEN)
+                .excludeDir("build")
+                .withSrcPattern(".*/src/main/.*\\.java")
+                .withTestPattern(".*/src/test/.*Test\\.java")
+                .buildOutputDirName("target/classes")
+                .build();
+        return zkProject;
+    }
+
 
 }

@@ -5,7 +5,8 @@ import com.example.mutator.UpcastExceptionOperator;
 
 public class UCE extends UpcastExceptionOperator {
 
-    static {
+    public UCE() {
+
         exceptions.add("java.lang.IllegalThreadStateException");
         exceptions.add("java.lang.IllegalMonitorStateException");
         exceptions.add("java.lang.InterruptedException");

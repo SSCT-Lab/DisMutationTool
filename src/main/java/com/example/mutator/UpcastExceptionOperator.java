@@ -20,10 +20,10 @@ import java.util.Optional;
 public abstract class UpcastExceptionOperator extends MutantGen {
 
     private static final Logger logger = LogManager.getLogger(UpcastExceptionOperator.class);
-    protected static ArrayList<String> exceptions = new ArrayList<>();
-    protected static String targetException = "";
-    protected static String targetExceptionClassName = "";
-    protected static MutatorType mutator;
+    protected ArrayList<String> exceptions = new ArrayList<>();
+    protected String targetException = "";
+    protected String targetExceptionClassName = "";
+    protected MutatorType mutator;
 
     protected boolean continueProcess(CompilationUnit cu) {
         return true;

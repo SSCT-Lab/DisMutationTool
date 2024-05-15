@@ -147,7 +147,7 @@ public class EquivalentMutantFilter {
                 res.add(mutants.get(i));
             }
         }
-        return mutants;
+        return res;
     }
 
     public class CustomOutputHandler implements InvocationOutputHandler {

@@ -13,7 +13,9 @@ import com.example.mutator.UpcastExceptionOperator;
 
 public class UNE extends UpcastExceptionOperator {
 
-    static {
+    public UNE() {
+        mutator = MutatorType.UNE;
+
         exceptions.add("java.net.UnknownHostException");
         exceptions.add("java.net.UnknownServiceException");
         exceptions.add("java.net.ProtocolException");
@@ -25,8 +27,6 @@ public class UNE extends UpcastExceptionOperator {
         exceptions.add("javax.management.remote.JMXServerErrorException");
         exceptions.add("javax.management.JMXProviderException");
         exceptions.add("java.net.HttpRetryException");
-
-        mutator = MutatorType.UNE;
 
         targetException = "java.io.IOException";
     }

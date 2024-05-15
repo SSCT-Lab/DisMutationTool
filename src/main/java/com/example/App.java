@@ -51,7 +51,7 @@ public class App {
 
     private static void mutateZK() {
 
-        Project zkProject = Project.builder()
+        Project zkProject1 = Project.builder()
                 .setBasePath(Config.ZK_PROJECT_PATH)
                 .setProjectType(Project.ProjectType.MAVEN)
                 .setMutator(MutatorType.MNR)
@@ -73,23 +73,36 @@ public class App {
                 .buildOutputDirName("target/classes")
                 .build();
 
-//        Project zkProject = Project.builder()
-//                .setBasePath(Config.ZK_PROJECT_PATH)
-//                .setProjectType(Project.ProjectType.MAVEN)
-//                .setMutator(MutatorType.NCS)
-//                .excludeDir("build")
-//                .withSrcPattern(".*/src/main/.*\\.java")
-//                .withTestPattern(".*/src/test/.*Test\\.java")
-//                .buildOutputDirName("target/classes")
-//                .build();
+        Project zkProject2 = Project.builder()
+                .setBasePath(Config.ZK_PROJECT_PATH)
+                .setProjectType(Project.ProjectType.MAVEN)
+                .setMutator(MutatorType.UNE)
+                .setMutator(MutatorType.UCE)
+                .setMutator(MutatorType.UFE)
+                .excludeDir("build")
+                .withSrcPattern(".*/src/main/.*\\.java")
+                .withTestPattern(".*/src/test/.*Test\\.java")
+                .buildOutputDirName("target/classes")
+                .build();
+
+
+        Project zkProject3 = Project.builder()
+                .setBasePath(Config.ZK_PROJECT_PATH)
+                .setProjectType(Project.ProjectType.MAVEN)
+                .setMutator(MutatorType.RTS)
+                .excludeDir("build")
+                .withSrcPattern(".*/src/main/.*\\.java")
+                .withTestPattern(".*/src/test/.*Test\\.java")
+                .buildOutputDirName("target/classes")
+                .build();
 
 
 
-        MutantGenerator mutantGenerator = new MutantGenerator(zkProject);
-        mutantGenerator.generateMutants();
+//        MutantGenerator mutantGenerator = new MutantGenerator(zkProject1);
+//        mutantGenerator.generateMutantsWithoutFilterEq();
 
-//        AllRunner allRunner = new AllRunner(zkProject);
-//        allRunner.run();
+        AllRunner allRunner = new AllRunner(zkProject1);
+        allRunner.run();
     }
 
     private static void setUp(){

@@ -8,7 +8,7 @@ import com.github.javaparser.ast.ImportDeclaration;
 import java.util.ArrayList;
 
 public class UFE extends UpcastExceptionOperator {
-    static {
+    public UFE() {
         exceptions.add("java.io.FileNotFoundException");
         exceptions.add("java.io.IOException");
         exceptions.add("java.lang.SecurityException");

@@ -6,6 +6,7 @@ import com.example.mutator.Mutant;
 import com.example.mutator.MutatorFactory;
 import com.example.mutator.MutatorType;
 import com.example.utils.FileUtil;
+import com.google.common.annotations.VisibleForTesting;
 import lombok.Getter;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
@@ -30,7 +31,16 @@ public class MutantGenerator {
         this.mutatorSet = project.getMutators();
     }
 
-    public List<Mutant> generateMutants() {
+    public List<Mutant> generateMutants(){
+        return generateMutants(false);
+    }
+
+    public List<Mutant> generateMutantsWithoutFilterEq() {
+        return generateMutants(true);
+    }
+
+
+    public List<Mutant> generateMutants(boolean skipBytecodeComp) {
         logger.info("\n\nPHASE: Generate initial mutants for project: " + project.getBasePath() + " ...\n\n");
         // 生成所有变异体
         List<String> srcFileLs = project.getSrcFileLs();
@@ -40,18 +50,19 @@ public class MutantGenerator {
             }
         }
 
-        // 去重
-        mutants = new ArrayList<>(new HashSet<>(mutants));
+//        // 去重
+//        mutants = new ArrayList<>(new HashSet<>(mutants));
 
         // 删除内容相同的变异体
         logger.info("\n\nPHASE: Removing identical mutants...\n\n");
         deleteIdenticalMutants();
 
-
-        // 删除等价变异体
-        logger.info("\n\nPHASE: Removing equivalent mutants...\n\n");
-        EquivalentMutantFilter equivalentMutantFilter = new EquivalentMutantFilter(project);
-        mutants = equivalentMutantFilter.filterMutants(mutants);
+        if(!skipBytecodeComp){
+            // 删除等价变异体
+            logger.info("\n\nPHASE: Removing equivalent mutants...\n\n");
+            EquivalentMutantFilter equivalentMutantFilter = new EquivalentMutantFilter(project);
+            mutants = equivalentMutantFilter.filterMutants(mutants);
+        }
 
         // 统计变异体信息
         for (Mutant mutant : mutants) {
@@ -85,7 +96,7 @@ public class MutantGenerator {
                 String path2 = mutants.get(j).getMutatedPath();
                 if (FileUtil.isFileIdentical(path1, path2)) {
                     logger.info("Identical mutants FOUND: " + path1 + " and " + path2);
-                    if(fileToDelete.contains(path1)){
+                    if (fileToDelete.contains(path1)) {
                         continue;
                     }
                     fileToDelete.add(path2);
@@ -93,14 +104,19 @@ public class MutantGenerator {
             }
         }
         // 删除对应的mutant和文件
-        for (String path : fileToDelete) {
-            mutants.removeIf(mutant -> mutant.getMutatedPath().equals(path));
-            try {
-                logger.info("Removing identical mutant: " + path);
-                FileUtils.delete(new File(path));
-            } catch (IOException e){
-                throw new RuntimeException("Failed to delete file: " + path);
+        List<Mutant> newMutants = new ArrayList<>();
+        for (Mutant mutant : mutants) {
+            if (fileToDelete.contains(mutant.getMutatedPath())) {
+                try {
+                    logger.info("Deleting identical mutant: " + mutant.getMutatedPath());
+                    FileUtils.delete(new File(mutant.getMutatedPath()));
+                } catch (IOException e) {
+                    throw new RuntimeException("Failed to delete file: " + mutant.getMutatedPath());
+                }
+            } else {
+                newMutants.add(mutant);
             }
         }
+        mutants = newMutants;
     }
 }

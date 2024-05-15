@@ -48,6 +48,11 @@ do
     if grep -q "BUILD SUCCESS" "$output_file"; then
         echo "构建成功"
         break
+    elif grep -q "BUILD FAILURE" "$output_file"; then
+        echo "构建失败，请查看日志文件: $output_file"
+        kill "$mvn_pid"  # 结束 mvn 进程
+        sleep 10
+        exit 1
     elif [ "$(find "$output_file" -mmin +"$timeout")" ]; then
         echo "输出文件长时间未更新，结束 mvn 进程"
         kill "$mvn_pid"  # 结束 mvn 进程

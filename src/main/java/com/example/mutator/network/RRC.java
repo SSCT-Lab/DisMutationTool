@@ -37,7 +37,7 @@ public class RRC extends MutantGen {
                         try {
                             ResolvedMethodDeclaration resolvedMethodDeclaration = methodCallExpr.resolve();
                             String packageAndClassName = resolvedMethodDeclaration.getPackageName() + "." + resolvedMethodDeclaration.getClassName();
-                            if (packageAndClassName.equals("java.net.Socket") || packageAndClassName.equals("java.net.ServerSocket")) { // 判断close方法的调用者是否是Socket或ServerSocket TODO 其他shutdown方法
+                            if (packageAndClassName.equals("java.net.Socket") || packageAndClassName.equals("java.net.ServerSocket")) { // 判断close方法的调用者是否是Socket或ServerSocket
                                 // 生成变异体
                                 // 在拷贝cu上删除close方法
                                 CompilationUnit cuCopy = generateCuCopy(originalFilePath);

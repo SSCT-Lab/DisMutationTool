@@ -29,8 +29,8 @@ skip_test_class="$3"
 cd "$mvn_path" || exit 1
 
 # 拼接输出重定向文件路径
-output_dir="/home/zdc/code/DisMutationTool/testOutputs" # TODO 可变参数
-project_dir="/home/zdc/code/distributedSystems/zk/apache-zookeeper-3.5.8/zookeeper-server" # TODO 可变参数
+output_dir="/home/zdc/code/DisMutationTool/testOutputs" # 可变参数
+project_dir="/home/zdc/code/distributedSystems/zk/apache-zookeeper-3.5.8/zookeeper-server" # 可变参数
 output_path="$output_dir/$output_file"
 
 # 创建输出目录

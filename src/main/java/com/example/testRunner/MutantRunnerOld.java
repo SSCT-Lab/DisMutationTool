@@ -71,7 +71,6 @@ public class MutantRunnerOld {
             int exitCode = process.waitFor();
 
             // 打印脚本执行结果
-            // TODO 汇总统计
             if (exitCode == 0) {
                 logger.info("脚本执行成功！");
             } else {

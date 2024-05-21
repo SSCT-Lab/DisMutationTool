@@ -23,7 +23,7 @@ public class RFB extends MutantGen {
 
     /**
      * 删除掉finally块中的内容，如果finally块为空，则不做任何操作
-     * TODO：块中仅有logger或输出等
+     * 块中仅有logger或输出等
      * remove finally block's contents
      *
      * @param originalFilePath

@@ -25,9 +25,6 @@ public enum MutatorType {
     RCF, // remove consistency files' checks
     UFE, // upcast consistency files' exception
 
-    // RLUL, // remove lock and unlock
-    // RINT, //TODO remove exception throw statements in if (Obj == NULL) statements
-
     // ---------------pit----------------
     // https://pitest.org/quickstart/mutators/
     //https://github.com/hcoles/pitest/tree/master/pitest/src/main/java/org/pitest/mutationtest/engine/gregor/mutators

@@ -31,6 +31,7 @@ public class Config {
 
     // Path to the specific project directory of Apache ActiveMQ.(Never used)
     public static final String AMQ_PROJECT_PATH = TARGET_SYSTEM_PATH+"/amq/apache-activemq-5.16.0";
+    public static final String CAS_PROJECT_PATH = TARGET_SYSTEM_PATH+"/cas/apache-cassandra-3.11.6-src";
 
     // Path to the script used for running Maven commands.
     public static final String SCRIPT_PATH = PROJECT_PATH + "/bin/mvn-runner.sh";

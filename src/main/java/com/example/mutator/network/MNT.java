@@ -53,7 +53,7 @@ public class MNT extends MutantGen {
                     String packageAndClassName = resolvedMethodDeclaration.getPackageName() + "." + resolvedMethodDeclaration.getClassName();
                     if (packageAndClassName.equals("java.net.Socket") || packageAndClassName.equals("java.net.ServerSocket")
                             && methodCallExpr.getArguments().size() == 1
-                            && methodCallExpr.getArguments().get(1).calculateResolvedType().isNumericType()) { // UnsolvedSymbolException is thrown if the type is not numeric
+                            && methodCallExpr.getArguments().get(0).calculateResolvedType().isNumericType()) { // UnsolvedSymbolException is thrown if the type is not numeric
                         Mutant mutant = genMutant(originalFilePath, i, ++mutantNo, 0);
                         res.add(mutant);
                     }

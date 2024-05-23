@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class MNR extends MutantGen {
 
@@ -55,6 +56,9 @@ public class MNR extends MutantGen {
                     }
                 } catch (UnsolvedSymbolException e) {
                     // logger.info("UnsolvedSymbolException in methodCallExpr - " + throwStmt.getExpression().asObjectCreationExpr().getType());
+                } catch (Exception e){
+                    logger.info("Exception in methodCallExpr - " +methodCallExpr.getName().asString());
+                    logger.info(e.getMessage());
                 }
                 // 删除网络资源的if检查
 

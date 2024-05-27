@@ -56,5 +56,43 @@ public class TestUtils {
         return zkProject;
     }
 
+    public static Project generateCasProject() {
+        Project casProject = Project.builder()
+                .setBasePath(Config.CAS_PROJECT_PATH)
+                .setProjectType(Project.ProjectType.ANT)
+                .setMutator(MutatorType.MNR)
+                .setMutator(MutatorType.MNT)
+                .setMutator(MutatorType.RRC)
+                .setMutator(MutatorType.UNE)
+                .setMutator(MutatorType.BCS)
+                .setMutator(MutatorType.RCS)
+                .setMutator(MutatorType.NCS)
+                .setMutator(MutatorType.SCS)
+                .setMutator(MutatorType.RTS)
+                .setMutator(MutatorType.UCE)
+                .setMutator(MutatorType.MCT)
+                .setMutator(MutatorType.RCF)
+                .setMutator(MutatorType.UFE)
+                .excludeDir("build")
+                .withSrcPattern(".*/src/.*\\.java")
+                .withTestPattern(".*/test/.*Test\\.java")
+                .buildOutputDirName("build/classes")
+                .build();
+        return casProject;
+    }
+
+    public static Project generateCasProject(MutatorType mutatorType) {
+        Project casProject = Project.builder()
+                .setBasePath(Config.CAS_PROJECT_PATH)
+                .setProjectType(Project.ProjectType.ANT)
+                .setMutator(mutatorType)
+                .excludeDir("build")
+                .withSrcPattern(".*/src/.*\\.java")
+                .withTestPattern(".*/test/.*Test\\.java")
+                .buildOutputDirName("build/classes")
+                .build();
+        return casProject;
+    }
+
 
 }

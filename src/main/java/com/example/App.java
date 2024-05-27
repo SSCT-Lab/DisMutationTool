@@ -45,8 +45,10 @@ public class App {
                 .buildOutputDirName("build/classes")
                 .build();
 
-        MutantGenerator mutantGenerator = new MutantGenerator(casProject);
-        mutantGenerator.generateMutantsWithoutFilterEq();
+//        MutantGenerator mutantGenerator = new MutantGenerator(casProject);
+//        mutantGenerator.generateMutantsWithoutFilterEq();
+        AllRunner allRunner = new AllRunner(casProject);
+        allRunner.run();
 
     }
 

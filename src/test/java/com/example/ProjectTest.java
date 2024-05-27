@@ -1,5 +1,7 @@
 package com.example;
 
+import com.example.mutantgen.MutantGenerator;
+import com.example.mutator.MutatorType;
 import com.example.utils.FileUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,5 +35,12 @@ public class ProjectTest {
     public void testCatFile(){
         String selectedPath = testProject.getTestFileLs().get(0);
         FileUtil.showFileContent(selectedPath);
+    }
+
+    @Test
+    public void testCompileAntProject(){
+        Project casProject = TestUtils.generateCasProject(MutatorType.RRC);
+        MutantGenerator mutantGenerator = new MutantGenerator(casProject);
+        mutantGenerator.generateMutants();
     }
 }

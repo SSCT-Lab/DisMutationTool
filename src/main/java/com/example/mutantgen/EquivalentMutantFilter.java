@@ -8,13 +8,14 @@ import com.example.utils.MutantUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.shared.invoker.*;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 
 import org.apache.logging.log4j.LogManager;
@@ -30,7 +31,7 @@ public class EquivalentMutantFilter {
         this.project = project;
     }
 
-    public List<Mutant> filterMutants(List<Mutant> mutants) {
+    List<Mutant> filter(List<Mutant> mutants) {
         boolean originalCompileSuccess = compileSource();
         if (!originalCompileSuccess) {
             logger.error("original code compile failed");
@@ -40,31 +41,7 @@ public class EquivalentMutantFilter {
         return compileAndCompareEachMutant(mutants);
     }
 
-    private boolean compileSource() {
-        InvocationRequest request = new DefaultInvocationRequest();
-        if (project.getProjectType() == Project.ProjectType.MAVEN) {
-            String pomPath = project.getBasePath() + "/pom.xml";
-            request.setPomFile(new File(pomPath));
-            request.setGoals(Collections.singletonList("clean compile"));
-            Invoker invoker = new DefaultInvoker();
-            // 设置自定义输出处理器
-             invoker.setOutputHandler(new CustomOutputHandler());
-            try {
-                InvocationResult result = invoker.execute(request);
-                if (result.getExitCode() != 0) { // 编译失败
-                    // result.getExecutionException().printStackTrace();
-                    return false;
-                }
-                return true;
-            } catch (MavenInvocationException e) {
-                e.printStackTrace();
-                throw new RuntimeException("build failed without exit code");
-            }
-        } else {
-            // TODO ant?
-        }
-        return true;
-    }
+
 
     // 将srcPath中.class文件复制到tarPath中
     private void copyOriginalBytecode() {
@@ -150,8 +127,77 @@ public class EquivalentMutantFilter {
         return res;
     }
 
-    public class CustomOutputHandler implements InvocationOutputHandler {
 
+
+
+    private boolean compileSource() {
+        if (project.getProjectType() == Project.ProjectType.MAVEN) {
+            InvocationRequest request = new DefaultInvocationRequest();
+            String pomPath = project.getBasePath() + "/pom.xml";
+            request.setPomFile(new File(pomPath));
+            request.setGoals(Collections.singletonList("clean compile"));
+            Invoker invoker = new DefaultInvoker();
+            // 设置自定义输出处理器
+            invoker.setOutputHandler(new CustomOutputHandler());
+            try {
+                InvocationResult result = invoker.execute(request);
+                if (result.getExitCode() != 0) { // 编译失败
+                    // result.getExecutionException().printStackTrace();
+                    return false;
+                }
+                return true;
+            } catch (MavenInvocationException e) {
+                e.printStackTrace();
+                throw new RuntimeException("build failed without exit code");
+            }
+        } else {
+            String buildFilePath = project.getBasePath() + "/build.xml";
+            try {
+                // 获取build.xml文件的目录
+                File buildFile = new File(buildFilePath);
+                File directory = buildFile.getParentFile();
+
+                // 创建命令
+                String[] command = {"ant", "clean", "build"};
+
+                // 创建ProcessBuilder
+                ProcessBuilder processBuilder = new ProcessBuilder(command);
+                processBuilder.directory(directory);
+                processBuilder.redirectErrorStream(true);
+
+                // 启动进程
+                Process process = processBuilder.start();
+
+                // 读取输出
+                Thread outputThread = new Thread(() -> {
+                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            System.out.println(line);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+
+                // 启动输出线程
+                outputThread.start();
+
+                // 等待进程结束
+                int exitCode = process.waitFor();
+                outputThread.join();  // 等待输出线程结束
+
+                // 返回输出和状态
+                return exitCode == 0;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+    }
+
+
+    public class CustomOutputHandler implements InvocationOutputHandler {
         @Override
         public void consumeLine(String s) throws IOException {
 

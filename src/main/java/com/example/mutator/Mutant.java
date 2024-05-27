@@ -2,15 +2,21 @@ package com.example.mutator;
 
 import com.example.utils.Config;
 import com.example.utils.FileUtil;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.File;
 
+@Getter
+@Setter
 public class Mutant {
     private int lineNo;
     private MutatorType mutatorType;
     private String originalPath;
     private String originalCopyPath; // 复制到当前选股original文件夹下
     private String mutatedPath;
+//    private String originalBytecodePath;
+//    private String mutatedBytecodePath;
 
     public Mutant(int lineNo, MutatorType mutatorType, String originalPath, String mutatedPath) {
         this.lineNo = lineNo;
@@ -23,25 +29,5 @@ public class Mutant {
         if(!new File((this.originalCopyPath)).exists()){
             FileUtil.copyFileToTargetDir(originalPath, Config.ORIGINAL_PATH, fileName);
         }
-    }
-
-    public String getOriginalPath() {
-        return originalPath;
-    }
-
-    public MutatorType getMutatorType() {
-        return mutatorType;
-    }
-
-    public int getLineNo() {
-        return lineNo;
-    }
-
-    public String getMutatedPath() {
-        return mutatedPath;
-    }
-
-    public String getOriginalCopyPath() {
-        return originalCopyPath;
     }
 }

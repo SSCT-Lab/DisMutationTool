@@ -40,9 +40,16 @@ public class RRC extends MutantGen {
                             if (packageAndClassName.equals("java.net.Socket") || packageAndClassName.equals("java.net.ServerSocket")) { // 判断close方法的调用者是否是Socket或ServerSocket
                                 // 生成变异体
                                 // 在拷贝cu上删除close方法
+                                // 如果close方法在finally块中的某个try块中，检查这个try块是否为空，如果删除后是空的，删除这个try块
                                 CompilationUnit cuCopy = generateCuCopy(originalFilePath);
                                 MethodCallExpr methodCallExprInCopy = cuCopy.findAll(TryStmt.class).get(i).getFinallyBlock().get().findAll(MethodCallExpr.class).get(j);
                                 methodCallExprInCopy.removeForced();
+                                List<TryStmt> tryStmtsForCloseInCopy = cuCopy.findAll(TryStmt.class).get(i).getFinallyBlock().get().findAll(TryStmt.class);
+                                for (TryStmt tryStmtForClose : tryStmtsForCloseInCopy) {
+                                    if (tryStmtForClose.getTryBlock().isEmpty()) {
+                                        tryStmtForClose.removeForced();
+                                    }
+                                }
                                 // 写入文件
                                 int lineNo = methodCallExprInCopy.getRange().get().begin.line;
                                 res.add(generateMutantAndSaveToFile(++mutantNo, lineNo, mutator, originalFilePath, cuCopy));

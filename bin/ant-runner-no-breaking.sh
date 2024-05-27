@@ -3,11 +3,11 @@
 kill_ant_processes() {
   local target_dir=$1
   # 查找访问指定目录的mvn进程的PID
-  local pids=$(lsof +D "$target_dir" | grep 'mvn' | awk '{print $2}')
+  local pids=$(lsof +D "$target_dir" | grep 'ant' | awk '{print $2}')
 
   # 如果找到了进程，就中止它们
   if [ -n "$pids" ]; then
-    echo "正在中止以下mvn进程: $pids"
+    echo "正在中止以下ant进程: $pids"
     kill -9 $pids
   else
     echo "没有找到访问 $target_dir 的mvn进程。"
@@ -66,6 +66,9 @@ while kill -0 $ant_pid 2>/dev/null; do
     if [ "$inactive_time" -ge "$max_inactive_time" ]; then
         echo "输出文件 $output_file 在 10 分钟内没有更新，终止进程 $ant_pid" >> "$output_file"
         kill -9 $ant_pid
+        sleep 10
+        kill_ant_processes "$ant_path"
+        sleep 60
         exit 1
     fi
 done

@@ -1,5 +1,6 @@
 package com.example.mutator.deprecated;
 
+import com.example.Project;
 import com.example.mutator.Mutant;
 import com.example.mutator.MutantGen;
 import com.example.mutator.MutatorType;
@@ -39,7 +40,7 @@ public class RUL extends MutantGen {
                 // 写入变异体文件
                 mutantNo++;
                 String mutantName = FileUtil.getFileName(originalFilePath) + "_" + mutator + "_" + mutantNo + ".java";
-                String mutantPath = new File(Config.MUTANT_PATH).getAbsolutePath()+ "/" + mutantName;
+                String mutantPath = new File(Project.MUTANT_PATH).getAbsolutePath()+ "/" + mutantName;
                 logger.info("Generating mutant: " + mutantName);
                 FileUtil.writeToFile(LexicalPreservingPrinter.print(cuCopy), mutantPath);
                 res.add(new Mutant(methodCallExpr.getRange().get().begin.line, mutator, originalFilePath, mutantPath));

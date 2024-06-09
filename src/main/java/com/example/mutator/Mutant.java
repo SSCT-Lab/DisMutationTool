@@ -1,5 +1,6 @@
 package com.example.mutator;
 
+import com.example.Project;
 import com.example.utils.Config;
 import com.example.utils.FileUtil;
 import lombok.Getter;
@@ -24,10 +25,10 @@ public class Mutant {
         this.originalPath = originalPath;
         this.mutatedPath = mutatedPath;
         String fileName = FileUtil.getFileName(originalPath) + ".java";
-        this.originalCopyPath = Config.ORIGINAL_PATH + File.separator + fileName;
+        this.originalCopyPath = Project.ORIGINAL_PATH + File.separator + fileName;
         // 如果文件被其他（同一文件）的突变体复制过，不复制
         if(!new File((this.originalCopyPath)).exists()){
-            FileUtil.copyFileToTargetDir(originalPath, Config.ORIGINAL_PATH, fileName);
+            FileUtil.copyFileToTargetDir(originalPath, Project.ORIGINAL_PATH, fileName);
         }
     }
 }

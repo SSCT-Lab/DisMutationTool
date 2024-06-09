@@ -46,7 +46,8 @@ public class EquivalentMutantFilter {
     // 将srcPath中.class文件复制到tarPath中
     private void copyOriginalBytecode() {
         String srcPath = project.getBuildOutputPath();
-        String tarPath = Config.ORIGINAL_BYTECODE_PATH;
+        // String tarPath = Config.ORIGINAL_BYTECODE_PATH;
+        String tarPath = project.ORIGINAL_BYTECODE_PATH;
         List<String> classFiles = FileUtil.getFilesBasedOnPattern(srcPath, ".*\\.class");
         for (String classFile : classFiles) {
             String fileName = FileUtil.getFileName(classFile) + ".class";
@@ -77,7 +78,7 @@ public class EquivalentMutantFilter {
 
             String pattern = "^" + Pattern.quote(namePrefix) + "(?:\\$[^.]+)?\\.class$";
 
-            List<String> originalBytecodeFiles = FileUtil.getFilesBasedOnPattern(Config.ORIGINAL_BYTECODE_PATH, pattern);
+            List<String> originalBytecodeFiles = FileUtil.getFilesBasedOnPattern(project.ORIGINAL_BYTECODE_PATH, pattern);
             List<String> mutatedBytecodeFiles = FileUtil.getFilesBasedOnPattern(project.getBuildOutputPath(), pattern);
             Collections.sort(originalBytecodeFiles);
             Collections.sort(mutatedBytecodeFiles);

@@ -37,8 +37,8 @@ public class MutantRunner {
         // 运行测试脚本
         try {
             long startTime = System.currentTimeMillis();
-            String scriptPath = project.getProjectType() == Project.ProjectType.MAVEN ? Config.MVN_SCRIPT_PATH : Config.ANT_SCRIPT_PATH;
-            String outputDir = Config.OUTPUTS_PATH + "/" + mutant.getMutatorType();
+            String scriptPath = project.getProjectType() == Project.ProjectType.MAVEN ? Project.MVN_SCRIPT_PATH : Project.ANT_SCRIPT_PATH;
+            String outputDir = Project.OUTPUTS_PATH + "/" + mutant.getMutatorType();
             // 如果outputDir不存在，则创建
             File outputDirFile = new File(outputDir);
             if (!outputDirFile.exists()) {
@@ -46,7 +46,11 @@ public class MutantRunner {
             }
             String outputFilePath = outputDir + "/" + FileUtil.getFileName(mutatedFilePath) + ".txt";
             logger.info("运行测试脚本: " + scriptPath + " " + outputFilePath + " " + project.getBasePath() + " ");
-            ProcessBuilder processBuilder = new ProcessBuilder("bash", scriptPath, outputFilePath, project.getBasePath(), "");
+            String args = "";
+            if(project.getProjectType() == Project.ProjectType.ANT){
+                args = "-Dtest.runners=7";
+            }
+            ProcessBuilder processBuilder = new ProcessBuilder("bash", scriptPath, outputFilePath, project.getBasePath(), args);
             processBuilder.redirectErrorStream(true); // 合并标准输出和错误输出
             Process process = processBuilder.start();
             int exitCode = process.waitFor();
@@ -68,7 +72,7 @@ public class MutantRunner {
             // 撤销变异
             MutantUtil.unloadMutant(mutant);
             // 变异文件复制到输出目录的<mutator>子目录下
-            FileUtil.copyFileToTargetDir(mutant.getMutatedPath(), Config.OUTPUTS_PATH + "/" + mutant.getMutatorType(), mutatedFileName);
+            FileUtil.copyFileToTargetDir(mutant.getMutatedPath(), Project.OUTPUTS_PATH + "/" + mutant.getMutatorType(), mutatedFileName);
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {

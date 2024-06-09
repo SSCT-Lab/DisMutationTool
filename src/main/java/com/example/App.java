@@ -9,16 +9,81 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
-import java.io.IOException;
 
 public class App {
     private static final Logger logger = LogManager.getLogger(App.class);
+
+    public static void main0(String[] args) {
+        // clean up
+        setUp();
+        mutantRmq();
+    }
 
     public static void main(String[] args) {
         // clean up
         setUp();
 
-        mutantCas();
+        if (args.length < 7) {
+            System.out.println("Please provide all required arguments: basePath, mutatorList, projectType, excludeDir, srcPattern, buildOutputDirName, outputDirName");
+            return;
+        }
+
+        String basePath = args[0];
+        String[] mutatorList = args[1].split(",");
+        String projectType = args[2];
+        String excludeDir = args[3];
+        String srcPattern = args[4];
+        String buildOutputDirName = args[5];
+        String outputDirName = args[6];
+
+        Project.ProjectType type = projectType.equals("mvn") ? Project.ProjectType.MAVEN : Project.ProjectType.ANT;
+
+        Project.ProjectBuilder builder = Project.builder()
+                .setBasePath(basePath)
+                .setProjectType(type)
+                .excludeDir(excludeDir)
+                .withSrcPattern(srcPattern)
+                .buildOutputDirName(buildOutputDirName)
+                .setMutantRunnerOutputPath(outputDirName);
+
+        for(String mutator : mutatorList){
+            builder.setMutator(MutatorType.valueOf(mutator));
+        }
+
+        Project project = builder.build();
+
+        AllRunner allRunner = new AllRunner(project);
+        allRunner.run();
+    }
+
+    protected static void mutantRmq(){
+        Project hbaseProject = Project.builder()
+                .setBasePath(Config.RMQ_PROJECT_PATH)
+                .setProjectType(Project.ProjectType.MAVEN)
+                .setMutator(MutatorType.MNR)
+                .setMutator(MutatorType.MNT)
+                .setMutator(MutatorType.RRC)
+                .setMutator(MutatorType.UNE)
+                .setMutator(MutatorType.BCS)
+                .setMutator(MutatorType.RCS)
+                .setMutator(MutatorType.NCS)
+                .setMutator(MutatorType.SCS)
+                .setMutator(MutatorType.RTS)
+                .setMutator(MutatorType.UCE)
+                .setMutator(MutatorType.MCT)
+                .setMutator(MutatorType.RCF)
+                .setMutator(MutatorType.UFE)
+                .excludeDir("build")
+                .withSrcPattern(".*/src/main/.*\\.java")
+                .withTestPattern(".*/test/.*\\.java")
+                .buildOutputDirName("target/classes")
+                .build();
+
+//        MutantGenerator mutantGenerator = new MutantGenerator(hbaseProject);
+//        mutantGenerator.generateMutantsWithoutFilterEq();
+        AllRunner allRunner = new AllRunner(hbaseProject);
+        allRunner.run();
+
     }
 
 
@@ -92,7 +157,7 @@ public class App {
         Project zkProject3 = Project.builder()
                 .setBasePath(Config.ZK_PROJECT_PATH)
                 .setProjectType(Project.ProjectType.MAVEN)
-                .setMutator(MutatorType.RTS)
+                .setMutator(MutatorType.RRC)
                 .excludeDir("build")
                 .withSrcPattern(".*/src/main/.*\\.java")
                 .withTestPattern(".*/src/test/.*Test\\.java")
@@ -104,7 +169,7 @@ public class App {
 //        MutantGenerator mutantGenerator = new MutantGenerator(zkProject1);
 //        mutantGenerator.generateMutantsWithoutFilterEq();
 
-        AllRunner allRunner = new AllRunner(zkProject1);
+        AllRunner allRunner = new AllRunner(zkProject3);
         allRunner.run();
     }
 

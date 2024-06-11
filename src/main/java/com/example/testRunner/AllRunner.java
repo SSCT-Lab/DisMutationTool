@@ -21,7 +21,7 @@ public class AllRunner {
         MutantGenerator mutantGenerator = new MutantGenerator(project);
         mutantLs = mutantGenerator.generateMutants();
         for (Mutant mutant: mutantLs){
-            MutantRunner mutantRunner = new MutantRunner(mutant, project);
+            MutantRunnerScript mutantRunner = new MutantRunnerScript(mutant, project);
             mutantRunner.run();
         }
     }

@@ -20,11 +20,20 @@ public class App {
     }
 
     public static void main(String[] args) {
-        // clean up
-        setUp();
+
+
+        args = new String[]{
+          Config.RMQ_PROJECT_PATH,
+          "RRC,MNT,MNR,UNE,BCS,RCS,NCS,SCS,RTS,UCE,MCT,RCF,UFE",
+          "mvn",
+          "build",
+          ".*/src/main/.*\\.java",
+          "target/classes",
+          "/home/zdc/outputs/rmqMutant"
+        };
 
         if (args.length < 7) {
-            System.out.println("Please provide all required arguments: basePath, mutatorList, projectType, excludeDir, srcPattern, buildOutputDirName, outputDirName");
+            System.out.println("Please provide all required arguments: basePath, mutatorList, projectType, excludeDir, srcPattern, compileOutputDirName, outputDirName");
             return;
         }
 
@@ -52,8 +61,10 @@ public class App {
 
         Project project = builder.build();
 
-        AllRunner allRunner = new AllRunner(project);
-        allRunner.run();
+//        AllRunner allRunner = new AllRunner(project);
+//        allRunner.run();
+        MutantGenerator mutantGenerator = new MutantGenerator(project);
+        mutantGenerator.generateMutantsWithoutFilterEq();
     }
 
     protected static void mutantRmq(){

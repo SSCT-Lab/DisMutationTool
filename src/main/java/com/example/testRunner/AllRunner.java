@@ -20,9 +20,17 @@ public class AllRunner {
     public void run() {
         MutantGenerator mutantGenerator = new MutantGenerator(project);
         mutantLs = mutantGenerator.generateMutants();
+        TestSuiteRunner runner = project.getProjectType() == Project.ProjectType.MAVEN ? new MvnRunner() : new AntRunner();
         for (Mutant mutant: mutantLs){
-            MutantRunnerScript mutantRunner = new MutantRunnerScript(mutant, project);
+            MutantRunner mutantRunner = new MutantRunner(mutant, project, runner);
             mutantRunner.run();
         }
+
+
+
+//        for (Mutant mutant: mutantLs){
+//            MutantRunnerScript mutantRunner = new MutantRunnerScript(mutant, project);
+//            mutantRunner.run();
+//        }
     }
 }

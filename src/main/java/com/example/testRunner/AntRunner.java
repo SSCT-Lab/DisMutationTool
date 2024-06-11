@@ -14,13 +14,13 @@ import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class AntRunner {
+public class AntRunner extends TestSuiteRunner {
 
     private static final int TIMEOUT_MINUTES = 10;
 
     private static final Logger logger = LogManager.getLogger(AntRunner.class);
 
-    private static int runAntProcess(String outputFilePath, String projectPath, String antArgs) throws IOException, InterruptedException {
+    public int runTestSuite(String outputFilePath, String projectPath, String antArgs) throws IOException, InterruptedException {
         File outputFile = new File(outputFilePath);
         outputFile.createNewFile();
 
@@ -58,30 +58,6 @@ public class AntRunner {
         return 0;
     }
 
-    private static long getProcessId(Process process) {
-        try {
-            // For UNIX-based systems
-            if (process.getClass().getName().equals("java.lang.UNIXProcess")) {
-                String pidField = process.getClass().getDeclaredField("pid").getName();
-                if (pidField != null) {
-                    process.getClass().getDeclaredField("pid").setAccessible(true);
-                    return (long) process.getClass().getDeclaredField("pid").get(process);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return -1;
-    }
-
-    private static boolean isProcessAlive(long pid) throws IOException {
-        Process process = new ProcessBuilder("bash", "-c", "kill -0 " + pid).start();
-        try {
-            return process.waitFor() == 0;
-        } catch (InterruptedException e) {
-            return false;
-        }
-    }
 
     private static void killAntProcesses(String targetDir) throws IOException, InterruptedException {
         ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", "lsof +D " + targetDir + " | grep 'ant' | awk '{print $2}'");

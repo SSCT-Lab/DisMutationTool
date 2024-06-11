@@ -78,6 +78,8 @@ public class MutantGenerator {
             }
         }
 
+        mutants.sort(Comparator.comparing(Mutant::getMutatedPath));
+
         return mutants;
     }
 

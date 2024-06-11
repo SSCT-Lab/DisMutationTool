@@ -12,11 +12,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class MutantRunnerOld {
-    private static final Logger logger = LogManager.getLogger(MutantRunnerOld.class);
+@Deprecated
+public class MutantRunnerScriptOld {
+    private static final Logger logger = LogManager.getLogger(MutantRunnerScriptOld.class);
     private final Mutant mutant;
 
-    public MutantRunnerOld(Mutant mutant) {
+    public MutantRunnerScriptOld(Mutant mutant) {
         this.mutant = mutant;
     }
 

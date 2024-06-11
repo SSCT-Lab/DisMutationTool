@@ -15,13 +15,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
-public class MvnRunner {
+public class MvnRunner extends TestSuiteRunner {
 
     private static final int TIMEOUT_MINUTES = 10;
 
     private static final Logger logger = LogManager.getLogger(MvnRunner.class);
 
-    private static int runMvnProcess(String outputFilePath, String projectPath, String skipTestClass) throws IOException, InterruptedException {
+    public int runTestSuite(String outputFilePath, String projectPath, String args) throws IOException, InterruptedException {
 
         File outputFile = new File(outputFilePath);
         outputFile.createNewFile();
@@ -29,11 +29,7 @@ public class MvnRunner {
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.directory(new File(projectPath));
 
-        if (skipTestClass.isEmpty()) {
-            processBuilder.command("bash", "-c", "mvn clean test > " + outputFilePath + " &");
-        } else {
-            processBuilder.command("bash", "-c", "mvn clean test -Dtest=!" + skipTestClass + " > " + outputFilePath + " &");
-        }
+        processBuilder.command("bash", "-c", "mvn clean test " + args + " >> " + outputFilePath + " 2>&1 &");
 
         Process mvnProcess = processBuilder.start();
         long mvnPid = getProcessId(mvnProcess);
@@ -74,29 +70,8 @@ public class MvnRunner {
         return 0;
     }
 
-    private static long getProcessId(Process process) {
-        try {
-            if (process.getClass().getName().equals("java.lang.UNIXProcess")) {
-                String pidField = process.getClass().getDeclaredField("pid").getName();
-                if (pidField != null) {
-                    process.getClass().getDeclaredField("pid").setAccessible(true);
-                    return (long) process.getClass().getDeclaredField("pid").get(process);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return -1;
-    }
 
-    private static boolean isProcessAlive(long pid) throws IOException {
-        Process process = new ProcessBuilder("bash", "-c", "kill -0 " + pid).start();
-        try {
-            return process.waitFor() == 0;
-        } catch (InterruptedException e) {
-            return false;
-        }
-    }
+
 
     private static void killMvnProcesses(String targetDir) throws IOException, InterruptedException {
         ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", "lsof +D " + targetDir + " | grep 'mvn' | awk '{print $2}'");

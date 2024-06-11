@@ -2,24 +2,21 @@ package com.example.testRunner;
 
 import com.example.Project;
 import com.example.mutator.Mutant;
-import com.example.utils.Config;
 import com.example.utils.FileUtil;
 import com.example.utils.MutantUtil;
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
-public class MutantRunner {
-    private static final Logger logger = LogManager.getLogger(MutantRunner.class);
+
+public class MutantRunnerScript {
+    private static final Logger logger = LogManager.getLogger(MutantRunnerScript.class);
     private final Mutant mutant;
     private final Project project;
 
-    public MutantRunner(Mutant mutant, Project project) {
+    public MutantRunnerScript(Mutant mutant, Project project) {
         this.mutant = mutant;
         this.project = project;
     }

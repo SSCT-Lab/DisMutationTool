@@ -50,7 +50,7 @@ public class RandomRunner {
         }
         // 运行测试
         for (Mutant mutant: selectedMutants){
-            MutantRunner mutantRunner = new MutantRunner(mutant, mutantManager.getProject());
+            MutantRunnerScript mutantRunner = new MutantRunnerScript(mutant, mutantManager.getProject());
             mutantRunner.run();
         }
     }

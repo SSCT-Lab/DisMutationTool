@@ -31,3 +31,9 @@ originalBytecode/*
 tmp/
 target/
 .DS_Store
+
+bin/apache-cassandra-3.11.6-src
+bin/apache-zookeeper-3.5.8
+bin/hbase-2.5.8
+bin/rocketmq-all-5.2.0-source-release
+

@@ -30,6 +30,6 @@ public class ExtractExcludedTestClasses {
             System.out.println("Error reading from file: " + e.getMessage());
         }
 
-        System.out.println(result.toString());
+        System.out.println(result);
     }
 }

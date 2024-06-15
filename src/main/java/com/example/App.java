@@ -24,7 +24,8 @@ public class App {
 
         args = new String[]{
           Config.RMQ_PROJECT_PATH,
-          "RRC,MNT,MNR,UNE,BCS,RCS,NCS,SCS,RTS,UCE,MCT,RCF,UFE",
+//          "RRC,MNT,MNR,UNE,BCS,RCS,NCS,SCS,RTS,UCE,MCT,RCF,UFE",
+          "MNT",
           "mvn",
           "build",
           ".*/src/main/.*\\.java",
@@ -61,10 +62,10 @@ public class App {
 
         Project project = builder.build();
 
-//        AllRunner allRunner = new AllRunner(project);
-//        allRunner.run();
-        MutantGenerator mutantGenerator = new MutantGenerator(project);
-        mutantGenerator.generateMutantsWithoutFilterEq();
+        AllRunner allRunner = new AllRunner(project);
+        allRunner.run();
+//        MutantGenerator mutantGenerator = new MutantGenerator(project);
+//        mutantGenerator.generateMutantsWithoutFilterEq();
     }
 
     protected static void mutantRmq(){

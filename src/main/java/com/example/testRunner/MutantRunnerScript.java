@@ -10,7 +10,6 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 
-@Deprecated
 public class MutantRunnerScript {
     private static final Logger logger = LogManager.getLogger(MutantRunnerScript.class);
     private final Mutant mutant;
@@ -21,7 +20,7 @@ public class MutantRunnerScript {
         this.project = project;
     }
 
-    public void run() {
+    public void run(String scriptPath) {
         String mutatedFilePath = mutant.getMutatedPath();
         String mutatedFileName = FileUtil.getFileName(mutatedFilePath) + ".java";
 
@@ -34,7 +33,6 @@ public class MutantRunnerScript {
         // 运行测试脚本
         try {
             long startTime = System.currentTimeMillis();
-            String scriptPath = project.getProjectType() == Project.ProjectType.MAVEN ? Project.MVN_SCRIPT_PATH : Project.ANT_SCRIPT_PATH;
             String outputDir = Project.OUTPUTS_PATH + "/" + mutant.getMutatorType();
             // 如果outputDir不存在，则创建
             File outputDirFile = new File(outputDir);

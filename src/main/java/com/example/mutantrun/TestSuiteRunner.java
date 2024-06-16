@@ -1,4 +1,4 @@
-package com.example.testRunner;
+package com.example.mutantrun;
 
 import java.io.IOException;
 import java.lang.management.ManagementFactory;

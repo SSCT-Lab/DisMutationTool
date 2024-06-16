@@ -20,5 +20,10 @@ public class DockerRunner {
         this.containerCnt = containerCnt;
     }
 
+    // 构建docker容器，分发变异体，容器内使用all runner运行测试
+    public void run(){
+
+    }
+
 
 }

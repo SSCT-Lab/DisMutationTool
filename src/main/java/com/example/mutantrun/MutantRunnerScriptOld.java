@@ -1,4 +1,4 @@
-package com.example.testRunner;
+package com.example.mutantrun;
 
 import com.example.mutator.Mutant;
 import com.example.utils.Config;

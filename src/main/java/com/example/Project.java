@@ -35,10 +35,11 @@ public class Project {
     // paths to save mutants, original files, bytecodes, and test outputs
     public static String MVN_SCRIPT_PATH;
     public static String ANT_SCRIPT_PATH;
-    public static String MUTANT_RUNNER_OUTPUT_PATH;
-    public static String MUTANT_PATH;
+    public static String MUTANT_OUTPUT_PATH;
+    public static String MUTANTS_PATH;
     public static String ORIGINAL_PATH;
     public static String ORIGINAL_BYTECODE_PATH;
+    public static String MUTANT_BYTECODE_PATH;
     public static String OUTPUTS_PATH;
 
     private Project(ProjectBuilder builder) {
@@ -56,44 +57,35 @@ public class Project {
 
         MVN_SCRIPT_PATH = Paths.get(System.getProperty("user.dir"), "bin", "mvn-runner-no-breaking.sh").toFile().getAbsolutePath();
         ANT_SCRIPT_PATH = Paths.get(System.getProperty("user.dir"), "bin", "ant-runner-no-breaking.sh").toFile().getAbsolutePath();
-        logger.debug("MVN_SCRIPT_PATH: " + MVN_SCRIPT_PATH);
-        logger.debug("ANT_SCRIPT_PATH: " + ANT_SCRIPT_PATH);
+        logger.info("MVN_SCRIPT_PATH: " + MVN_SCRIPT_PATH);
+        logger.info("ANT_SCRIPT_PATH: " + ANT_SCRIPT_PATH);
 
-        MUTANT_RUNNER_OUTPUT_PATH = new File(builder.mutantRunnerOutputPath).getAbsolutePath();
-        MUTANT_PATH = Paths.get(MUTANT_RUNNER_OUTPUT_PATH, "mutants").toFile().getAbsolutePath();
-        ORIGINAL_PATH = Paths.get(MUTANT_RUNNER_OUTPUT_PATH, "original").toFile().getAbsolutePath();
-        ORIGINAL_BYTECODE_PATH = Paths.get(MUTANT_RUNNER_OUTPUT_PATH, "originalBytecode").toFile().getAbsolutePath();
-        OUTPUTS_PATH = Paths.get(MUTANT_RUNNER_OUTPUT_PATH, "testOutputs").toFile().getAbsolutePath();
-        // 如果存在，删除原有的MUTANT_RUNNER_OUTPUT_PATH
+        MUTANT_OUTPUT_PATH = new File(builder.mutantRunnerOutputPath).getAbsolutePath();
+        MUTANTS_PATH = Paths.get(MUTANT_OUTPUT_PATH, "mutants").toFile().getAbsolutePath();
+        ORIGINAL_PATH = Paths.get(MUTANT_OUTPUT_PATH, "original").toFile().getAbsolutePath();
+        ORIGINAL_BYTECODE_PATH = Paths.get(MUTANT_OUTPUT_PATH, "originalBytecode").toFile().getAbsolutePath();
+        MUTANT_BYTECODE_PATH = Paths.get(MUTANT_OUTPUT_PATH, "mutantBytecode").toFile().getAbsolutePath();
+        OUTPUTS_PATH = Paths.get(MUTANT_OUTPUT_PATH, "testOutputs").toFile().getAbsolutePath();
+
+        // 如果存在，删除原有的MUTANT_OUTPUT_PATH
         try {
-            FileUtils.deleteDirectory(new File(MUTANT_RUNNER_OUTPUT_PATH));
+            FileUtils.deleteDirectory(new File(MUTANT_OUTPUT_PATH));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // 判断以上4个路径是否存在，不存在则创建
-        FileUtil.createDirIfNotExist(MUTANT_PATH);
+        // 判断以上5个路径是否存在，不存在则创建
+        FileUtil.createDirIfNotExist(MUTANTS_PATH);
         FileUtil.createDirIfNotExist(ORIGINAL_PATH);
         FileUtil.createDirIfNotExist(ORIGINAL_BYTECODE_PATH);
+        FileUtil.createDirIfNotExist(MUTANT_BYTECODE_PATH);
         FileUtil.createDirIfNotExist(OUTPUTS_PATH);
 
         // 打印项目信息，如果遇到Collection循环缩进打印
         logger.info("Project Information:");
         logger.info("basePath: " + this.basePath);
-        logger.info("allFileLs: ");
-        for (String file : this.allFileLs) {
-            logger.info("    " + file);
-        }
         logger.info("srcFileLs: ");
         for (String file : this.srcFileLs) {
             logger.info("    " + file);
-        }
-        logger.info("testFileLs: ");
-        for (String file : this.testFileLs) {
-            logger.info("    " + file);
-        }
-        logger.info("excludedTests: ");
-        for (String testName : this.excludedTests) {
-            logger.info("    " + testName);
         }
         logger.info("mutators: ");
         for (MutatorType mutator : this.mutators) {
@@ -103,8 +95,8 @@ public class Project {
         logger.info("buildOutputPath: " + this.buildOutputPath);
         logger.info("MVN_SCRIPT_PATH: " + MVN_SCRIPT_PATH);
         logger.info("ANT_SCRIPT_PATH: " + ANT_SCRIPT_PATH);
-        logger.info("MUTANT_RUNNER_OUTPUT_PATH: " + MUTANT_RUNNER_OUTPUT_PATH);
-        logger.info("MUTANT_PATH: " + MUTANT_PATH);
+        logger.info("MUTANT_OUTPUT_PATH: " + MUTANT_OUTPUT_PATH);
+        logger.info("MUTANTS_PATH: " + MUTANTS_PATH);
         logger.info("ORIGINAL_PATH: " + ORIGINAL_PATH);
         logger.info("ORIGINAL_BYTECODE_PATH: " + ORIGINAL_BYTECODE_PATH);
         logger.info("OUTPUTS_PATH: " + OUTPUTS_PATH);

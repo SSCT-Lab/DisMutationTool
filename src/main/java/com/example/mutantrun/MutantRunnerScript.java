@@ -1,4 +1,4 @@
-package com.example.testRunner;
+package com.example.mutantrun;
 
 import com.example.Project;
 import com.example.mutator.Mutant;
@@ -10,20 +10,17 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 
-public class MutantRunner {
-    private static final Logger logger = LogManager.getLogger(MutantRunner.class);
-
+public class MutantRunnerScript {
+    private static final Logger logger = LogManager.getLogger(MutantRunnerScript.class);
     private final Mutant mutant;
     private final Project project;
-    private TestSuiteRunner runner;
 
-    public MutantRunner(Mutant mutant, Project project, TestSuiteRunner runner) {
+    public MutantRunnerScript(Mutant mutant, Project project) {
         this.mutant = mutant;
         this.project = project;
-        this.runner = runner;
     }
 
-    public void run() {
+    public void run(String scriptPath) {
         String mutatedFilePath = mutant.getMutatedPath();
         String mutatedFileName = FileUtil.getFileName(mutatedFilePath) + ".java";
 
@@ -36,7 +33,6 @@ public class MutantRunner {
         // 运行测试脚本
         try {
             long startTime = System.currentTimeMillis();
-            String scriptPath = project.getProjectType() == Project.ProjectType.MAVEN ? Project.MVN_SCRIPT_PATH : Project.ANT_SCRIPT_PATH;
             String outputDir = Project.OUTPUTS_PATH + "/" + mutant.getMutatorType();
             // 如果outputDir不存在，则创建
             File outputDirFile = new File(outputDir);
@@ -45,10 +41,14 @@ public class MutantRunner {
             }
             String outputFilePath = outputDir + "/" + FileUtil.getFileName(mutatedFilePath) + ".txt";
             logger.info("运行测试脚本: " + scriptPath + " " + outputFilePath + " " + project.getBasePath() + " ");
-
-            // 运行测试脚本
-            int exitCode = runner.runTestSuite(outputFilePath, project.getBasePath(), "-Dtest.runners=7");
-
+            String args = "";
+            if(project.getProjectType() == Project.ProjectType.ANT){
+                args = "-Dtest.runners=7";
+            }
+            ProcessBuilder processBuilder = new ProcessBuilder("bash", scriptPath, outputFilePath, project.getBasePath(), args);
+            processBuilder.redirectErrorStream(true); // 合并标准输出和错误输出
+            Process process = processBuilder.start();
+            int exitCode = process.waitFor();
 
             // 打印脚本执行结果
             if (exitCode == 0) {
@@ -60,9 +60,9 @@ public class MutantRunner {
             long endTime = System.currentTimeMillis();
             long executionTime = endTime - startTime;
             logger.info("脚本执行耗时: " + executionTime + " 毫秒");
-        } catch (Exception e) {
+        } catch (InterruptedException | IOException e) {
             e.printStackTrace();
-            logger.error("Error during mutating: " + mutatedFileName + " " + e.getMessage(), e);
+            logger.error("执行脚本时发生异常: " + e.getMessage(), e);
         } finally {
             // 撤销变异
             MutantUtil.unloadMutant(mutant);

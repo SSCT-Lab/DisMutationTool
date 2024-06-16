@@ -2,6 +2,7 @@ package com.example.testRunner;
 
 import com.example.Project;
 import com.example.mutantgen.MutantGenerator;
+import com.example.mutantrun.MutantRunnerScript;
 import com.example.mutator.Mutant;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

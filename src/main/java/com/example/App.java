@@ -80,8 +80,6 @@ public class App {
         Project project = builder.build();
 
         if (isDocker) {
-            MutantGenerator mutantGenerator = new MutantGenerator(project);
-            mutantGenerator.generateMutantsWithoutFilterEq();
             DockerRunner dockerRunner = new DockerRunner(3, argMap.get("--dockerfile"), argMap.get("--projectPathInDocker"), project, argMap);
             try {
                 dockerRunner.run();

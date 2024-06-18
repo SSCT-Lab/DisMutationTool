@@ -27,4 +27,4 @@ WORKDIR /usr/local/src/rocketmq/rocketmq-all-5.2.0-source-release
 RUN mvn clean install -Dmaven.test.skip=true
 
 # Default command to keep the container running
-CMD ["bash"]
+# CMD ["bash"]

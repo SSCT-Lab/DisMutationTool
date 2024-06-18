@@ -16,9 +16,11 @@ This tool is designed for mutation testing of distributed systems, aiming to ens
 
 ### Prerequisites
 
+- ubuntu 22.04
 - Java 8 or higher
 - Apache Maven/Ant/Gradle, depends on target system requirements
 - Existing distributed system code and test suite for testing
+- (optional) Docker if you want to run test suites in parallel in docker mode
 
 ### Installation
 
@@ -34,11 +36,31 @@ This tool is designed for mutation testing of distributed systems, aiming to ens
    cd DisMutationTool
    ```
 
-3. TODO
+3. Build project
+
+   ```
+   mvn clean package
+   ```
 
 ### Usage
 
-TODO
+```
+java jar DisMutationTool-1.0-SNAPSHOT-jar-with-dependencies.jar.jar [your args, for example: --projectPath="/path/to/target/project"]
+```
+
+### Args
+- projectPath: path to target project.
+- mutators: mutation operators to be used, split in comma, --mutators="RRC,MNT,NCS" for example.
+- projectType: type of target project, mvn or ant.
+- srcPattern: pattern of source code files.
+- buildOutputDir: relative path of build output directory, from where we collect bytecodes and use them to filter equivalent mutants.
+- outputDir: output directory for reports.
+- (optional)dockerfile: dockerfile path if you want to run test suites in docker mode.
+- (optional)projectPathInDocker: path to target project in docker container.
+
+### Notices
+- Make sure test suite of target system is GREEN.
+- Please ensure you have built your target project in dockerfile, or the project's dependencies can be installed. 
 
 ## Contributing
 

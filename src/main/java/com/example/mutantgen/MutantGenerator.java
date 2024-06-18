@@ -26,7 +26,7 @@ public class MutantGenerator {
     }
 
     public List<Mutant> generateMutants(){
-        return generateMutants(false);
+        return generateMutants(true); // TODO 修改
     }
 
     public List<Mutant> generateMutantsWithoutFilterEq() {
@@ -77,6 +77,8 @@ public class MutantGenerator {
                 logger.info("\t" + mutator + " count: " + mutantMap.get(srcFile).get(mutator).size());
             }
         }
+
+        mutants.sort(Comparator.comparing(Mutant::getMutatedPath));
 
         return mutants;
     }

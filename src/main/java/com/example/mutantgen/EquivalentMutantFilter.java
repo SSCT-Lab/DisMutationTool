@@ -46,7 +46,8 @@ public class EquivalentMutantFilter {
     // 将srcPath中.class文件复制到tarPath中
     private void copyOriginalBytecode() {
         String srcPath = project.getBuildOutputPath();
-        String tarPath = Config.ORIGINAL_BYTECODE_PATH;
+        // String tarPath = Config.ORIGINAL_BYTECODE_PATH;
+        String tarPath = project.ORIGINAL_BYTECODE_PATH;
         List<String> classFiles = FileUtil.getFilesBasedOnPattern(srcPath, ".*\\.class");
         for (String classFile : classFiles) {
             String fileName = FileUtil.getFileName(classFile) + ".class";
@@ -62,6 +63,13 @@ public class EquivalentMutantFilter {
             Mutant mutant = mutants.get(i);
             // 装载变异体
             MutantUtil.loadMutant(mutant);
+            // 创建文件夹，以保存变异体编译后的字节码
+            String mutantBytecodeDir = Project.MUTANT_BYTECODE_PATH + "/" +  FileUtil.getFileName(mutant.getOriginalPath());
+            File mutantBytecodeDirFile = new File(mutantBytecodeDir);
+            if (!mutantBytecodeDirFile.exists()) {
+                mutantBytecodeDirFile.mkdirs();
+            }
+            
             // 编译装载后的代码
             boolean compileSuccess = compileSource();
             if (!compileSuccess) { // 编译失败，保留变异体，跳过后续步骤，之后运行会保存编译失败的文件
@@ -77,7 +85,7 @@ public class EquivalentMutantFilter {
 
             String pattern = "^" + Pattern.quote(namePrefix) + "(?:\\$[^.]+)?\\.class$";
 
-            List<String> originalBytecodeFiles = FileUtil.getFilesBasedOnPattern(Config.ORIGINAL_BYTECODE_PATH, pattern);
+            List<String> originalBytecodeFiles = FileUtil.getFilesBasedOnPattern(Project.ORIGINAL_BYTECODE_PATH, pattern);
             List<String> mutatedBytecodeFiles = FileUtil.getFilesBasedOnPattern(project.getBuildOutputPath(), pattern);
             Collections.sort(originalBytecodeFiles);
             Collections.sort(mutatedBytecodeFiles);
@@ -103,6 +111,12 @@ public class EquivalentMutantFilter {
                 logger.info("Equivalent mutant found: " + FileUtil.getFileName(mutant.getMutatedPath()) + " is equivalent to original code");
                 toDelete.add(i);
             }
+            // 将变异体的字节码文件复制到mutantBytecodeDir中
+            for (String mutatedBytecodeFile : mutatedBytecodeFiles) {
+                String fileName = FileUtil.getFileName(mutatedBytecodeFile) + ".class";
+                FileUtil.copyFileToTargetDir(mutatedBytecodeFile, mutantBytecodeDir, fileName);
+            }
+
             // 撤销装载
             MutantUtil.unloadMutant(mutant);
         }

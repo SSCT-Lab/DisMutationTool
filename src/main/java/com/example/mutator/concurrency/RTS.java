@@ -35,7 +35,7 @@ public class RTS extends MutantGen {
                     String methodName = methodCallExpr.getNameAsString();
                     String scope = methodCallExpr.getScope().map(Object::toString).orElse("");
                     // 只处理lock和unlock方法
-                    if (methodName.equals("lock") && !scope.isEmpty()) {
+                    if ((methodName.equals("lock") || methodName.equals("lockInterruptibly") || methodName.equals("tryLock")) && !scope.isEmpty()) {
                         lockStack.push(j);
                     } else if (methodName.equals("unlock") && !scope.isEmpty()) {
                         if(lockStack.isEmpty()) {

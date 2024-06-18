@@ -209,4 +209,11 @@ public class FileUtil {
         }
     }
 
+    public static void createDirIfNotExist(String path) {
+        File file = new File(path);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+    }
+
 }

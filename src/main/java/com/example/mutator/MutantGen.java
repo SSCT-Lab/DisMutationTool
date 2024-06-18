@@ -1,6 +1,6 @@
 package com.example.mutator;
 
-import com.example.utils.Config;
+import com.example.Project;
 import com.example.utils.FileUtil;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
@@ -61,7 +61,7 @@ public abstract class MutantGen {
     // 根据传入信息，生成变异体并保存到文件
     protected Mutant generateMutantAndSaveToFile(int mutantNo, int lineNo, MutatorType mutatorType, String originalPath, CompilationUnit cu){
         String mutantName = FileUtil.getFileName(originalPath) + "_" + mutatorType + "_" + mutantNo + ".java";
-        String mutantPath = new File(Config.MUTANT_PATH).getAbsolutePath() + "/" + mutantName;
+        String mutantPath = new File(Project.MUTANTS_PATH).getAbsolutePath() + "/" + mutantName;
         logger.info("Generating " + mutatorType + " mutant: " + mutantName);
         FileUtil.writeToFile(LexicalPreservingPrinter.print(cu), mutantPath);
         return new Mutant(lineNo, mutatorType, originalPath, mutantPath);

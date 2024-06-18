@@ -4,6 +4,7 @@ import com.example.Project;
 import com.example.mutantgen.MutantGenerator;
 import com.example.mutantrun.MutantRunnerScript;
 import com.example.mutator.Mutant;
+import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,13 +15,19 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class AllRunner {
-    private static final Logger logger = LogManager.getLogger(AllRunner.class);
-    private List<Mutant> mutantLs;
-    private final Project project;
+@Getter
+public class PartitionRunner{
+    private static final Logger logger = LogManager.getLogger(PartitionRunner.class);
 
-    public AllRunner(Project project) {
+    private int id; // 从0开始
+    private int partitionCnt;
+    private Project project;
+    private List<Mutant> mutantLs;
+    public PartitionRunner(int id, int partitionCnt, Project project, List<Mutant> mutantLs) {
+        this.id = id;
+        this.partitionCnt = partitionCnt;
         this.project = project;
+        this.mutantLs = mutantLs.subList(id * mutantLs.size() / partitionCnt, (id + 1) * mutantLs.size() / partitionCnt);
     }
 
     public void run() {
@@ -61,13 +68,6 @@ public class AllRunner {
             throw new RuntimeException();
         }
 
-
-//        TestSuiteRunner runner = project.getProjectType() == Project.ProjectType.MAVEN ? new MvnRunner() : new AntRunner();
-//        for (Mutant mutant: mutantLs){
-//            MutantRunner mutantRunner = new MutantRunner(mutant, project, runner);
-//            mutantRunner.run();
-//        }
-
-
     }
+
 }

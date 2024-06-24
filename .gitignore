@@ -37,3 +37,4 @@ bin/apache-zookeeper-3.5.8
 bin/hbase-2.5.8
 bin/rocketmq-all-5.2.0-source-release
 
+src/main/resources/ExcludedClasses

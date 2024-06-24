@@ -1,4 +1,4 @@
-package com.example.utils;
+package com.example.baseline.util;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -12,8 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ExtractExcludedTestClasses {
-    public static void main(String[] args) {
-        String filePath = "src/main/resources/ExcludedClasses"; // 替换为实际文件路径
+    public static void extract(String filePath){
         Pattern pattern = Pattern.compile("testClass=([^,]+)");
         Set<String> classNames = new HashSet<>();
 
@@ -36,6 +35,10 @@ public class ExtractExcludedTestClasses {
         // 转换List为字符串，使用逗号分隔
         String result = String.join(",", sortedClassNames);
         System.out.println(result);
+    }
+    public static void main(String[] args) {
+        String filePath = "src/main/resources/ExcludedClasses"; // 替换为实际文件路径
+        ExtractExcludedTestClasses.extract(filePath);
     }
 }
 

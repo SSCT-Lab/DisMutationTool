@@ -4,6 +4,8 @@ import com.example.Project;
 import com.example.mutantgen.MutantGenerator;
 import com.example.mutantrun.MutantRunnerScript;
 import com.example.mutator.Mutant;
+import com.example.utils.Constants;
+import com.example.utils.MutantUtil;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,7 +38,7 @@ public class PartitionRunner{
 
         try {
             // 从资源中读取脚本文件
-            InputStream resourceStream = AllRunner.class.getClassLoader().getResourceAsStream(resourcePath);
+            InputStream resourceStream = PartitionRunner.class.getClassLoader().getResourceAsStream(resourcePath);
             if (resourceStream == null) {
                 throw new IOException("Resource not found: " + resourcePath);
             }
@@ -55,8 +57,9 @@ public class PartitionRunner{
             // 确保临时文件具有执行权限
             tempFile.toFile().setExecutable(true);
 
-            MutantGenerator mutantGenerator = new MutantGenerator(project);
-            mutantLs = mutantGenerator.generateMutants();
+            // 反序列化，读取mutantLs
+            mutantLs = MutantUtil.deserializeMutantLs();
+            logger.info("Partition " + id + " has " + mutantLs.size() + " mutants");
 
             for (Mutant mutant : mutantLs) {
                 MutantRunnerScript mutantRunner = new MutantRunnerScript(mutant, project);

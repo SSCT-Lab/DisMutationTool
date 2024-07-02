@@ -40,12 +40,14 @@ public class MutantUtil {
             oos.writeObject(mutants);
             logger.info("Mutants are persisted to " + path);
         } catch (IOException e) {
+            e.printStackTrace();
             logger.error("Error while persisting mutants");
             throw new RuntimeException("Error while persisting mutants");
         }
     }
 
-    public static List<Mutant> deserializeMutantLs(String path) {
+    public static List<Mutant> deserializeMutantLs() {
+        String path = Constants.dockerOutputsBaseDir + "/" + Constants.persistMutantsName;
         List<Mutant> mutants = null;
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path))) {
             mutants = (List<Mutant>) ois.readObject();

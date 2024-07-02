@@ -54,7 +54,7 @@ public class DockerRunner {
         // 生成变异体，并序列化
         MutantGenerator mutantGenerator = new MutantGenerator(project);
         List<Mutant> mutants = mutantGenerator.generateMutants();
-        MutantUtil.serializeMutantLs(mutants);
+        MutantUtil.serializeMutantLs(mutants, project);
 
         // 构建docker容器
         dockerClient = DockerClientBuilder.getInstance().build();
@@ -91,6 +91,7 @@ public class DockerRunner {
                     "--srcPattern=" + originalArgMap.get("--srcPattern"),
                     "--buildOutputDir=" + originalArgMap.get("--buildOutputDir"),
                     "--outputDir=" + originalArgMap.get("--outputDir"),
+                    "--mutators=" + originalArgMap.get("--mutators"),
             };
             String arg = String.join(" ", args);
             int finalI = i;

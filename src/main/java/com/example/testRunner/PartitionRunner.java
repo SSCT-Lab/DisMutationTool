@@ -5,11 +5,13 @@ import com.example.mutantgen.MutantGenerator;
 import com.example.mutantrun.MutantRunnerScript;
 import com.example.mutator.Mutant;
 import com.example.utils.Constants;
+import com.example.utils.FileUtil;
 import com.example.utils.MutantUtil;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -25,11 +27,10 @@ public class PartitionRunner{
     private int partitionCnt;
     private Project project;
     private List<Mutant> mutantLs;
-    public PartitionRunner(int id, int partitionCnt, Project project, List<Mutant> mutantLs) {
+    public PartitionRunner(int id, int partitionCnt, Project project) {
         this.id = id;
         this.partitionCnt = partitionCnt;
         this.project = project;
-        this.mutantLs = mutantLs.subList(id * mutantLs.size() / partitionCnt, (id + 1) * mutantLs.size() / partitionCnt);
     }
 
     public void run() {
@@ -58,7 +59,10 @@ public class PartitionRunner{
             tempFile.toFile().setExecutable(true);
 
             // 反序列化，读取mutantLs
-            mutantLs = MutantUtil.deserializeMutantLs();
+            mutantLs = MutantUtil.deserializeMutantLs(project);
+            mutantLs = mutantLs.subList(id * mutantLs.size() / partitionCnt, (id + 1) * mutantLs.size() / partitionCnt);
+
+
             logger.info("Partition " + id + " has " + mutantLs.size() + " mutants");
 
             for (Mutant mutant : mutantLs) {

@@ -8,10 +8,12 @@ import com.example.utils.MutantUtil;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.BuildImageResultCallback;
 import com.github.dockerjava.api.command.CreateContainerResponse;
+import com.github.dockerjava.api.command.ExecCreateCmdResponse;
 import com.github.dockerjava.api.model.Bind;
 import com.github.dockerjava.api.model.HostConfig;
 import com.github.dockerjava.api.model.Volume;
 import com.github.dockerjava.core.DockerClientBuilder;
+import com.github.dockerjava.core.command.ExecStartResultCallback;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DockerRunner {
-    private static final Logger logger = LogManager.getLogger(AllRunner.class);
+    private static final Logger logger = LogManager.getLogger(DockerRunner.class);
 
     private int containerCnt;
     private String dockerfilePath;
@@ -66,36 +68,49 @@ public class DockerRunner {
         String hostDir = Project.MUTANT_OUTPUT_PATH;
         String containerDir = Constants.dockerOutputsBaseDir;
 
-        // 创建容器，并绑定目录
+        // 创建容器，并绑定目录,然后启动容器
         for (int i = 0; i < containerCnt; i++) {
             CreateContainerResponse container = dockerClient.createContainerCmd(imageId)
                     .withHostConfig(new HostConfig().withBinds(new Bind(hostDir, new Volume(containerDir))))
+                    .withCmd("tail", "-f", "/dev/null")
                     .exec();
             containerIds[i] = container.getId();
+            dockerClient.startContainerCmd(containerIds[i]).exec();
         }
 
 
-        // 复制jar文件到容器中,启动容器
+        // 复制jar文件到容器中
         for (int i = 0; i < containerCnt; i++) {
-            dockerClient.startContainerCmd(containerIds[i]).exec();
             copyJarToContainer(containerIds[i]);
             // 容器中执行命令
             String[] args = new String[]{
                     "--partition=" + i + "-" + containerCnt,
                     "--projectPath=" + projectPathInDocker,
                     "--outputPath=" + containerDir,
-                    "--projectType=" + originalArgMap.get("projectType"),
-                    "--srcPattern=" + originalArgMap.get("srcPattern"),
-                    "--buildOutputDir=" + originalArgMap.get("buildOutputDir"),
-                    "--outputDir=" + originalArgMap.get("outputDir"),
+                    "--projectType=" + originalArgMap.get("--projectType"),
+                    "--srcPattern=" + originalArgMap.get("--srcPattern"),
+                    "--buildOutputDir=" + originalArgMap.get("--buildOutputDir"),
+                    "--outputDir=" + originalArgMap.get("--outputDir"),
             };
             String arg = String.join(" ", args);
             int finalI = i;
+            logger.info("cd / && java -jar /" + jarFileName + " " + arg);
             new Thread(() -> {
-                dockerClient.execCreateCmd(containerIds[finalI])
-                        .withAttachStdout(true)
-                        .withCmd("sh", "-c", "cd / && java -jar " + jarFileName + " " + arg)
-                        .exec();
+                try {
+                    ExecCreateCmdResponse execCreateCmdResponse = dockerClient.execCreateCmd(containerIds[finalI])
+                            .withCmd("sh", "-c", "cd / && java -jar /" + jarFileName + " " + arg)
+                            .withAttachStdout(true)
+                            .withAttachStderr(true)
+                            .exec();
+
+                    dockerClient.execStartCmd(execCreateCmdResponse.getId())
+                            .exec(new ExecStartResultCallback(System.out, System.err))
+                            .awaitCompletion();
+
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
             }).start();
         }
 
@@ -108,6 +123,10 @@ public class DockerRunner {
             jarFile = new File(DockerRunner.class.getProtectionDomain().getCodeSource().getLocation().toURI());
             String jarFilePath = jarFile.getAbsolutePath();
             String jarFileName = jarFile.getName();
+            // TODO 为了IDEA中运行，暂时加上jar名
+            jarFilePath = "/home/zdc/code/DisMutationTool/target/DisMutationTool-1.0-SNAPSHOT-jar-with-dependencies.jar";
+            jarFileName = "DisMutationTool-1.0-SNAPSHOT-jar-with-dependencies.jar";
+
             this.jarFileName = jarFileName;
             logger.info("JAR file path: " + jarFilePath);
             logger.info("JAR file name: " + jarFileName);

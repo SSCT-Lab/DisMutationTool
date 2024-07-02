@@ -22,8 +22,9 @@ public class App {
 
     public static void main(String[] args) {
         // clean up
-        setUp();
-        mutateHDFS();
+//        setUp();
+//        mutateHDFS();
+        main1(args);
     }
 
     public static void mutateHDFS() {
@@ -61,17 +62,17 @@ public class App {
     public static void main1(String[] args) {
 
 
-//        args = new String[]{
-//                "--projectPath=/home/zdc/code/distributedSystems/rmq/rocketmq-all-5.2.0-source-release",
-//                "--mutators=RRC,MNT,MNR,UNE,BCS,RCS,NCS,SCS,RTS,UCE,MCT,RCF,UFE",
-//                "--projectType=mvn",
-//                "--srcPattern=.*/src/main/.*\\.java",
-//                "--buildOutputDir=target/classes",
-//                "--outputDir=/home/zdc/outputs/rmqMutant",
-//
-//                "--dockerfile=/home/zdc/code/DisMutationTool/Dockerfile/rmq/Dockerfile",
-//                "--projectPathInDocker=/usr/local/src/rocketmq/rocketmq-all-5.2.0-source-release"
-//        };
+        args = new String[]{
+                "--projectPath=/home/zdc/code/distributedSystems/rmq/rocketmq-all-5.2.0-source-release",
+                "--mutators=MNT,MNR",
+                "--projectType=mvn",
+                "--srcPattern=.*/src/main/.*\\.java",
+                "--buildOutputDir=target/classes",
+                "--outputDir=/home/zdc/outputs/rmqMutant",
+
+                "--dockerfile=/home/zdc/code/DisMutationTool/Dockerfile/rmq/Dockerfile",
+                "--projectPathInDocker=/usr/local/src/rocketmq/rocketmq-all-5.2.0-source-release"
+        };
         if (args.length == 0) {
             logger.error("No arguments provided");
             return;

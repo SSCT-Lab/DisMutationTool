@@ -30,7 +30,6 @@ public class MutantRunnerScript {
         // 将变异体代码写入项目
         MutantUtil.loadMutant(mutant);
 
-        // 运行测试脚本
         try {
             long startTime = System.currentTimeMillis();
             String outputDir = Project.OUTPUTS_PATH + "/" + mutant.getMutatorType();
@@ -40,29 +39,23 @@ public class MutantRunnerScript {
                 outputDirFile.mkdirs();
             }
             String outputFilePath = outputDir + "/" + FileUtil.getFileName(mutatedFilePath) + ".txt";
-            logger.info("运行测试脚本: " + scriptPath + " " + outputFilePath + " " + project.getBasePath() + " ");
+            logger.info("Running script: " + scriptPath + " " + outputFilePath + " " + project.getBasePath() + " ");
             String args = "";
             if(project.getProjectType() == Project.ProjectType.ANT){
                 args = "-Dtest.runners=7";
             }
             ProcessBuilder processBuilder = new ProcessBuilder("bash", scriptPath, outputFilePath, project.getBasePath(), args);
-            processBuilder.redirectErrorStream(true); // 合并标准输出和错误输出
+            processBuilder.redirectErrorStream(true); // merge stdout and stderr
             Process process = processBuilder.start();
             int exitCode = process.waitFor();
 
-            // 打印脚本执行结果
-            if (exitCode == 0) {
-                logger.info("脚本执行成功！");
-            } else {
-                logger.error("脚本执行失败！");
-            }
-
+            logger.info("Script execution result: " + exitCode);
             long endTime = System.currentTimeMillis();
             long executionTime = endTime - startTime;
-            logger.info("脚本执行耗时: " + executionTime + " 毫秒");
+            logger.info("Running time: " + executionTime/1000 + " seconds");
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
-            logger.error("执行脚本时发生异常: " + e.getMessage(), e);
+            logger.error("Error while running script " + e.getMessage(), e);
         } finally {
             // 撤销变异
             MutantUtil.unloadMutant(mutant);

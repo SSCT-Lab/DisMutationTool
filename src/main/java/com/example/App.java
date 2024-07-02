@@ -7,13 +7,12 @@ import com.example.testRunner.AllRunner;
 import com.example.testRunner.DockerRunner;
 import com.example.testRunner.PartitionRunner;
 import com.example.utils.Config;
-import com.example.utils.PathsInDocker;
+import com.example.utils.Constants;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,16 +20,45 @@ import java.util.Map;
 public class App {
     private static final Logger logger = LogManager.getLogger(App.class);
 
-    public static void main0(String[] args) {
+    public static void main(String[] args) {
         // clean up
         setUp();
-        mutantRmq();
+        mutateHDFS();
+    }
+
+    public static void mutateHDFS() {
+        Project project = Project.builder()
+                .setBasePath(Config.HDFS_PROJECT_PATH)
+                .setProjectType(Project.ProjectType.MAVEN)
+                .setMutator(MutatorType.MNR)
+                .setMutator(MutatorType.MNT)
+                .setMutator(MutatorType.RRC)
+                .setMutator(MutatorType.UNE)
+                .setMutator(MutatorType.BCS)
+                .setMutator(MutatorType.RCS)
+                .setMutator(MutatorType.NCS)
+                .setMutator(MutatorType.SCS)
+                .setMutator(MutatorType.RTS)
+                .setMutator(MutatorType.UCE)
+                .setMutator(MutatorType.MCT)
+                .setMutator(MutatorType.RCF)
+                .setMutator(MutatorType.UFE)
+                .excludeDir("build")
+                .withSrcPattern(".*/src/main/.*\\.java")
+                .withTestPattern(".*/src/test/.*Test\\.java")
+                .buildOutputDirName("target/classes")
+                .setMutantRunnerOutputPath("/home/zdc/outputs/rmqMutant")
+                .build();
+
+
+        MutantGenerator mutantGenerator = new MutantGenerator(project);
+        mutantGenerator.generateMutantsWithoutFilterEq();
+
     }
 
     // --projectPath=/home/zdc/code/distributedSystems/rmq/rocketmq-all-5.2.0-source-release --mutators=RRC,MNT,MNR,UNE,BCS,RCS,NCS,SCS,RTS,UCE,MCT,RCF,UFE --projectType=mvn --srcPattern=.*/src/main/.*\.java --buildOutputDir=target/classes --outputDir=/home/zdc/outputs/rmqMutant --dockerfile=/home/zdc/code/DisMutationTool/Dockerfile/rmq/Dockerfile --projectPathInDocker=/usr/local/src/rocketmq/rocketmq-all-5.2.0-source-release
 
-    public static void main(String[] args) {
-
+    public static void main1(String[] args) {
 
 
 //        args = new String[]{
@@ -44,7 +72,7 @@ public class App {
 //                "--dockerfile=/home/zdc/code/DisMutationTool/Dockerfile/rmq/Dockerfile",
 //                "--projectPathInDocker=/usr/local/src/rocketmq/rocketmq-all-5.2.0-source-release"
 //        };
-        if(args.length == 0){
+        if (args.length == 0) {
             logger.error("No arguments provided");
             return;
         }
@@ -81,11 +109,7 @@ public class App {
 
         if (isDocker) {
             DockerRunner dockerRunner = new DockerRunner(3, argMap.get("--dockerfile"), argMap.get("--projectPathInDocker"), project, argMap);
-            try {
-                dockerRunner.run();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            dockerRunner.run();
         } else if (isPartition) {
             int id = Integer.parseInt(argMap.get("--partition").split("-")[0]);
             int partitionCnt = Integer.parseInt(argMap.get("--partition").split("-")[1]);
@@ -94,13 +118,13 @@ public class App {
                     .setProjectType(type)
                     .withSrcPattern(srcPattern)
                     .buildOutputDirName(buildOutputDirName)
-                    .setMutantRunnerOutputPath(PathsInDocker.outputDir);
+                    .setMutantRunnerOutputPath(Constants.dockerOutputsBaseDir);
             for (String mutator : mutatorList) {
                 builder.setMutator(MutatorType.valueOf(mutator));
             }
             Project projectInDocker = projectInDockerBuilder.build();
 
-            MutantGenerator mutantGenerator = new MutantGenerator(project);
+            MutantGenerator mutantGenerator = new MutantGenerator(project); // TODO 从序列化文件中读取
             List<Mutant> mutants = mutantGenerator.generateMutantsWithoutFilterEq();
             PartitionRunner partitionRunner = new PartitionRunner(id, partitionCnt, projectInDocker, mutants);
             partitionRunner.run();

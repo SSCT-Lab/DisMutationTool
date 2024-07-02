@@ -35,7 +35,7 @@ public class Project {
     // paths to save mutants, original files, bytecodes, and test outputs
     public static String MVN_SCRIPT_PATH;
     public static String ANT_SCRIPT_PATH;
-    public static String MUTANT_OUTPUT_PATH;
+    public static String MUTANT_OUTPUT_PATH; // 输出文件的根文件夹路径
     public static String MUTANTS_PATH;
     public static String ORIGINAL_PATH;
     public static String ORIGINAL_BYTECODE_PATH;

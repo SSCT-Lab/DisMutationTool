@@ -68,6 +68,8 @@ public class MutantUtil {
         // 容器内，重新加入前缀
         String hostProjectPath = project.getBasePath();
         String hostOutputPath = Project.MUTANT_OUTPUT_PATH;
+        logger.info("containerProjectPath: " + hostProjectPath);
+        logger.info("containerOutputPath: " + hostOutputPath);
         for (Mutant mutant : mutants) {
             mutant.setOriginalPath(hostProjectPath + mutant.getOriginalPath());
             mutant.setMutatedPath(hostOutputPath + mutant.getMutatedPath());

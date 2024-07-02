@@ -25,6 +25,8 @@ public class MutatorFactory {
                 return new RRC();
             case UNE:
                 return new UNE();
+            case RNE:
+                return new RNE();
             // concurrency
             case RCS:
                 return new RCS();
@@ -40,11 +42,15 @@ public class MutatorFactory {
                 return new MCT();
             case BCS:
                 return new BCS();
+            case RCE:
+                return new RCE();
             // consistency
             case RCF:
                 return new RCF();
             case UFE:
                 return new UFE();
+            case RFE:
+                return new RFE();
             // traditional
 
             default:

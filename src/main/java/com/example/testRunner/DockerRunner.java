@@ -86,11 +86,10 @@ public class DockerRunner {
             String[] args = new String[]{
                     "--partition=" + i + "-" + containerCnt,
                     "--projectPath=" + projectPathInDocker,
-                    "--outputPath=" + containerDir,
                     "--projectType=" + originalArgMap.get("--projectType"),
                     "--srcPattern=" + originalArgMap.get("--srcPattern"),
                     "--buildOutputDir=" + originalArgMap.get("--buildOutputDir"),
-                    "--outputDir=" + originalArgMap.get("--outputDir"),
+                    "--outputDir=" + containerDir,
                     "--mutators=" + originalArgMap.get("--mutators"),
             };
             String arg = String.join(" ", args);

@@ -1,6 +1,7 @@
 package com.example;
 
 import com.example.mutator.MutatorType;
+import com.example.utils.Constants;
 import com.example.utils.FileUtil;
 import lombok.Getter;
 import org.apache.commons.io.FileUtils;
@@ -67,26 +68,28 @@ public class Project {
         MUTANT_BYTECODE_PATH = Paths.get(MUTANT_OUTPUT_PATH, "mutantBytecode").toFile().getAbsolutePath();
         OUTPUTS_PATH = Paths.get(MUTANT_OUTPUT_PATH, "testOutputs").toFile().getAbsolutePath();
 
-        // 如果存在，删除原有的MUTANT_OUTPUT_PATH
-        try {
-            FileUtils.deleteDirectory(new File(MUTANT_OUTPUT_PATH));
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(!Constants.isPartition){
+            // 如果存在，删除原有的MUTANT_OUTPUT_PATH
+            try {
+                FileUtils.deleteDirectory(new File(MUTANT_OUTPUT_PATH));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            // 判断以上5个路径是否存在，不存在则创建
+            FileUtil.createDirIfNotExist(MUTANTS_PATH);
+            FileUtil.createDirIfNotExist(ORIGINAL_PATH);
+            FileUtil.createDirIfNotExist(ORIGINAL_BYTECODE_PATH);
+            FileUtil.createDirIfNotExist(MUTANT_BYTECODE_PATH);
+            FileUtil.createDirIfNotExist(OUTPUTS_PATH);
         }
-        // 判断以上5个路径是否存在，不存在则创建
-        FileUtil.createDirIfNotExist(MUTANTS_PATH);
-        FileUtil.createDirIfNotExist(ORIGINAL_PATH);
-        FileUtil.createDirIfNotExist(ORIGINAL_BYTECODE_PATH);
-        FileUtil.createDirIfNotExist(MUTANT_BYTECODE_PATH);
-        FileUtil.createDirIfNotExist(OUTPUTS_PATH);
 
         // 打印项目信息，如果遇到Collection循环缩进打印
         logger.info("Project Information:");
         logger.info("basePath: " + this.basePath);
         logger.info("srcFileLs: ");
-        for (String file : this.srcFileLs) {
-            logger.info("    " + file);
-        }
+//        for (String file : this.srcFileLs) {
+//            logger.info("    " + file);
+//        }
         logger.info("mutators: ");
         for (MutatorType mutator : this.mutators) {
             logger.info("    " + mutator);

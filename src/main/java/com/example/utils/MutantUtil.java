@@ -34,7 +34,15 @@ public class MutantUtil {
     }
 
     // 将mutants列表序列化
-    public static void serializeMutantLs(List<Mutant> mutants) {
+    public static void serializeMutantLs(List<Mutant> mutants, Project project) {
+        // 对mutants做过滤，去除宿主机路径前缀
+        String hostProjectPath = project.getBasePath();
+        String hostOutputPath = Project.MUTANT_OUTPUT_PATH;
+        for (Mutant mutant : mutants) {
+            mutant.setOriginalPath(mutant.getOriginalPath().replace(hostProjectPath, ""));
+            mutant.setMutatedPath(mutant.getMutatedPath().replace(hostOutputPath, ""));
+            mutant.setOriginalCopyPath(mutant.getOriginalCopyPath().replace(hostOutputPath, ""));
+        }
         String path = Project.MUTANT_OUTPUT_PATH + "/" + Constants.persistMutantsName;
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path))) {
             oos.writeObject(mutants);
@@ -46,7 +54,7 @@ public class MutantUtil {
         }
     }
 
-    public static List<Mutant> deserializeMutantLs() {
+    public static List<Mutant> deserializeMutantLs(Project project) {
         String path = Constants.dockerOutputsBaseDir + "/" + Constants.persistMutantsName;
         List<Mutant> mutants = null;
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path))) {
@@ -55,6 +63,15 @@ public class MutantUtil {
         } catch (IOException | ClassNotFoundException e) {
             logger.error("Error while deserializing mutants");
             throw new RuntimeException("Error while deserializing mutants");
+        }
+
+        // 容器内，重新加入前缀
+        String hostProjectPath = project.getBasePath();
+        String hostOutputPath = Project.MUTANT_OUTPUT_PATH;
+        for (Mutant mutant : mutants) {
+            mutant.setOriginalPath(hostProjectPath + mutant.getOriginalPath());
+            mutant.setMutatedPath(hostOutputPath + mutant.getMutatedPath());
+            mutant.setOriginalCopyPath(hostOutputPath + mutant.getOriginalCopyPath());
         }
         return mutants;
     }

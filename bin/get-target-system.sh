@@ -7,6 +7,7 @@ urls=(
     "https://archive.apache.org/dist/hbase/2.5.8/hbase-2.5.8-src.tar.gz"
     "https://dist.apache.org/repos/dist/release/rocketmq/5.2.0/rocketmq-all-5.2.0-source-release.zip"
     "https://archive.apache.org/dist/skywalking/10.0.0/apache-skywalking-apm-10.0.0-src.tgz"
+    "https://archive.apache.org/dist/kafka/3.6.0/kafka-3.6.0-src.tgz"
 )
 
 filenames=(
@@ -15,6 +16,7 @@ filenames=(
     "hbase-2.5.8-src.tar.gz"
     "rocketmq-all-5.2.0-source-release.zip"
     "apache-skywalking-apm-10.0.0-src.tgz"
+    "kafka-3.6.0-src.tgz"
 )
 
 # folders name
@@ -24,6 +26,7 @@ folders=(
     "hbase-2.5.8"
     "rocketmq-all-5.2.0-source-release"
     "apache-skywalking-apm-10.0.0"
+    "kafka-3.6.0-src"
 )
 
 for index in "${!urls[@]}"; do

@@ -6,6 +6,7 @@ urls=(
     "https://archive.apache.org/dist/cassandra/3.11.6/apache-cassandra-3.11.6-src.tar.gz"
     "https://archive.apache.org/dist/hbase/2.5.8/hbase-2.5.8-src.tar.gz"
     "https://dist.apache.org/repos/dist/release/rocketmq/5.2.0/rocketmq-all-5.2.0-source-release.zip"
+    "https://archive.apache.org/dist/skywalking/10.0.0/apache-skywalking-apm-10.0.0-src.tgz"
 )
 
 filenames=(
@@ -13,6 +14,7 @@ filenames=(
     "apache-cassandra-3.11.6-src.tar.gz"
     "hbase-2.5.8-src.tar.gz"
     "rocketmq-all-5.2.0-source-release.zip"
+    "apache-skywalking-apm-10.0.0-src.tgz"
 )
 
 # folders name
@@ -21,6 +23,7 @@ folders=(
     "apache-cassandra-3.11.6-src"
     "hbase-2.5.8"
     "rocketmq-all-5.2.0-source-release"
+    "apache-skywalking-apm-10.0.0"
 )
 
 for index in "${!urls[@]}"; do
@@ -44,6 +47,8 @@ for index in "${!urls[@]}"; do
             tar -xzvf "$filename"
         elif [ "$extension" == "zip" ]; then
             unzip "$filename"
+            elif [ "$extension" == "tgz" ]; then
+                        tar -xzvf "$filename"
         else
             echo "Unknown file extension: $extension. Skipping decompression..."
         fi

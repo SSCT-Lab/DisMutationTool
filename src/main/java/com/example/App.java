@@ -21,16 +21,15 @@ import java.util.Map;
 public class App {
     private static final Logger logger = LogManager.getLogger(App.class);
 
-    public static void main(String[] args) {
+    public static void oldMain(String[] args) {
         // clean up
 //        setUp();
 //        mutateHDFS();
-        main1(args);
     }
 
     // --projectPath=/home/zdc/code/distributedSystems/rmq/rocketmq-all-5.2.0-source-release --mutators=RRC,MNT,MNR,UNE,BCS,RCS,NCS,SCS,RTS,UCE,MCT,RCF,UFE --projectType=mvn --srcPattern=.*/src/main/.*\.java --buildOutputDir=target/classes --outputDir=/home/zdc/outputs/rmqMutant --dockerfile=/home/zdc/code/DisMutationTool/Dockerfile/rmq/Dockerfile --projectPathInDocker=/usr/local/src/rocketmq/rocketmq-all-5.2.0-source-release
 
-    public static void main1(String[] args) {
+    public static void main(String[] args) {
 
 
 //        args = new String[]{

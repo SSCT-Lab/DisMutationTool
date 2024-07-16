@@ -29,6 +29,7 @@ fix:
   - (done) 初始化clean之前判断目录
   - (done) 写入变异体文件方法抽象
   - (done) 整理Upcast算子的重复代码
+  - project的设计需要修改
 
 - (done)ant脚本编写
 - (done)mvn脚本修改

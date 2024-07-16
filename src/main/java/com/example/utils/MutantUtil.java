@@ -1,9 +1,13 @@
 package com.example.utils;
 
+import com.example.Project;
 import com.example.mutator.Mutant;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.*;
+import java.util.List;
 
 public class MutantUtil {
     private static final Logger logger = LogManager.getLogger(MutantUtil.class.getName());
@@ -27,6 +31,50 @@ public class MutantUtil {
         String originalFileName = FileUtil.getFileName(originalFilePath) + ".java";
         logger.info("Undo mutating " + originalFileName + "...");
         FileUtil.copyFileToTargetDir(mutant.getOriginalCopyPath(), FileUtil.getFileDir(originalFilePath), originalFileName);
+    }
 
+    // 将mutants列表序列化
+    public static void serializeMutantLs(List<Mutant> mutants, Project project) {
+        // 对mutants做过滤，去除宿主机路径前缀
+        String hostProjectPath = project.getBasePath();
+        String hostOutputPath = Project.MUTANT_OUTPUT_PATH;
+        for (Mutant mutant : mutants) {
+            mutant.setOriginalPath(mutant.getOriginalPath().replace(hostProjectPath, ""));
+            mutant.setMutatedPath(mutant.getMutatedPath().replace(hostOutputPath, ""));
+            mutant.setOriginalCopyPath(mutant.getOriginalCopyPath().replace(hostOutputPath, ""));
+        }
+        String path = Project.MUTANT_OUTPUT_PATH + "/" + Constants.persistMutantsName;
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path))) {
+            oos.writeObject(mutants);
+            logger.info("Mutants are persisted to " + path);
+        } catch (IOException e) {
+            e.printStackTrace();
+            logger.error("Error while persisting mutants");
+            throw new RuntimeException("Error while persisting mutants");
+        }
+    }
+
+    public static List<Mutant> deserializeMutantLs(Project project) {
+        String path = Constants.dockerOutputsBaseDir + "/" + Constants.persistMutantsName;
+        List<Mutant> mutants = null;
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path))) {
+            mutants = (List<Mutant>) ois.readObject();
+            logger.info("Mutants are deserialized from " + path);
+        } catch (IOException | ClassNotFoundException e) {
+            logger.error("Error while deserializing mutants");
+            throw new RuntimeException("Error while deserializing mutants");
+        }
+
+        // 容器内，重新加入前缀
+        String hostProjectPath = project.getBasePath();
+        String hostOutputPath = Project.MUTANT_OUTPUT_PATH;
+        logger.info("containerProjectPath: " + hostProjectPath);
+        logger.info("containerOutputPath: " + hostOutputPath);
+        for (Mutant mutant : mutants) {
+            mutant.setOriginalPath(hostProjectPath + mutant.getOriginalPath());
+            mutant.setMutatedPath(hostOutputPath + mutant.getMutatedPath());
+            mutant.setOriginalCopyPath(hostOutputPath + mutant.getOriginalCopyPath());
+        }
+        return mutants;
     }
 }

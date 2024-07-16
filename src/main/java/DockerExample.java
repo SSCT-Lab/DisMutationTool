@@ -1,10 +1,12 @@
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
+import com.github.dockerjava.api.command.ExecCreateCmdResponse;
 import com.github.dockerjava.api.model.Bind;
 import com.github.dockerjava.api.model.Volume;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.command.BuildImageResultCallback;
+import com.github.dockerjava.core.command.ExecStartResultCallback;
 import com.github.dockerjava.core.command.LogContainerResultCallback;
 import com.github.dockerjava.core.command.PullImageResultCallback;
 
@@ -45,6 +47,33 @@ public class DockerExample {
                 .exec();
 
         System.out.println("File copied to container");
+
+        // 在容器内执行命令：创建一个文件
+        ExecCreateCmdResponse execCreateCmdResponse = dockerClient.execCreateCmd(container.getId())
+                .withCmd("sh", "-c", "echo 'Hello, World!' > /hello.txt")
+                .withAttachStdout(true)
+                .withAttachStderr(true)
+                .exec();
+
+        // 启动执行并打印结果
+        dockerClient.execStartCmd(execCreateCmdResponse.getId())
+                .exec(new ExecStartResultCallback(System.out, System.err))
+                .awaitCompletion();
+
+        // 验证文件是否创建成功
+        execCreateCmdResponse = dockerClient.execCreateCmd(container.getId())
+                .withCmd("cat", "/hello.txt")
+                .withAttachStdout(true)
+                .withAttachStderr(true)
+                .exec();
+
+        dockerClient.execStartCmd(execCreateCmdResponse.getId())
+                .exec(new ExecStartResultCallback(System.out, System.err))
+                .awaitCompletion();
+
+        // 停止并移除容器
+        dockerClient.stopContainerCmd(container.getId()).exec();
+        dockerClient.removeContainerCmd(container.getId()).exec();
 
 
 

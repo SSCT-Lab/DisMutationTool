@@ -7,10 +7,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.File;
+import java.io.Serializable;
 
 @Getter
 @Setter
-public class Mutant {
+public class Mutant implements Serializable {
     private int lineNo;
     private MutatorType mutatorType;
     private String originalPath;

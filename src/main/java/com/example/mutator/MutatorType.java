@@ -11,6 +11,7 @@ public enum MutatorType {
     MNT, // modify network timeout
     RRC, // remove resource closes
     UNE, // upcast network exception
+    RNE, // remove network exception
 
     // ---------------concurrency----------------
     BCS, // broaden critical sections
@@ -19,11 +20,13 @@ public enum MutatorType {
     SCS, // split critical sections
     RTS, // remove concurrency thread's synchronization
     UCE, // upcast concurrency exception
+    RCE, // remove concurrency exception
     MCT, // modify concurrency timeout
 
     // ---------------consistency----------------
     RCF, // remove consistency files' checks
     UFE, // upcast consistency files' exception
+    RFE, // remove consistency files' exception
 
     // ---------------pit----------------
     // https://pitest.org/quickstart/mutators/

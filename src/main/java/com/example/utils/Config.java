@@ -9,7 +9,6 @@ public class Config {
     // /Users/zhaodongchen/Code/distributedSystems
     // /home/zdc/code/distributedSystems
 
-
     public static String ROOT_PATH = "/home/zdc/code";
 
     // Base directory for the DisMutationTool project.
@@ -32,11 +31,12 @@ public class Config {
     public static String ZK_PROJECT_PATH = TARGET_SYSTEM_PATH + "/zk/apache-zookeeper-3.5.8/zookeeper-server";
 
     // Path to the specific project directory of Apache ActiveMQ.(Never used)
-    public static String AMQ_PROJECT_PATH = TARGET_SYSTEM_PATH + "/amq/apache-activemq-5.16.0";
+    public static String AMQ_PROJECT_PATH = TARGET_SYSTEM_PATH + "/amq/activemq-parent-5.18.3";
     public static String CAS_PROJECT_PATH = TARGET_SYSTEM_PATH + "/cas/apache-cassandra-3.11.6-src";
     public static String HBASE_PROJECT_PATH258 = TARGET_SYSTEM_PATH + "/hbase/hbase-2.5.8/hbase-server";
     public static String HBASE_PROJECT_PATH249 = TARGET_SYSTEM_PATH + "/hbase/hbase-2.4.9/hbase-server";
     public static String RMQ_PROJECT_PATH = TARGET_SYSTEM_PATH + "/rmq/rocketmq-all-5.2.0-source-release/";
+    public static String HDFS_PROJECT_PATH = TARGET_SYSTEM_PATH + "/hadoop/hadoop-2.8.5-src/hadoop-hdfs-project/hadoop-hdfs";
 
     // Path to the script used for running Maven commands.
     public static String SCRIPT_PATH = PROJECT_PATH + "/bin/mvn-runner.sh";

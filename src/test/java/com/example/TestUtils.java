@@ -52,6 +52,7 @@ public class TestUtils {
                 .withSrcPattern(".*/src/main/.*\\.java")
                 .withTestPattern(".*/src/test/.*Test\\.java")
                 .buildOutputDirName("target/classes")
+                .setMutantRunnerOutputPath("/home/zdc/code/DisMutationTool/Outputs")
                 .build();
         return zkProject;
     }

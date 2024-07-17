@@ -48,6 +48,7 @@ public class CoverageBasedRunner {
                     args.append(originalClassCoverage);
                     args.append(",");
                 }
+                args.append(" -DfailIfNoTests=false"); // TODO 提取为参数
             }
             logger.info(originalClassName + "\t" + args);
             MutantRunnerScript mutantRunner = new MutantRunnerScript(mutant, project);
@@ -71,7 +72,9 @@ public class CoverageBasedRunner {
                     if (currentSourceFile != null) {
                         // Add the test class to the set for the current source file
 //                        result.computeIfAbsent(currentSourceFile, k -> new HashSet<>()).add(line.substring(0, line.lastIndexOf(".")));
-                        result.computeIfAbsent(currentSourceFile, k -> new HashSet<>()).add(line);
+                        String lineP1 = line.substring(0, line.lastIndexOf("."));
+                        String lineP2 = line.substring(line.lastIndexOf(".") + 1);
+                        result.computeIfAbsent(currentSourceFile, k -> new HashSet<>()).add(lineP1 + "#" + lineP2);
                     }
                 }
             }

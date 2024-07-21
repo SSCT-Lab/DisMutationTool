@@ -20,7 +20,7 @@ public class MutantRunnerScript {
         this.project = project;
     }
 
-    public void run(String scriptPath) {
+    public void run(String scriptPath, String args) {
         String mutatedFilePath = mutant.getMutatedPath();
         String mutatedFileName = FileUtil.getFileName(mutatedFilePath) + ".java";
 
@@ -39,11 +39,7 @@ public class MutantRunnerScript {
                 outputDirFile.mkdirs();
             }
             String outputFilePath = outputDir + "/" + FileUtil.getFileName(mutatedFilePath) + ".txt";
-            logger.info("Running script: " + scriptPath + " " + outputFilePath + " " + project.getBasePath() + " ");
-            String args = "";
-            if(project.getProjectType() == Project.ProjectType.ANT){
-                args = "-Dtest.runners=7";
-            }
+            logger.info("Running script: " + scriptPath + " " + outputFilePath + " " + project.getBasePath() + " " + args);
             ProcessBuilder processBuilder = new ProcessBuilder("bash", scriptPath, outputFilePath, project.getBasePath(), args);
             processBuilder.redirectErrorStream(true); // merge stdout and stderr
             Process process = processBuilder.start();

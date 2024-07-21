@@ -53,7 +53,7 @@ public class AllRunner {
 
             for (Mutant mutant : mutantLs) {
                 MutantRunnerScript mutantRunner = new MutantRunnerScript(mutant, project);
-                mutantRunner.run(absolutePath);
+                mutantRunner.run(absolutePath, "");
             }
 
         } catch (IOException e) {

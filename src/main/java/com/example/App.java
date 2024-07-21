@@ -4,6 +4,7 @@ import com.example.mutantgen.MutantGenerator;
 import com.example.mutator.Mutant;
 import com.example.mutator.MutatorType;
 import com.example.testRunner.AllRunner;
+import com.example.testRunner.CoverageBasedRunner;
 import com.example.testRunner.DockerRunner;
 import com.example.testRunner.PartitionRunner;
 import com.example.utils.Config;
@@ -56,12 +57,15 @@ public class App {
 
         boolean isDocker = argMap.containsKey("--dockerfile");
         boolean isPartition = argMap.containsKey("--partition");
+        boolean isCoverage = argMap.containsKey("--coveragePath"); // 是否以coverage模式运行
+
         String basePath = argMap.get("--projectPath");
         String[] mutatorList = argMap.get("--mutators").split(",");
         String projectType = argMap.get("--projectType");
         String srcPattern = argMap.get("--srcPattern");
         String buildOutputDirName = argMap.get("--buildOutputDir");
         String outputDirName = argMap.get("--outputDir");
+        String coveragePath = argMap.get("--coveragePath");
 
         Project.ProjectType type = projectType.equals("mvn") ? Project.ProjectType.MAVEN : Project.ProjectType.ANT;
 
@@ -89,9 +93,12 @@ public class App {
             int partitionCnt = Integer.parseInt(argMap.get("--partition").split("-")[1]);
             PartitionRunner partitionRunner = new PartitionRunner(id, partitionCnt, project);
             partitionRunner.run();
-
-
-        } else {
+        } else if (isCoverage) {
+            logger.info("Using coverage runner");
+            CoverageBasedRunner coverageBasedRunner = new CoverageBasedRunner(project, coveragePath);
+            coverageBasedRunner.run();
+        }
+        else {
             logger.info("Using normal runner");
             AllRunner allRunner = new AllRunner(project);
             allRunner.run();

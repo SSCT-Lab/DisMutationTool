@@ -9,6 +9,7 @@ urls=(
     "https://archive.apache.org/dist/skywalking/10.0.0/apache-skywalking-apm-10.0.0-src.tgz"
     "https://archive.apache.org/dist/kafka/3.6.0/kafka-3.6.0-src.tgz"
     "https://archive.apache.org/dist/kafka/2.4.0/kafka-2.4.0-src.tgz"
+    "https://dlcdn.apache.org/hadoop/common/hadoop-3.4.0/hadoop-3.4.0-src.tar.gz"
 )
 
 filenames=(
@@ -30,6 +31,7 @@ folders=(
     "apache-skywalking-apm-10.0.0"
     "kafka-3.6.0-src"
     "kafka-2.4.0-src"
+    "hadoop-3.4.0-src"
 )
 
 for index in "${!urls[@]}"; do

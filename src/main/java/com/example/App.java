@@ -68,7 +68,7 @@ public class App {
         String coveragePath = argMap.get("--coveragePath");
         String scriptArgs = argMap.get("--scriptArgs");  // 脚本额外参数，例如rmq的 -DfailIfNoTests=false
 
-        Project.ProjectType type = projectType.equals("mvn") ? Project.ProjectType.MAVEN : Project.ProjectType.ANT;
+        Project.ProjectType type = projectType.equals("mvn") ? Project.ProjectType.MAVEN : projectType.equals("ant") ? Project.ProjectType.ANT : Project.ProjectType.GRADLE;
 
         Project.ProjectBuilder builder = Project.builder()
                 .setBasePath(basePath)

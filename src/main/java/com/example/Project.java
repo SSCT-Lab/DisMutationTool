@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class Project {
 
     public enum ProjectType {
-        MAVEN, ANT
+        MAVEN, ANT, GRADLE
     }
 
 
@@ -36,6 +36,7 @@ public class Project {
     // paths to save mutants, original files, bytecodes, and test outputs
     public static String MVN_SCRIPT_PATH;
     public static String ANT_SCRIPT_PATH;
+    public static String GRADLE_SCRIPT_PATH;
     public static String MUTANT_OUTPUT_PATH; // 输出文件的根文件夹路径
     public static String MUTANTS_PATH;
     public static String ORIGINAL_PATH;
@@ -58,8 +59,10 @@ public class Project {
 
         MVN_SCRIPT_PATH = Paths.get(System.getProperty("user.dir"), "bin", "mvn-runner-no-breaking.sh").toFile().getAbsolutePath();
         ANT_SCRIPT_PATH = Paths.get(System.getProperty("user.dir"), "bin", "ant-runner-no-breaking.sh").toFile().getAbsolutePath();
+        GRADLE_SCRIPT_PATH = Paths.get(System.getProperty("user.dir"), "bin", "gradle-runner.sh").toFile().getAbsolutePath();
         logger.info("MVN_SCRIPT_PATH: " + MVN_SCRIPT_PATH);
         logger.info("ANT_SCRIPT_PATH: " + ANT_SCRIPT_PATH);
+        logger.info("GRADLE_SCRIPT_PATH: " + GRADLE_SCRIPT_PATH);
 
         MUTANT_OUTPUT_PATH = new File(builder.mutantRunnerOutputPath).getAbsolutePath();
         MUTANTS_PATH = Paths.get(MUTANT_OUTPUT_PATH, "mutants").toFile().getAbsolutePath();
@@ -68,7 +71,7 @@ public class Project {
         MUTANT_BYTECODE_PATH = Paths.get(MUTANT_OUTPUT_PATH, "mutantBytecode").toFile().getAbsolutePath();
         OUTPUTS_PATH = Paths.get(MUTANT_OUTPUT_PATH, "testOutputs").toFile().getAbsolutePath();
 
-        if(!Constants.isPartition){
+        if (!Constants.isPartition) {
             // 如果存在，删除原有的MUTANT_OUTPUT_PATH
             try {
                 FileUtils.deleteDirectory(new File(MUTANT_OUTPUT_PATH));

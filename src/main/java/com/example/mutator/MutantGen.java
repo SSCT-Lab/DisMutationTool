@@ -2,6 +2,7 @@ package com.example.mutator;
 
 import com.example.Project;
 import com.example.utils.FileUtil;
+import com.github.javaparser.JavaParser;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
@@ -35,6 +36,7 @@ public abstract class MutantGen {
     protected CompilationUnit parse(String originalFilePath) {
         try {
             FileInputStream in = new FileInputStream(originalFilePath);
+            // logger.info("Reading original file: " + originalFilePath);
             cu = StaticJavaParser.parse(in);
             LexicalPreservingPrinter.setup(cu); // 尽可能保留原始格式
             return this.cu;

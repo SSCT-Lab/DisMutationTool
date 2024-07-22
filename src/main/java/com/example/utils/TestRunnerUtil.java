@@ -15,7 +15,16 @@ public class TestRunnerUtil {
     private static final Logger logger = LogManager.getLogger(TestRunnerUtil.class);
 
     public static String getScriptPath(Project project){
-        String resourcePath = project.getProjectType() == Project.ProjectType.MAVEN ? "bin/mvn-runner-no-breaking.sh" : "bin/ant-runner-no-breaking.sh";
+        String resourcePath = "";
+        switch (project.getProjectType()){
+            case MAVEN:
+                resourcePath = "bin/mvn-runner-no-breaking.sh";
+                break;
+            case ANT:
+                resourcePath = "bin/ant-runner-no-breaking.sh";
+            case GRADLE:
+                resourcePath = "bin/gradle-runner.sh";
+        }
         try {
             // 从资源中读取脚本文件
             InputStream resourceStream = TestRunnerUtil.class.getClassLoader().getResourceAsStream(resourcePath);
@@ -25,7 +34,7 @@ public class TestRunnerUtil {
 
             // 创建临时目录和文件
             Path tempDir = Files.createTempDirectory("resources");
-            Path tempFile = Paths.get(tempDir.toString(), "mvn.sh");
+            Path tempFile = Paths.get(tempDir.toString(), "script.sh");
 
             // 将脚本文件复制到临时文件
             Files.copy(resourceStream, tempFile);

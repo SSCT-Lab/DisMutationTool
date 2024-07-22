@@ -4,6 +4,7 @@ import com.example.Project;
 import com.example.mutator.Mutant;
 import com.example.mutator.MutatorFactory;
 import com.example.mutator.MutatorType;
+import com.example.utils.Constants;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,6 +40,17 @@ public class MutantGenerator {
         // 生成所有变异体
         List<String> srcFileLs = project.getSrcFileLs();
         for (String srcFile : srcFileLs) {
+            boolean skip = false;
+            for(String excludeFile: Constants.excludeSrcFiles){
+                if (srcFile.contains(excludeFile)) {
+                    skip = true;
+                    break;
+                }
+            }
+            if(skip){
+                logger.info("Skipping file: " + srcFile);
+                continue;
+            }
             for (MutatorType mutator : mutatorSet) {
                 mutants.addAll(MutatorFactory.getMutator(mutator).execute(srcFile));
             }

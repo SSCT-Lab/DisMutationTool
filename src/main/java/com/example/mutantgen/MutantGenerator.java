@@ -1,6 +1,7 @@
 package com.example.mutantgen;
 
 import com.example.Project;
+import com.example.mutantFilter.BytecodeFilter;
 import com.example.mutator.Mutant;
 import com.example.mutator.MutatorFactory;
 import com.example.mutator.MutatorType;
@@ -62,12 +63,17 @@ public class MutantGenerator {
         IdenticalMutantFilter identicalMutantFilter = new IdenticalMutantFilter();
         mutants = identicalMutantFilter.filter(mutants);
 
-        if(!skipBytecodeComp){
-            // 删除等价变异体
-            logger.info("\n\nPHASE: Removing equivalent mutants...\n\n");
-            EquivalentMutantFilter equivalentMutantFilter = new EquivalentMutantFilter(project);
-            mutants = equivalentMutantFilter.filter(mutants);
-        }
+//        if(!skipBytecodeComp){
+//            // 删除等价变异体
+//            logger.info("\n\nPHASE: Removing equivalent mutants...\n\n");
+//            EquivalentMutantFilter equivalentMutantFilter = new EquivalentMutantFilter(project);
+//            mutants = equivalentMutantFilter.filter(mutants);
+//        }
+
+        // 删除等价变异体
+        logger.info("\n\nPHASE: Removing equivalent mutants...\n\n");
+        BytecodeFilter bytecodeFilter = new BytecodeFilter(project, mutants);
+        mutants = bytecodeFilter.filter();
 
         // 统计变异体信息
         for (Mutant mutant : mutants) {

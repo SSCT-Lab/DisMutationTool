@@ -26,7 +26,7 @@ gradle_path="$2"
 gradle_args="$3"
 
 # 设置超时时间
-timeout=3  # 10 分钟
+timeout=8  # 10 分钟
 
 touch "$output_file"
 

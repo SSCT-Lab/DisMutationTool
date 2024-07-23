@@ -66,7 +66,7 @@ public class App {
         String buildOutputDirName = argMap.get("--buildOutputDir");
         String outputDirName = argMap.get("--outputDir");
         String coveragePath = argMap.get("--coveragePath");
-        String scriptArgs = argMap.get("--scriptArgs");  // 脚本额外参数，例如rmq的 -DfailIfNoTests=false
+        // String scriptArgs = argMap.get("--scriptArgs");  // 脚本额外参数，例如rmq的 -DfailIfNoTests=false
 
         Project.ProjectType type = projectType.equals("mvn") ? Project.ProjectType.MAVEN : projectType.equals("ant") ? Project.ProjectType.ANT : Project.ProjectType.GRADLE;
 

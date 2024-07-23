@@ -38,11 +38,12 @@ public class Project {
     public static String ANT_SCRIPT_PATH;
     public static String GRADLE_SCRIPT_PATH;
     public static String MUTANT_OUTPUT_PATH; // 输出文件的根文件夹路径
-    public static String MUTANTS_PATH;
-    public static String ORIGINAL_PATH;
-    public static String ORIGINAL_BYTECODE_PATH;
-    public static String MUTANT_BYTECODE_PATH;
-    public static String OUTPUTS_PATH;
+    public static String MUTANTS_PATH; // 原始变异体
+    public static String ORIGINAL_PATH; // 变异体对应原始文件
+    public static String ORIGINAL_BYTECODE_PATH; // 项目原始字节码
+    public static String MUTANT_BYTECODE_PATH; // 变异体各自对应字节码
+    public static String MUTANT_FILTERED_PATH; // 过滤掉等价变异体之后，变异体路径
+    public static String OUTPUTS_PATH; // 脚本运行输出
 
     private Project(ProjectBuilder builder) {
         this.basePath = builder.basePath;
@@ -69,6 +70,7 @@ public class Project {
         ORIGINAL_PATH = Paths.get(MUTANT_OUTPUT_PATH, "original").toFile().getAbsolutePath();
         ORIGINAL_BYTECODE_PATH = Paths.get(MUTANT_OUTPUT_PATH, "originalBytecode").toFile().getAbsolutePath();
         MUTANT_BYTECODE_PATH = Paths.get(MUTANT_OUTPUT_PATH, "mutantBytecode").toFile().getAbsolutePath();
+        MUTANT_FILTERED_PATH = Paths.get(MUTANT_OUTPUT_PATH, "mutantsFiltered").toFile().getAbsolutePath();
         OUTPUTS_PATH = Paths.get(MUTANT_OUTPUT_PATH, "testOutputs").toFile().getAbsolutePath();
 
         if (!Constants.isPartition) {
@@ -78,11 +80,12 @@ public class Project {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            // 判断以上5个路径是否存在，不存在则创建
+            // 判断以上6个路径是否存在，不存在则创建
             FileUtil.createDirIfNotExist(MUTANTS_PATH);
             FileUtil.createDirIfNotExist(ORIGINAL_PATH);
             FileUtil.createDirIfNotExist(ORIGINAL_BYTECODE_PATH);
             FileUtil.createDirIfNotExist(MUTANT_BYTECODE_PATH);
+            FileUtil.createDirIfNotExist(MUTANT_FILTERED_PATH);
             FileUtil.createDirIfNotExist(OUTPUTS_PATH);
         }
 

@@ -58,8 +58,8 @@ public class FileUtil {
     public static void showFileContent(String path) {
         File file = new File(path);
         if (file.exists()) {
-            System.out.println("File path: " + path);
-            System.out.println("File content:");
+            logger.info("File path: " + path);
+            logger.info("File content:");
             try {
                 java.nio.file.Files.lines(file.toPath()).forEach(System.out::println);
             } catch (Exception e) {
@@ -174,8 +174,8 @@ public class FileUtil {
             List<String> file2Lines = Files.readAllLines(new File(file2Path).toPath(), StandardCharsets.UTF_8);
             Patch<String> patch = DiffUtils.diff(file1Lines, file2Lines);
 
-            System.out.println("diff " + file1Path + " " + file2Path);
-            System.out.println("***************");
+            logger.info("diff " + file1Path + " " + file2Path);
+            logger.info("***************");
 
             for (Delta<String> delta : patch.getDeltas()) {
                 int origStart = delta.getOriginal().getPosition() + 1;
@@ -183,15 +183,15 @@ public class FileUtil {
                 int revisedStart = delta.getRevised().getPosition() + 1;
                 int revisedEnd = revisedStart + delta.getRevised().size() - 1;
 
-                System.out.println("*** " + origStart + "," + origEnd + " ****");
+                logger.info("*** " + origStart + "," + origEnd + " ****");
                 for (Object line : delta.getOriginal().getLines()) {
-                    System.out.println("- " + line);
+                    logger.info("- " + line);
                 }
-                System.out.println("--- " + revisedStart + "," + revisedEnd + " ----");
+                logger.info("--- " + revisedStart + "," + revisedEnd + " ----");
                 for (Object line : delta.getRevised().getLines()) {
-                    System.out.println("+ " + line);
+                    logger.info("+ " + line);
                 }
-                System.out.println();
+                logger.info("\n");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

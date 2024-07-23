@@ -1,0 +1,22 @@
+Processing folder: ./data\BCS
+		Folder: ./data\BCS - Total .txt files: 29, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': 4
+Processing folder: ./data\MCT
+		Folder: ./data\MCT - Total .txt files: 24, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': 2
+Processing folder: ./data\NCS
+		Folder: ./data\NCS - Total .txt files: 30, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': 7
+Processing folder: ./data\RCE
+		Folder: ./data\RCE - Total .txt files: 4, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': 2
+Processing folder: ./data\RCS
+		Folder: ./data\RCS - Total .txt files: 119, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': 13
+Processing folder: ./data\RFE
+		Folder: ./data\RFE - Total .txt files: 2, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': 0
+Processing folder: ./data\RNE
+		Folder: ./data\RNE - Total .txt files: 44, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': 0
+Processing folder: ./data\RRC
+		Folder: ./data\RRC - Total .txt files: 1, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': 0
+Processing folder: ./data\RTS
+		Folder: ./data\RTS - Total .txt files: 35, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': 2
+Processing folder: ./data\SCS
+		Folder: ./data\SCS - Total .txt files: 64, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': 11
+
+Overall total .txt files: 352, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': 41

@@ -28,15 +28,15 @@ public class MutantGenerator {
     }
 
     public List<Mutant> generateMutants(){
-        return generateMutants(true); // TODO 修改
+        return generateMutants(false);
     }
 
-    public List<Mutant> generateMutantsWithoutFilterEq() {
-        return generateMutants(true);
+    public void generateMutantsWithoutFilterEq() {
+        generateMutants(true);
     }
 
 
-    private List<Mutant> generateMutants(boolean skipBytecodeComp) {
+    private List<Mutant> generateMutants(boolean skipBytecode) {
         logger.info("\n\nPHASE: Generate initial mutants for project: " + project.getBasePath() + " ...\n\n");
         // 生成所有变异体
         List<String> srcFileLs = project.getSrcFileLs();
@@ -63,17 +63,13 @@ public class MutantGenerator {
         IdenticalMutantFilter identicalMutantFilter = new IdenticalMutantFilter();
         mutants = identicalMutantFilter.filter(mutants);
 
-//        if(!skipBytecodeComp){
-//            // 删除等价变异体
-//            logger.info("\n\nPHASE: Removing equivalent mutants...\n\n");
-//            EquivalentMutantFilter equivalentMutantFilter = new EquivalentMutantFilter(project);
-//            mutants = equivalentMutantFilter.filter(mutants);
-//        }
 
         // 删除等价变异体
-        logger.info("\n\nPHASE: Removing equivalent mutants...\n\n");
-        BytecodeFilter bytecodeFilter = new BytecodeFilter(project, mutants);
-        mutants = bytecodeFilter.filter();
+        if(!skipBytecode){
+            logger.info("\n\nPHASE: Removing equivalent mutants...\n\n");
+            BytecodeFilter bytecodeFilter = new BytecodeFilter(project, mutants);
+            mutants = bytecodeFilter.filter();
+        }
 
         // 统计变异体信息
         for (Mutant mutant : mutants) {

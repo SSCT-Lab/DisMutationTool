@@ -133,7 +133,6 @@ public class App {
 
 
         MutantGenerator mutantGenerator = new MutantGenerator(project);
-        mutantGenerator.generateMutantsWithoutFilterEq();
 
     }
 

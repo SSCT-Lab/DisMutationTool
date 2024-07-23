@@ -24,6 +24,7 @@ public class IdenticalMutantFilter {
             String path1 = mutants.get(i).getMutatedPath();
             for (int j = i + 1; j < mutants.size(); j++) {
                 String path2 = mutants.get(j).getMutatedPath();
+                if(path1.equals(path2)) continue;
                 if (FileUtil.isFileIdentical(path1, path2)) {
                     logger.info("Identical mutants FOUND: " + path1 + " and " + path2);
                     if (fileToDelete.contains(path1)) {

@@ -34,53 +34,49 @@ public class CoverageBasedRunner {
         MutantGenerator mutantGenerator = new MutantGenerator(project);
         mutantLs = mutantGenerator.generateMutants();
 
-        // TODO 删除
-        // 保存变异体信息到
 
+        Map<String, Set<String>> coverageMap = parseTestClasses(coverageFilePath);
 
-
-//        Map<String, Set<String>> coverageMap = parseTestClasses(coverageFilePath);
-//
-//        if(project.getProjectType() == Project.ProjectType.MAVEN){
-//            for (Mutant mutant : mutantLs) {
-//                StringBuilder args = new StringBuilder();
-//                args.append("-Dtest=");
-//                String originalClassName = FileUtil.getFileName(mutant.getOriginalPath()); // 从path中去掉路径前缀和.java后缀，直接获取文件名
-//                Set<String> originalClassCoverageInfo = coverageMap.get(originalClassName);
-//                if (originalClassCoverageInfo == null) {
-//                    args = new StringBuilder().append("-DskipTests");
-//                } else {
-//                    for (String originalClassCoverage : originalClassCoverageInfo) {
-//                        args.append(originalClassCoverage);
-//                        args.append(",");
-//                    }
-//                    args.append(" -DfailIfNoTests=false");
-//                }
-//                logger.info(originalClassName + "\t" + args);
-//                MutantRunnerScript mutantRunner = new MutantRunnerScript(mutant, project);
-//                mutantRunner.run(absolutePath, args.toString());
-//            }
-//        } else if(project.getProjectType() == Project.ProjectType.GRADLE){
-//            for (Mutant mutant : mutantLs) {
-//                StringBuilder args = new StringBuilder();
-//                String originalClassName = FileUtil.getFileName(mutant.getOriginalPath()); // 从path中去掉路径前缀和.java后缀，直接获取文件名
-//                Set<String> originalClassCoverageInfo = coverageMap.get(originalClassName);
-//                if (originalClassCoverageInfo == null) {
-//                    args = new StringBuilder().append("-x test");
-//                } else {
-//                    for (String originalClassCoverage : originalClassCoverageInfo) {
-//                        String replaced = originalClassCoverage.replace("#", ".");
-//                        args.append("--tests ");
-//                        args.append(replaced);
-//                        args.append(" ");
-//                    }
-//                    args.append(" --continue");
-//                }
-//                logger.info(originalClassName + "\t" + args);
-//                MutantRunnerScript mutantRunner = new MutantRunnerScript(mutant, project);
-//                mutantRunner.run(absolutePath, args.toString());
-//            }
-//        }
+        if(project.getProjectType() == Project.ProjectType.MAVEN){
+            for (Mutant mutant : mutantLs) {
+                StringBuilder args = new StringBuilder();
+                args.append("-Dtest=");
+                String originalClassName = FileUtil.getFileName(mutant.getOriginalPath()); // 从path中去掉路径前缀和.java后缀，直接获取文件名
+                Set<String> originalClassCoverageInfo = coverageMap.get(originalClassName);
+                if (originalClassCoverageInfo == null) {
+                    args = new StringBuilder().append("-DskipTests");
+                } else {
+                    for (String originalClassCoverage : originalClassCoverageInfo) {
+                        args.append(originalClassCoverage);
+                        args.append(",");
+                    }
+                    args.append(" -DfailIfNoTests=false");
+                }
+                logger.info(originalClassName + "\t" + args);
+                MutantRunnerScript mutantRunner = new MutantRunnerScript(mutant, project);
+                mutantRunner.run(absolutePath, args.toString());
+            }
+        } else if(project.getProjectType() == Project.ProjectType.GRADLE){
+            for (Mutant mutant : mutantLs) {
+                StringBuilder args = new StringBuilder();
+                String originalClassName = FileUtil.getFileName(mutant.getOriginalPath()); // 从path中去掉路径前缀和.java后缀，直接获取文件名
+                Set<String> originalClassCoverageInfo = coverageMap.get(originalClassName);
+                if (originalClassCoverageInfo == null) {
+                    args = new StringBuilder().append("-x test");
+                } else {
+                    for (String originalClassCoverage : originalClassCoverageInfo) {
+                        String replaced = originalClassCoverage.replace("#", ".");
+                        args.append("--tests ");
+                        args.append(replaced);
+                        args.append(" ");
+                    }
+                    args.append(" --continue");
+                }
+                logger.info(originalClassName + "\t" + args);
+                MutantRunnerScript mutantRunner = new MutantRunnerScript(mutant, project);
+                mutantRunner.run(absolutePath, args.toString());
+            }
+        }
 
 
 

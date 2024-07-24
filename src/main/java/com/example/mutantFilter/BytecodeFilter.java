@@ -136,11 +136,21 @@ public class BytecodeFilter {
     private List<Mutant> filterMutants() {
         List<Mutant> res = new ArrayList<>();
         for (Mutant mutant : mutants) {
+            if(isMutantCompileFailed(mutant)) continue;
             if(isBytecodeIdenticalWithOriginal(mutant)) continue;
             if(isBytecodeIdenticalWithOtherMutants(mutant, res)) continue;
             res.add(mutant);
         }
         return res;
+    }
+
+    private boolean isMutantCompileFailed(Mutant mutant){
+        List<String> mutatedBytecodeFiles = FileUtil.getFilesBasedOnPattern(getMutantBytecodeDir(mutant), ".*\\.class$");
+        if(mutatedBytecodeFiles.size() == 0){
+            logger.info("Skiping bytecode comparison for COMPILE FAILED mutant {}", FileUtil.getFileName(mutant.getOriginalPath()));
+            return true;
+        }
+        return false;
     }
 
     private boolean isBytecodeIdenticalWithOriginal(Mutant mutant) {
@@ -153,6 +163,9 @@ public class BytecodeFilter {
         Collections.sort(mutatedBytecodeFiles);
         for (String filename : originalBytecodeFiles) {
             logger.info("\t\t" + FileUtil.getFileName(filename) + ".class");
+        }
+        if(originalBytecodeFiles.size() != mutatedBytecodeFiles.size()){
+            throw new RuntimeException("Bytecode files's size not corresponding");
         }
         // 比较两个list中，同名文件字节码是否相同
         for (int j = 0; j < originalBytecodeFiles.size(); j++) {
@@ -178,18 +191,20 @@ public class BytecodeFilter {
     }
 
     private boolean isBytecodeIdenticalBetweenTwoMutants(Mutant m1, Mutant m2) {
+        logger.info("Comapring bytecode between {} and {}", FileUtil.getFileName(m1.getMutatedPath()), FileUtil.getFileName(m2.getMutatedPath()));
         List<String> m1Files = FileUtil.getFilesBasedOnPattern(getMutantBytecodeDir(m1), ".*\\.class$");
         List<String> m2Files = FileUtil.getFilesBasedOnPattern(getMutantBytecodeDir(m2), ".*\\.class$");
         Collections.sort(m1Files);
         Collections.sort(m2Files);
         if(m1Files.size() != m2Files.size()) return false;
         for(int i = 0; i < m1Files.size(); i++) {
-            logger.info("Comparing {} to {}", m1Files.get(i), m2Files.get(i));
             String f1 = m1Files.get(i);
             String f2 = m2Files.get(i);
             if(!f1.equals(f2)) return false;
+            logger.info("Comparing {} to {}", m1Files.get(i), m2Files.get(i));
             if(!FileUtil.isFileIdentical(f1, f2)) return false;
         }
+        logger.info("Equivalent mutant found: {} is equivalent to {}", FileUtil.getFileName(m1.getMutatedPath()), FileUtil.getFileName(m2.getMutatedPath()));
         return true;
     }
 

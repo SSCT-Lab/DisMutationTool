@@ -134,11 +134,14 @@ public class BytecodeFilter {
     }
 
     private List<Mutant> filterMutants() {
+        logger.info("Start filtering mutants");
         List<Mutant> res = new ArrayList<>();
         for (Mutant mutant : mutants) {
+            logger.info("Filtering mutant for bytecode{}", mutant.getMutatedPath());
             if(isMutantCompileFailed(mutant)) continue;
             if(isBytecodeIdenticalWithOriginal(mutant)) continue;
             if(isBytecodeIdenticalWithOtherMutants(mutant, res)) continue;
+            logger.info("Mutant {} is not equal to others", mutant.getMutatedPath());
             res.add(mutant);
         }
         return res;
@@ -146,8 +149,8 @@ public class BytecodeFilter {
 
     private boolean isMutantCompileFailed(Mutant mutant){
         List<String> mutatedBytecodeFiles = FileUtil.getFilesBasedOnPattern(getMutantBytecodeDir(mutant), ".*\\.class$");
-        if(mutatedBytecodeFiles.size() == 0){
-            logger.info("Skiping bytecode comparison for COMPILE FAILED mutant {}", FileUtil.getFileName(mutant.getOriginalPath()));
+        if(mutatedBytecodeFiles.isEmpty()){
+            logger.info("Skipping bytecode comparison for COMPILE FAILED mutant {}", FileUtil.getFileName(mutant.getOriginalPath()));
             return true;
         }
         return false;

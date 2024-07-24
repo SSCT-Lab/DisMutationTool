@@ -138,7 +138,10 @@ public class BytecodeFilter {
         List<Mutant> res = new ArrayList<>();
         for (Mutant mutant : mutants) {
             logger.info("Filtering mutant for bytecode{}", mutant.getMutatedPath());
-            if(isMutantCompileFailed(mutant)) continue;
+            if(isMutantCompileFailed(mutant)){ // 编译失败的变异体直接添加
+                res.add(mutant);
+                continue;
+            }
             if(isBytecodeIdenticalWithOriginal(mutant)) continue;
             if(isBytecodeIdenticalWithOtherMutants(mutant, res)) continue;
             logger.info("Mutant {} is not equal to others", mutant.getMutatedPath());
@@ -194,11 +197,12 @@ public class BytecodeFilter {
     }
 
     private boolean isBytecodeIdenticalBetweenTwoMutants(Mutant m1, Mutant m2) {
-        logger.info("Comapring bytecode between {} and {}", FileUtil.getFileName(m1.getMutatedPath()), FileUtil.getFileName(m2.getMutatedPath()));
+        logger.info("Comparing bytecode between {} and {}", FileUtil.getFileName(m1.getMutatedPath()), FileUtil.getFileName(m2.getMutatedPath()));
         List<String> m1Files = FileUtil.getFilesBasedOnPattern(getMutantBytecodeDir(m1), ".*\\.class$");
         List<String> m2Files = FileUtil.getFilesBasedOnPattern(getMutantBytecodeDir(m2), ".*\\.class$");
         Collections.sort(m1Files);
         Collections.sort(m2Files);
+        if(m1Files.isEmpty() || m2Files.isEmpty()) return false;
         if(m1Files.size() != m2Files.size()) return false;
         for(int i = 0; i < m1Files.size(); i++) {
             String f1 = m1Files.get(i);

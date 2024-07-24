@@ -33,8 +33,8 @@ touch "$output_file"
 # 切换到 mvn 路径
 cd "$mvn_path" || exit 1
 
-# 开始执行 mvn clean test，并将输出重定向到临时文件
-mvn clean test $mvn_args > "$output_file" &
+# 开始执行 mvn test，并将输出重定向到临时文件
+mvn test $mvn_args > "$output_file" &
 
 
 # 获取 mvn 进程的 PID

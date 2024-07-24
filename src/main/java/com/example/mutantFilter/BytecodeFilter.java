@@ -123,7 +123,7 @@ public class BytecodeFilter {
 
     private String[] getBuildCmd() {
         if (this.project.getProjectType() == Project.ProjectType.MAVEN) {
-            return new String[]{"mvn", "clean", "compile"};
+            return new String[]{"mvn", "compile"};
         } else if (this.project.getProjectType() == Project.ProjectType.GRADLE) {
             // /gradlew clean compileJava
             return new String[]{"./gradlew", "clean", "compileJava"};

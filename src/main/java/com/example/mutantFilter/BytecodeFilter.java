@@ -83,6 +83,9 @@ public class BytecodeFilter {
         // 将这些文件拷贝到 mutantBytecodeDir
         for (String classFile : mutatedBytecodeFiles) {
             String fileName = FileUtil.getFileName(classFile) + ".class";
+            // String originalFilePath = FileUtil.getFileDir(classFile);
+            // String filePath = originalFilePath.replace(project.getBasePath(), mutantBytecodeDir);
+            // TODO 这些文件应该有独立的命名空间，否则相同名称的.class文件会被覆盖
             FileUtil.copyFileToTargetDir(classFile, mutantBytecodeDir, fileName);
         }
 

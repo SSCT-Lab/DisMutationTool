@@ -20,14 +20,16 @@ def count_failed_strings_in_txt_files(root_dir):
                 file_path = os.path.join(subdir, file)
                 with open(file_path, 'r', encoding='utf-8') as f:
                     content = f.read()
-                    passed = re.search(r'> \w+ PASSED', content)
-                    failed = re.search(r'> \w+ FAILED', content)
+                    passed = re.search(r' > \w+ PASSED', content)
+                    failed = re.search(r' > \w+ FAILED', content)
 
                     if not passed and not failed:
-                        last_10_lines = content.splitlines()[-10:]
-                        if not any("BUILD SUCCESS" in line for line in last_10_lines):
+                        last_50_lines = content.splitlines()[-50:]
+                        if not any("BUILD SUCCESS" in line for line in last_50_lines):
+                            print(f"\t\t {file} compile failed")
                             failed_file_count += 1
                     elif failed:
+                        print(f"\t\t {file} test failed")
                         failed_file_count += 1
 
         total_txt_files += txt_file_count
@@ -38,4 +40,4 @@ def count_failed_strings_in_txt_files(root_dir):
     print(f"\nOverall total .txt files: {total_txt_files}, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': {total_failed_files}")
 
 if __name__ == "__main__":
-    count_failed_strings_in_txt_files("./kafkaMutation/testOutputs")
+    count_failed_strings_in_txt_files("./data/kafkaTestOutputs")

@@ -86,6 +86,77 @@ zookeeper results
 73/104 by now, total 385
 
 hbase results
+Processing folder: ./data/hbaseTestOutputs\BCS
+		Folder: ./data/hbaseTestOutputs\BCS - Total .txt files: 33, Failed files: 0, Test failed:0, Build failed: False, Other failed: 0
+Processing folder: ./data/hbaseTestOutputs\MCT
+Test failure in file: ./data/hbaseTestOutputs\MCT\DelayingRunner_MCT_1.txt
+Test failure in file: ./data/hbaseTestOutputs\MCT\RegistryEndpointsRefresher_MCT_1.txt
+		Folder: ./data/hbaseTestOutputs\MCT - Total .txt files: 9, Failed files: 2, Test failed:2, Build failed: False, Other failed: 0
+Processing folder: ./data/hbaseTestOutputs\NCS
+Compile failure in file: ./data/hbaseTestOutputs\NCS\PoolMap_NCS_1.txt
+Compile failure in file: ./data/hbaseTestOutputs\NCS\PoolMap_NCS_2.txt
+		Folder: ./data/hbaseTestOutputs\NCS - Total .txt files: 19, Failed files: 2, Test failed:0, Build failed: False, Other failed: 0
+Processing folder: ./data/hbaseTestOutputs\RCE
+Compile failure in file: ./data/hbaseTestOutputs\RCE\HBaseAdmin_RCE_3.txt
+Compile failure in file: ./data/hbaseTestOutputs\RCE\ResultBoundedCompletionService_RCE_1.txt
+		Folder: ./data/hbaseTestOutputs\RCE - Total .txt files: 6, Failed files: 2, Test failed:0, Build failed: True, Other failed: 0
+Processing folder: ./data/hbaseTestOutputs\RCS
+Test failure in file: ./data/hbaseTestOutputs\RCS\AsyncRequestFutureImpl_RCS_8.txt
+Test failure in file: ./data/hbaseTestOutputs\RCS\DelayingRunner_RCS_1.txt
+Test failure in file: ./data/hbaseTestOutputs\RCS\PoolMap_RCS_1.txt
+Test failure in file: ./data/hbaseTestOutputs\RCS\RegistryEndpointsRefresher_RCS_1.txt
+Other failure in file: ./data/hbaseTestOutputs\RCS\ResultBoundedCompletionService_RCS_1.txt
+Test failure in file: ./data/hbaseTestOutputs\RCS\ResultBoundedCompletionService_RCS_4.txt
+Test failure in file: ./data/hbaseTestOutputs\RCS\SimpleRequestController_RCS_2.txt
+		Folder: ./data/hbaseTestOutputs\RCS - Total .txt files: 64, Failed files: 7, Test failed:6, Build failed: False, Other failed: 1
+Processing folder: ./data/hbaseTestOutputs\RFE
+Test failure in file: ./data/hbaseTestOutputs\RFE\AbstractHBaseSaslRpcClient_RFE_1.txt
+Test failure in file: ./data/hbaseTestOutputs\RFE\AsyncProcess_RFE_1.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\BlockingRpcConnection_RFE_3.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\ClusterStatusListener_RFE_1.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\ClusterStatusListener_RFE_2.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\ClusterStatusListener_RFE_3.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\ConnectionFactory_RFE_1.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\ConnectionFactory_RFE_2.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\ConnectionImplementation_RFE_5.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\EncryptionUtil_RFE_1.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\EncryptionUtil_RFE_2.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\HBaseAdmin_RFE_2.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\HBaseHbck_RFE_1.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\HBaseHbck_RFE_2.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\HBaseHbck_RFE_3.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\HBaseHbck_RFE_4.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\HBaseHbck_RFE_5.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\HBaseHbck_RFE_6.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\HBaseHbck_RFE_7.txt
+Test failure in file: ./data/hbaseTestOutputs\RFE\HBaseSaslRpcClient_RFE_1.txt
+Test failure in file: ./data/hbaseTestOutputs\RFE\HBaseSaslRpcClient_RFE_2.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\HRegionInfo_RFE_1.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\MetaTableAccessor_RFE_4.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\ReplicationPeerConfigUtil_RFE_1.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\ScannerCallableWithReplicas_RFE_2.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\SecureBulkLoadClient_RFE_1.txt
+		Folder: ./data/hbaseTestOutputs\RFE - Total .txt files: 44, Failed files: 26, Test failed:4, Build failed: False, Other failed: 0
+Processing folder: ./data/hbaseTestOutputs\RNE
+		Folder: ./data/hbaseTestOutputs\RNE - Total .txt files: 1, Failed files: 0, Test failed:0, Build failed: False, Other failed: 0
+Processing folder: ./data/hbaseTestOutputs\RTS
+		Folder: ./data/hbaseTestOutputs\RTS - Total .txt files: 3, Failed files: 0, Test failed:0, Build failed: False, Other failed: 0
+Processing folder: ./data/hbaseTestOutputs\SCS
+Compile failure in file: ./data/hbaseTestOutputs\SCS\ConnectionImplementation_SCS_2.txt
+Compile failure in file: ./data/hbaseTestOutputs\SCS\PoolMap_SCS_1.txt
+Compile failure in file: ./data/hbaseTestOutputs\SCS\PoolMap_SCS_2.txt
+		Folder: ./data/hbaseTestOutputs\SCS - Total .txt files: 36, Failed files: 3, Test failed:0, Build failed: False, Other failed: 0
+
+Overall total .txt files: 215, Failed files: 42, Test failed:12, Build failed: 29, Other failed: 1
+173/215 = 0.8046511627906977
+- Compile failures with no coverage:
+- BlockingRpcConnection_RFE_3.java
+- ClusterStatusListener_RFE_1
+- ClusterStatusListener_RFE_2
+- ClusterStatusListener_RFE_3
+- ReplicationPeerConfigUtil_RFE_1
+- SecureBulkLoadClient_RFE_1
+179/215 = 0.83255814
 
 skywalking results
 - to run

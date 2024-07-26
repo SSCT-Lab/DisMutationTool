@@ -33,7 +33,7 @@ public class ExtractExcludedTestClasses {
         Collections.sort(sortedClassNames);
 
         // 转换List为字符串，使用逗号分隔
-        String result = String.join(",", sortedClassNames);
+        String result = String.join("</param>\n<param>", sortedClassNames);
         System.out.println(result);
     }
     public static void main(String[] args) {

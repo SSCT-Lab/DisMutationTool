@@ -1,0 +1,171 @@
+kafka results
+identical mutants: 3
+equivalent mutants: 0
+C:\Users\z50042829\PycharmProjects\pythonProject1\venv\Scripts\python.exe C:\Users\z50042829\PycharmProjects\pythonProject1\main.py 
+Processing folder: ./data/kafkaTestOutputs\testOutputs
+		Folder: ./data/kafkaTestOutputs\testOutputs - Total .txt files: 0, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': 0
+Processing folder: ./data/kafkaTestOutputs\testOutputs\BCS
+		 AbstractCoordinator_BCS_1.txt test failed
+		 PushHttpMetricsReporter_BCS_1.txt compile failed
+		 RandomComponentPayloadGenerator_BCS_1.txt compile failed
+		 RecordAccumulator_BCS_1.txt compile failed
+		Folder: ./data/kafkaTestOutputs\testOutputs\BCS - Total .txt files: 53, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': 4
+Processing folder: ./data/kafkaTestOutputs\testOutputs\MCT
+		 ExternalCommandWorker_MCT_2.txt test failed
+		 KafkaStreams_MCT_1.txt test failed
+		Folder: ./data/kafkaTestOutputs\testOutputs\MCT - Total .txt files: 42, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': 2
+Processing folder: ./data/kafkaTestOutputs\testOutputs\NCS
+		 AbstractCoordinator_NCS_5.txt test failed
+		 ConsumerNetworkClient_NCS_1.txt compile failed
+		 KafkaStreams_NCS_2.txt test failed
+		 RecordAccumulator_NCS_1.txt compile failed
+		 RecordAccumulator_NCS_2.txt compile failed
+		 RecordAccumulator_NCS_3.txt compile failed
+		Folder: ./data/kafkaTestOutputs\testOutputs\NCS - Total .txt files: 47, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': 6
+Processing folder: ./data/kafkaTestOutputs\testOutputs\RCE
+		 FutureRecordMetadata_RCE_1.txt test failed
+		 FutureRecordMetadata_RCE_2.txt compile failed
+		Folder: ./data/kafkaTestOutputs\testOutputs\RCE - Total .txt files: 10, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': 2
+Processing folder: ./data/kafkaTestOutputs\testOutputs\RCS
+		 AbstractCoordinator_RCS_12.txt test failed
+		 Fetcher_RCS_1.txt test failed
+		 IncompleteBatches_RCS_2.txt test failed
+		 KafkaStreams_RCS_1.txt test failed
+		 KafkaStreams_RCS_2.txt test failed
+		 RecordAccumulator_RCS_1.txt test failed
+		 RecordAccumulator_RCS_2.txt test failed
+		 RecordAccumulator_RCS_8.txt test failed
+		 WorkerManager_RCS_1.txt test failed
+		Folder: ./data/kafkaTestOutputs\testOutputs\RCS - Total .txt files: 169, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': 9
+Processing folder: ./data/kafkaTestOutputs\testOutputs\RFE
+		Folder: ./data/kafkaTestOutputs\testOutputs\RFE - Total .txt files: 2, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': 0
+Processing folder: ./data/kafkaTestOutputs\testOutputs\RNE
+		Folder: ./data/kafkaTestOutputs\testOutputs\RNE - Total .txt files: 44, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': 0
+Processing folder: ./data/kafkaTestOutputs\testOutputs\RRC
+		Folder: ./data/kafkaTestOutputs\testOutputs\RRC - Total .txt files: 1, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': 0
+Processing folder: ./data/kafkaTestOutputs\testOutputs\RTS
+		 BufferPool_RTS_1.txt test failed
+		 BufferPool_RTS_3.txt test failed
+		Folder: ./data/kafkaTestOutputs\testOutputs\RTS - Total .txt files: 35, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': 2
+Processing folder: ./data/kafkaTestOutputs\testOutputs\SCS
+		 ConsumerNetworkClient_SCS_1.txt compile failed
+		 ConsumerNetworkClient_SCS_2.txt compile failed
+		 ConsumerNetworkClient_SCS_3.txt compile failed
+		 Histogram_SCS_1.txt compile failed
+		 IncompleteBatches_SCS_1.txt compile failed
+		 KafkaAdminClient_SCS_2.txt compile failed
+		 KafkaStreams_SCS_1.txt compile failed
+		 MockConsumer_SCS_1.txt compile failed
+		 RecordAccumulator_SCS_2.txt compile failed
+		 RecordAccumulator_SCS_3.txt compile failed
+		 RecordAccumulator_SCS_4.txt compile failed
+		Folder: ./data/kafkaTestOutputs\testOutputs\SCS - Total .txt files: 94, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': 11
+
+Overall total .txt files: 497, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': 36
+
+
+rmq results
+Processing folder: ./data/rmqtestOutputs\BCS
+		Folder: ./data/rmqtestOutputs\BCS - Total .txt files: 20, Failed files: 4, Test failed:0, Build failed: False, Other failed: 2
+Processing folder: ./data/rmqtestOutputs\MCT
+		Folder: ./data/rmqtestOutputs\MCT - Total .txt files: 30, Failed files: 1, Test failed:1, Build failed: False, Other failed: 0
+Processing folder: ./data/rmqtestOutputs\MNT
+		Folder: ./data/rmqtestOutputs\MNT - Total .txt files: 2, Failed files: 0, Test failed:0, Build failed: False, Other failed: 0
+Processing folder: ./data/rmqtestOutputs\NCS
+		Folder: ./data/rmqtestOutputs\NCS - Total .txt files: 24, Failed files: 7, Test failed:1, Build failed: True, Other failed: 0
+Processing folder: ./data/rmqtestOutputs\RCF
+		Folder: ./data/rmqtestOutputs\RCF - Total .txt files: 4, Failed files: 1, Test failed:0, Build failed: False, Other failed: 0
+Processing folder: ./data/rmqtestOutputs\RCS
+		Folder: ./data/rmqtestOutputs\RCS - Total .txt files: 85, Failed files: 5, Test failed:5, Build failed: False, Other failed: 0
+Processing folder: ./data/rmqtestOutputs\RTS
+		Folder: ./data/rmqtestOutputs\RTS - Total .txt files: 167, Failed files: 44, Test failed:5, Build failed: True, Other failed: 0
+Processing folder: ./data/rmqtestOutputs\SCS
+		Folder: ./data/rmqtestOutputs\SCS - Total .txt files: 32, Failed files: 10, Test failed:0, Build failed: True, Other failed: 0
+
+Overall total .txt files: 364, Failed files: 72, Test failed:12, Build failed: 58, Other failed: 2
+
+zookeeper results
+identical mutants: 1
+equivalent mutants: 1
+73/104 by now, total 385
+
+hbase results
+identical mutants: 0
+equivalent mutants: 0
+Processing folder: ./data/hbaseTestOutputs\BCS
+		Folder: ./data/hbaseTestOutputs\BCS - Total .txt files: 33, Failed files: 0, Test failed:0, Build failed: False, Other failed: 0
+Processing folder: ./data/hbaseTestOutputs\MCT
+Test failure in file: ./data/hbaseTestOutputs\MCT\DelayingRunner_MCT_1.txt
+Test failure in file: ./data/hbaseTestOutputs\MCT\RegistryEndpointsRefresher_MCT_1.txt
+		Folder: ./data/hbaseTestOutputs\MCT - Total .txt files: 9, Failed files: 2, Test failed:2, Build failed: False, Other failed: 0
+Processing folder: ./data/hbaseTestOutputs\NCS
+Compile failure in file: ./data/hbaseTestOutputs\NCS\PoolMap_NCS_1.txt
+Compile failure in file: ./data/hbaseTestOutputs\NCS\PoolMap_NCS_2.txt
+		Folder: ./data/hbaseTestOutputs\NCS - Total .txt files: 19, Failed files: 2, Test failed:0, Build failed: False, Other failed: 0
+Processing folder: ./data/hbaseTestOutputs\RCE
+Compile failure in file: ./data/hbaseTestOutputs\RCE\HBaseAdmin_RCE_3.txt
+Compile failure in file: ./data/hbaseTestOutputs\RCE\ResultBoundedCompletionService_RCE_1.txt
+		Folder: ./data/hbaseTestOutputs\RCE - Total .txt files: 6, Failed files: 2, Test failed:0, Build failed: True, Other failed: 0
+Processing folder: ./data/hbaseTestOutputs\RCS
+Test failure in file: ./data/hbaseTestOutputs\RCS\AsyncRequestFutureImpl_RCS_8.txt
+Test failure in file: ./data/hbaseTestOutputs\RCS\DelayingRunner_RCS_1.txt
+Test failure in file: ./data/hbaseTestOutputs\RCS\PoolMap_RCS_1.txt
+Test failure in file: ./data/hbaseTestOutputs\RCS\RegistryEndpointsRefresher_RCS_1.txt
+Other failure in file: ./data/hbaseTestOutputs\RCS\ResultBoundedCompletionService_RCS_1.txt
+Test failure in file: ./data/hbaseTestOutputs\RCS\ResultBoundedCompletionService_RCS_4.txt
+Test failure in file: ./data/hbaseTestOutputs\RCS\SimpleRequestController_RCS_2.txt
+		Folder: ./data/hbaseTestOutputs\RCS - Total .txt files: 64, Failed files: 7, Test failed:6, Build failed: False, Other failed: 1
+Processing folder: ./data/hbaseTestOutputs\RFE
+Test failure in file: ./data/hbaseTestOutputs\RFE\AbstractHBaseSaslRpcClient_RFE_1.txt
+Test failure in file: ./data/hbaseTestOutputs\RFE\AsyncProcess_RFE_1.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\BlockingRpcConnection_RFE_3.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\ClusterStatusListener_RFE_1.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\ClusterStatusListener_RFE_2.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\ClusterStatusListener_RFE_3.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\ConnectionFactory_RFE_1.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\ConnectionFactory_RFE_2.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\ConnectionImplementation_RFE_5.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\EncryptionUtil_RFE_1.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\EncryptionUtil_RFE_2.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\HBaseAdmin_RFE_2.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\HBaseHbck_RFE_1.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\HBaseHbck_RFE_2.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\HBaseHbck_RFE_3.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\HBaseHbck_RFE_4.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\HBaseHbck_RFE_5.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\HBaseHbck_RFE_6.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\HBaseHbck_RFE_7.txt
+Test failure in file: ./data/hbaseTestOutputs\RFE\HBaseSaslRpcClient_RFE_1.txt
+Test failure in file: ./data/hbaseTestOutputs\RFE\HBaseSaslRpcClient_RFE_2.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\HRegionInfo_RFE_1.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\MetaTableAccessor_RFE_4.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\ReplicationPeerConfigUtil_RFE_1.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\ScannerCallableWithReplicas_RFE_2.txt
+Compile failure in file: ./data/hbaseTestOutputs\RFE\SecureBulkLoadClient_RFE_1.txt
+		Folder: ./data/hbaseTestOutputs\RFE - Total .txt files: 44, Failed files: 26, Test failed:4, Build failed: False, Other failed: 0
+Processing folder: ./data/hbaseTestOutputs\RNE
+		Folder: ./data/hbaseTestOutputs\RNE - Total .txt files: 1, Failed files: 0, Test failed:0, Build failed: False, Other failed: 0
+Processing folder: ./data/hbaseTestOutputs\RTS
+		Folder: ./data/hbaseTestOutputs\RTS - Total .txt files: 3, Failed files: 0, Test failed:0, Build failed: False, Other failed: 0
+Processing folder: ./data/hbaseTestOutputs\SCS
+Compile failure in file: ./data/hbaseTestOutputs\SCS\ConnectionImplementation_SCS_2.txt
+Compile failure in file: ./data/hbaseTestOutputs\SCS\PoolMap_SCS_1.txt
+Compile failure in file: ./data/hbaseTestOutputs\SCS\PoolMap_SCS_2.txt
+		Folder: ./data/hbaseTestOutputs\SCS - Total .txt files: 36, Failed files: 3, Test failed:0, Build failed: False, Other failed: 0
+
+Overall total .txt files: 215, Failed files: 42, Test failed:12, Build failed: 29, Other failed: 1
+173/215 = 0.8046511627906977
+- Compile failures with no coverage:
+- BlockingRpcConnection_RFE_3.java
+- ClusterStatusListener_RFE_1
+- ClusterStatusListener_RFE_2
+- ClusterStatusListener_RFE_3
+- ReplicationPeerConfigUtil_RFE_1
+- SecureBulkLoadClient_RFE_1
+179/215 = 0.83255814
+
+skywalking results
+- to run
+
+cas results
+- to decide which module for mutation testing

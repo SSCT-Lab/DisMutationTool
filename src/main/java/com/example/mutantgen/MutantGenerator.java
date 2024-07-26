@@ -1,9 +1,11 @@
 package com.example.mutantgen;
 
 import com.example.Project;
+import com.example.mutantFilter.BytecodeFilter;
 import com.example.mutator.Mutant;
 import com.example.mutator.MutatorFactory;
 import com.example.mutator.MutatorType;
+import com.example.utils.Constants;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,19 +28,30 @@ public class MutantGenerator {
     }
 
     public List<Mutant> generateMutants(){
-        return generateMutants(true); // TODO 修改
+        return generateMutants(false);
     }
 
-    public List<Mutant> generateMutantsWithoutFilterEq() {
-        return generateMutants(true);
+    public void generateMutantsWithoutFilterEq() {
+        generateMutants(true);
     }
 
 
-    private List<Mutant> generateMutants(boolean skipBytecodeComp) {
+    private List<Mutant> generateMutants(boolean skipBytecode) {
         logger.info("\n\nPHASE: Generate initial mutants for project: " + project.getBasePath() + " ...\n\n");
         // 生成所有变异体
         List<String> srcFileLs = project.getSrcFileLs();
         for (String srcFile : srcFileLs) {
+            boolean skip = false;
+            for(String excludeFile: Constants.excludeSrcFiles){
+                if (srcFile.contains(excludeFile)) {
+                    skip = true;
+                    break;
+                }
+            }
+            if(skip){
+                logger.info("Skipping file: " + srcFile);
+                continue;
+            }
             for (MutatorType mutator : mutatorSet) {
                 mutants.addAll(MutatorFactory.getMutator(mutator).execute(srcFile));
             }
@@ -50,11 +63,12 @@ public class MutantGenerator {
         IdenticalMutantFilter identicalMutantFilter = new IdenticalMutantFilter();
         mutants = identicalMutantFilter.filter(mutants);
 
-        if(!skipBytecodeComp){
-            // 删除等价变异体
+
+        // 删除等价变异体
+        if(!skipBytecode){
             logger.info("\n\nPHASE: Removing equivalent mutants...\n\n");
-            EquivalentMutantFilter equivalentMutantFilter = new EquivalentMutantFilter(project);
-            mutants = equivalentMutantFilter.filter(mutants);
+            BytecodeFilter bytecodeFilter = new BytecodeFilter(project, mutants);
+            mutants = bytecodeFilter.filter();
         }
 
         // 统计变异体信息

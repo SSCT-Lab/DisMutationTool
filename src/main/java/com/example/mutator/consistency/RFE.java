@@ -18,7 +18,7 @@ public class RFE extends DiscardExceptionOperator {
         exceptions.add("java.nio.file.InvalidPathException");
         exceptions.add("java.nio.file.FileSystemException");
 
-        mutator = MutatorType.UFE;
+        mutator = MutatorType.RFE;
 
         targetException = "java.lang.Exception";
     }
@@ -29,6 +29,7 @@ public class RFE extends DiscardExceptionOperator {
         ArrayList<String> importKeywords = new ArrayList<>();
         importKeywords.add("org.apache.cassandra.config"); // TODO 写到config
         importKeywords.add("org.apache.hadoop.conf");
+        importKeywords.add("org.apache.kafka.common.config");
 
         // 验证当前.java文件的package是否包含importKeywords中的任何一个关键字
         if (cu.getPackageDeclaration().isPresent()) {

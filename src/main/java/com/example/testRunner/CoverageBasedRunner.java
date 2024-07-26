@@ -34,25 +34,51 @@ public class CoverageBasedRunner {
         MutantGenerator mutantGenerator = new MutantGenerator(project);
         mutantLs = mutantGenerator.generateMutants();
 
+
         Map<String, Set<String>> coverageMap = parseTestClasses(coverageFilePath);
 
-        for (Mutant mutant : mutantLs) {
-            StringBuilder args = new StringBuilder();
-            args.append("-Dtest=");
-            String originalClassName = FileUtil.getFileName(mutant.getOriginalPath()); // 从path中去掉路径前缀和.java后缀，直接获取文件名
-            Set<String> originalClassCoverageInfo = coverageMap.get(originalClassName);
-            if (originalClassCoverageInfo == null) {
-                args = new StringBuilder().append("-DskipTests");
-            } else {
-                for (String originalClassCoverage : originalClassCoverageInfo) {
-                    args.append(originalClassCoverage);
-                    args.append(",");
+        if(project.getProjectType() == Project.ProjectType.MAVEN){
+            for (Mutant mutant : mutantLs) {
+                StringBuilder args = new StringBuilder();
+                args.append("-Dtest=");
+                String originalClassName = FileUtil.getFileName(mutant.getOriginalPath()); // 从path中去掉路径前缀和.java后缀，直接获取文件名
+                Set<String> originalClassCoverageInfo = coverageMap.get(originalClassName);
+                if (originalClassCoverageInfo == null) {
+                    args = new StringBuilder().append("-DskipTests");
+                } else {
+                    for (String originalClassCoverage : originalClassCoverageInfo) {
+                        args.append(originalClassCoverage);
+                        args.append(",");
+                    }
+                    args.append(" -DfailIfNoTests=false");
                 }
+                logger.info(originalClassName + "\t" + args);
+                MutantRunnerScript mutantRunner = new MutantRunnerScript(mutant, project);
+                mutantRunner.run(absolutePath, args.toString());
             }
-            logger.info(originalClassName + "\t" + args);
-            MutantRunnerScript mutantRunner = new MutantRunnerScript(mutant, project);
-            mutantRunner.run(absolutePath, args.toString());
+        } else if(project.getProjectType() == Project.ProjectType.GRADLE){
+            for (Mutant mutant : mutantLs) {
+                StringBuilder args = new StringBuilder();
+                String originalClassName = FileUtil.getFileName(mutant.getOriginalPath()); // 从path中去掉路径前缀和.java后缀，直接获取文件名
+                Set<String> originalClassCoverageInfo = coverageMap.get(originalClassName);
+                if (originalClassCoverageInfo == null) {
+                    args = new StringBuilder().append("-x test");
+                } else {
+                    for (String originalClassCoverage : originalClassCoverageInfo) {
+                        String replaced = originalClassCoverage.replace("#", ".");
+                        args.append("--tests ");
+                        args.append(replaced);
+                        args.append(" ");
+                    }
+                    args.append(" --continue");
+                }
+                logger.info(originalClassName + "\t" + args);
+                MutantRunnerScript mutantRunner = new MutantRunnerScript(mutant, project);
+                mutantRunner.run(absolutePath, args.toString());
+            }
         }
+
+
 
     }
 
@@ -71,7 +97,9 @@ public class CoverageBasedRunner {
                     if (currentSourceFile != null) {
                         // Add the test class to the set for the current source file
 //                        result.computeIfAbsent(currentSourceFile, k -> new HashSet<>()).add(line.substring(0, line.lastIndexOf(".")));
-                        result.computeIfAbsent(currentSourceFile, k -> new HashSet<>()).add(line);
+                        String lineP1 = line.substring(0, line.lastIndexOf("."));
+                        String lineP2 = line.substring(line.lastIndexOf(".") + 1);
+                        result.computeIfAbsent(currentSourceFile, k -> new HashSet<>()).add(lineP1 + "#" + lineP2);
                     }
                 }
             }

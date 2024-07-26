@@ -81,3 +81,14 @@ Processing folder: ./data/rmqtestOutputs\SCS
 		Folder: ./data/rmqtestOutputs\SCS - Total .txt files: 32, Failed files: 10, Test failed:0, Build failed: True, Other failed: 0
 
 Overall total .txt files: 364, Failed files: 72, Test failed:12, Build failed: 58, Other failed: 2
+
+zookeeper results
+73/104 by now, total 385
+
+hbase results
+
+skywalking results
+- to run
+
+cas results
+- to decide which module for mutation testing

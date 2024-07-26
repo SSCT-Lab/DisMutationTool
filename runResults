@@ -1,4 +1,6 @@
 kafka results
+identical mutants: 3
+equivalent mutants: 0
 C:\Users\z50042829\PycharmProjects\pythonProject1\venv\Scripts\python.exe C:\Users\z50042829\PycharmProjects\pythonProject1\main.py 
 Processing folder: ./data/kafkaTestOutputs\testOutputs
 		Folder: ./data/kafkaTestOutputs\testOutputs - Total .txt files: 0, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': 0
@@ -83,9 +85,13 @@ Processing folder: ./data/rmqtestOutputs\SCS
 Overall total .txt files: 364, Failed files: 72, Test failed:12, Build failed: 58, Other failed: 2
 
 zookeeper results
+identical mutants: 1
+equivalent mutants: 1
 73/104 by now, total 385
 
 hbase results
+identical mutants: 0
+equivalent mutants: 0
 Processing folder: ./data/hbaseTestOutputs\BCS
 		Folder: ./data/hbaseTestOutputs\BCS - Total .txt files: 33, Failed files: 0, Test failed:0, Build failed: False, Other failed: 0
 Processing folder: ./data/hbaseTestOutputs\MCT

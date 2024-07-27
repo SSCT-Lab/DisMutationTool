@@ -6,6 +6,7 @@ import com.example.mutator.Mutant;
 import com.example.mutator.MutatorFactory;
 import com.example.mutator.MutatorType;
 import com.example.utils.Constants;
+import com.example.utils.FileUtil;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,8 +39,28 @@ public class MutantGenerator {
 
     private List<Mutant> generateMutants(boolean skipBytecode) {
         logger.info("\n\nPHASE: Generate initial mutants for project: " + project.getBasePath() + " ...\n\n");
+
         // 生成所有变异体
         List<String> srcFileLs = project.getSrcFileLs();
+        // TODO 文件命名空间，暂时使文件名不重复
+        // 如果两个srcFile文件名相同，去掉后者
+        List<String> rmDupFileLs = new ArrayList<>();
+        for (String srcFile : srcFileLs) {
+            String javaFileName = FileUtil.getFileName(srcFile);
+            boolean flag = true;
+            for(String rmDupFile : rmDupFileLs){
+                String rmDupJavaFileName = FileUtil.getFileName(rmDupFile);
+                if(rmDupJavaFileName.equals(javaFileName)){
+                    flag = false;
+                }
+            }
+            if(flag){
+                rmDupFileLs.add(srcFile);
+            }
+        }
+
+        srcFileLs = rmDupFileLs;
+
         for (String srcFile : srcFileLs) {
             boolean skip = false;
             for(String excludeFile: Constants.excludeSrcFiles){

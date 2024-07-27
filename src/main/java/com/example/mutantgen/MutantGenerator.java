@@ -39,6 +39,7 @@ public class MutantGenerator {
 
     private List<Mutant> generateMutants(boolean skipBytecode) {
         logger.info("\n\nPHASE: Generate initial mutants for project: " + project.getBasePath() + " ...\n\n");
+
         // 生成所有变异体
         List<String> srcFileLs = project.getSrcFileLs();
         // TODO 文件命名空间，暂时使文件名不重复

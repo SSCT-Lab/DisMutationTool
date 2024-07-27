@@ -55,7 +55,7 @@ public class BytecodeFilter {
                 throw new RuntimeException("Class file path does not start with " + project.getBasePath());
             }
             filePath = filePath.replace(project.getBasePath(), Project.ORIGINAL_BYTECODE_PATH);
-            logger.info("Copying " + classFile + " to " + filePath);
+            // logger.info("Copying " + classFile + " to " + filePath);
             FileUtil.copyFileToTargetDir(classFile, filePath, fileName);
         }
     }

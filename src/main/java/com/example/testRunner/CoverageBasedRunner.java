@@ -32,12 +32,16 @@ public class CoverageBasedRunner {
         String absolutePath = TestRunnerUtil.getScriptPath(project);
 
         MutantGenerator mutantGenerator = new MutantGenerator(project);
+
+        // for tmp tests
+        // mutantGenerator.generateMutantsWithoutFilterEq();
+
         mutantLs = mutantGenerator.generateMutants();
 
 
         Map<String, Set<String>> coverageMap = parseTestClasses(coverageFilePath);
 
-        if(project.getProjectType() == Project.ProjectType.MAVEN){
+        if (project.getProjectType() == Project.ProjectType.MAVEN) {
             for (Mutant mutant : mutantLs) {
                 StringBuilder args = new StringBuilder();
                 args.append("-Dtest=");
@@ -56,7 +60,7 @@ public class CoverageBasedRunner {
                 MutantRunnerScript mutantRunner = new MutantRunnerScript(mutant, project);
                 mutantRunner.run(absolutePath, args.toString());
             }
-        } else if(project.getProjectType() == Project.ProjectType.GRADLE){
+        } else if (project.getProjectType() == Project.ProjectType.GRADLE) {
             for (Mutant mutant : mutantLs) {
                 StringBuilder args = new StringBuilder();
                 String originalClassName = FileUtil.getFileName(mutant.getOriginalPath()); // 从path中去掉路径前缀和.java后缀，直接获取文件名
@@ -76,8 +80,9 @@ public class CoverageBasedRunner {
                 MutantRunnerScript mutantRunner = new MutantRunnerScript(mutant, project);
                 mutantRunner.run(absolutePath, args.toString());
             }
+        } else if (project.getProjectType() == Project.ProjectType.ANT) {
+            // TODO, no ant coverage examples
         }
-
 
 
     }

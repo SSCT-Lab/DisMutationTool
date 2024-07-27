@@ -30,6 +30,10 @@ public class RFE extends DiscardExceptionOperator {
         importKeywords.add("org.apache.cassandra.config"); // TODO 写到config
         importKeywords.add("org.apache.hadoop.conf");
         importKeywords.add("org.apache.kafka.common.config");
+//        importKeywords.add("org.apache.rocketmq.proxy.config");
+//        importKeywords.add("org.apache.rocketmq.store.config");
+//        importKeywords.add("org.apache.zookeeper.server.quorum.QuorumPeerConfig");
+
 
         // 验证当前.java文件的package是否包含importKeywords中的任何一个关键字
         if (cu.getPackageDeclaration().isPresent()) {

@@ -22,8 +22,10 @@ public class TestRunnerUtil {
                 break;
             case ANT:
                 resourcePath = "bin/ant-runner-no-breaking.sh";
+                break;
             case GRADLE:
                 resourcePath = "bin/gradle-runner.sh";
+                break;
         }
         try {
             // 从资源中读取脚本文件

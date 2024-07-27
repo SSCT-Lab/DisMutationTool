@@ -25,37 +25,55 @@ public class RFE extends DiscardExceptionOperator {
 
     @Override
     protected boolean continueProcess(CompilationUnit cu) {
-        boolean res = false;
-        ArrayList<String> importKeywords = new ArrayList<>();
-        importKeywords.add("org.apache.cassandra.config"); // TODO 写到config
-        importKeywords.add("org.apache.hadoop.conf");
-        importKeywords.add("org.apache.kafka.common.config");
+//        ArrayList<String> importKeywords = new ArrayList<>();
+//        importKeywords.add("org.apache.cassandra.config");
+//        importKeywords.add("org.apache.hadoop.conf");
+//        importKeywords.add("org.apache.kafka.common.config");
 //        importKeywords.add("org.apache.rocketmq.proxy.config");
 //        importKeywords.add("org.apache.rocketmq.store.config");
 //        importKeywords.add("org.apache.zookeeper.server.quorum.QuorumPeerConfig");
+        // (import|package).*conf.*
 
-
-        // 验证当前.java文件的package是否包含importKeywords中的任何一个关键字
+        // 验证package是否有conf关键字
         if (cu.getPackageDeclaration().isPresent()) {
-            for (String keyword : importKeywords) {
-                if (cu.getPackageDeclaration().get().getNameAsString().contains(keyword)) {
-                    res = true;
-                    break;
-                }
+            String packageName = cu.getPackageDeclaration().get().getNameAsString();
+            if(!packageName.contains("test") && (packageName.contains(".conf") || packageName.contains(".config"))){
+                return true;
             }
         }
-        // 验证当前.java文件的任何一条import语句是否包含importKeywords中的任何一个关键字
+
+        // 验证是否import了conf
         for (ImportDeclaration importDeclaration : cu.findAll(ImportDeclaration.class)) {
-            if (res) {
-                break;
-            }
-            for (String keyword : importKeywords) {
-                if (importDeclaration.getNameAsString().contains(keyword)) {
-                    res = true;
-                    break;
-                }
+            String importName = importDeclaration.getNameAsString();
+            if(!importName.contains("test") && (importName.contains(".conf") || importName.contains(".config"))){
+                return true;
             }
         }
-        return res;
+
+        return false;
+
+//        // 验证当前.java文件的package是否包含importKeywords中的任何一个关键字
+//        if (cu.getPackageDeclaration().isPresent()) {
+//            for (String keyword : importKeywords) {
+//                if(keyword.contains("test")) continue;
+//                if (cu.getPackageDeclaration().get().getNameAsString().contains(keyword)) {
+//                    res = true;
+//                    break;
+//                }
+//            }
+//        }
+//        // 验证当前.java文件的任何一条import语句是否包含importKeywords中的任何一个关键字
+//        for (ImportDeclaration importDeclaration : cu.findAll(ImportDeclaration.class)) {
+//            if (res) {
+//                break;
+//            }
+//            for (String keyword : importKeywords) {
+//                if (importDeclaration.getNameAsString().contains(keyword)) {
+//                    res = true;
+//                    break;
+//                }
+//            }
+//        }
+//        return res;
     }
 }

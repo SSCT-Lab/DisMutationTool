@@ -1,3 +1,4 @@
+import json
 import os
 import re
 
@@ -36,11 +37,10 @@ def count_failed_strings_in_txt_files(root_dir):
                         print(f"\t Other failed in file: {file_path}")
                     elif not any_passed and not any_failed and build_failed:
                         compile_failed_count += 1
-                        print(f"\t Compile failed in file: {file_path}")
+                        # print(f"\t Compile failed in file: {file_path}")
                     elif any_failed:
                         test_failed_count += 1
                         print(f"\t Test failed in file: {file_path}")
-
 
         total_txt_files += txt_file_count
         failed_file_count = test_failed_count + compile_failed_count + other_failed_count
@@ -49,7 +49,6 @@ def count_failed_strings_in_txt_files(root_dir):
         total_other_failed += other_failed_count
         print(
             f"\tFolder: {subdir} - Total .txt files: {txt_file_count}, Files with '> xxxx FAILED' or no 'BUILD SUCCESS': {failed_file_count}")
-
 
     total_failed_files = total_test_failed + total_compile_failed + total_other_failed
 
@@ -64,6 +63,100 @@ def count_failed_strings_in_txt_files(root_dir):
         f"\n live/Total: {live_total}, live/TotalCompileSuccess: {live_compile_success}"
     )
 
+
+def print_test_coverage_for_mutants(root_dir, coverage_file):
+    json_res = []
+    for subdir, dirs, files in os.walk(root_dir):
+        if subdir == root_dir:
+            continue  # Skip the root directory itself
+
+        print(f"Processing folder: {subdir}")
+
+        for file in files:
+            if file.endswith('.txt'):
+                file_path = os.path.join(subdir, file)
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    res = {"id": file, "coverage_tests": [], "kill_tests": [], "result": ""}
+                    content = f.read()
+                    last_200_lines = content.splitlines()[-200:]
+                    build_success = any("BUILD SUCCESSFUL" in line for line in last_200_lines)
+                    build_failed = any("BUILD FAILED" in line for line in last_200_lines)
+                    any_passed = re.search(r' > \w+ PASSED', content)
+                    any_failed = re.search(r' > \w+ FAILED', content)
+
+                    mutant_id = str(file)
+                    res['id'] = mutant_id
+                    original_file_name = mutant_id.split("_")[0]
+                    # 写入coverage信息
+                    res['coverage_tests'] = get_tests_for_class(original_file_name, coverage_file)
+
+                    if not build_success and not build_failed:
+                        res['result'] = "timeoutFailure"
+                    elif not any_passed and not any_failed and build_failed:
+                        res['result'] = "compileFailure"
+                    elif any_failed:
+                        res['kill_tests'] = extract_failed_methods(content)
+                        res['result'] = "testFailure"
+                    else:  # 编译成功，测试成功（可能跳过测试）
+                        res['result'] = "notKilled"
+                    json_res.append(res)
+        save_json(json_res, coverage_file)
+
+
+def extract_failed_methods(content):
+    # 处理ANSI字符
+    ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
+    clean_content = ansi_escape.sub('', content)
+
+    # 分割行
+    log_lines = clean_content.splitlines()
+
+    failed_methods = []
+    failure_method_pattern = re.compile(r' > \w+ FAILED$')
+
+    for line in log_lines:
+        failure_match = failure_method_pattern.search(line)
+        if failure_match:
+            line_ls = line.split(' > ')
+            test_method_name = line_ls[0] + "." + line_ls[1]
+            test_method_name = test_method_name.strip(" FAILED")
+            failed_methods.append(test_method_name)
+
+    return failed_methods
+
+
+def get_tests_for_class(class_name, file_path):
+    # 读取文件内容
+    with open(file_path, 'r') as file:
+        file_content = file.read()
+
+    # 分隔文件内容
+    sections = re.split(r'\n\n+', file_content.strip())
+
+    # 查找对应的类并返回测试列表
+    for section in sections:
+        lines = section.split('\n')
+        category = lines[0].strip(':')
+        if category == class_name:
+            return lines[2:]
+
+    # 如果没有找到对应的类，返回空列表
+    return []
+
+
+def save_json(json_res, coverage_path: str):
+    path_ls = coverage_path.split("/")
+    json_file_name = path_ls[len(path_ls) - 1].split('-')[0] + "-res.json"
+    json_file_path = '/'.join(path_ls[:-2]) + '/statisticsResults/'
+    json_file = json_file_path + json_file_name
+
+    with open(json_file, 'w') as file:
+        json.dump(json_res, file, indent=4)
+    return
+
+
 if __name__ == "__main__":
     kafka_path = "/home/zdc/桌面/fromServer/kafka/kafkaMutant/testOutputs/"
-    count_failed_strings_in_txt_files(kafka_path)
+    coverage_path = "/home/zdc/code/DisMutationTool/coverageInfo/kafka-testlist.txt"
+    # count_failed_strings_in_txt_files(kafka_path)
+    print_test_coverage_for_mutants(kafka_path, coverage_path)

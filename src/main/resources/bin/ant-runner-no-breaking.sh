@@ -10,7 +10,7 @@ kill_ant_processes() {
     echo "正在中止以下ant进程: $pids"
     kill -9 $pids
   else
-    echo "没有找到访问 $target_dir 的mvn进程。"
+    echo "没有找到访问 $target_dir 的ant进程。"
   fi
 }
 
@@ -34,11 +34,7 @@ touch "$output_file"
 cd "$ant_path" || exit 1
 
 # 开始执行 ant clean test，并将输出重定向到临时文件
-if [ -z "$ant_args" ]; then
-    ant clean test "$ant_args" >> "$output_file" 2>&1 &
-else
-    ant clean test >> "$output_file" 2>&1 &
-fi
+ant clean test $ant_args >> "$output_file" 2>&1 &
 
 # 获取 mvn 进程的 PID
 ant_pid=$!

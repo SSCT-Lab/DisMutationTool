@@ -166,6 +166,42 @@ def print_test_coverage_for_mutants(directory, package_prefix):
                 save_json(json_res, "/home/zdc/code/DisMutationTool/statisticsResults/cas-res.json")
 
 
+def print_test_coverage_for_mutants_v2(directory, package_prefix):
+    json_res = []
+
+    # Walk through the directory
+    for root, dirs, files in os.walk(directory):
+
+        for file in files:
+            if file.endswith('.txt'):
+                file_path = os.path.join(root, file)
+                if not continue_process(file_path, package_prefix):
+                    continue
+                res = {"id": file, "coverage_tests": [], "kill_tests": [], "result": ""}
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        lines = f.readlines()
+                        content = ''.join(lines)
+                        if "Compile failed" in content:
+                            res['result'] = "compileFailure"
+                        else:
+                            lines = [line.strip() for line in lines]
+                            test_fail_or_error_ls = [x for x in lines if re.match(r'.*Testcase:.*(FAILED|ERROR)', x) and 'CompactionStressTest' not in x and 'CommitLogSegmentBackpressureTest' not in x]
+                            if len(test_fail_or_error_ls) > 0:
+                                for test_case in test_fail_or_error_ls:
+                                    res['kill_tests'].append(re.split(r'\s+',test_case)[2].strip(":"))
+                                res['result'] = "testFailure"
+                            else:
+                                if "Total time" not in content:
+                                    res['result'] = "timeoutFailure"
+                                else:
+                                    res['result'] = "notKilled"
+
+                        json_res.append(res)
+                except Exception as e:
+                    print(f"Error reading file {file_path}: {e}")
+                save_json(json_res, "/home/zdc/code/DisMutationTool/statisticsResults/cas-res.json")
+
 
 def save_json(json_res, path: str):
     with open(path, 'w') as file:
@@ -193,4 +229,4 @@ if __name__ == "__main__":
     #     print(f"  .txt files with 'BUILD SUCCESS': {stats['test_success_count']}")
     #     print(f"  .txt files with 'COMPILATION ERROR': {stats['compile_failure_count']}")
     #     print(f"  .txt files with 'TEST FAILURE': {stats['test_failure_count']}")
-    print_test_coverage_for_mutants(directory, "org.apache.cassandra.db")
+    print_test_coverage_for_mutants_v2(directory, "org.apache.cassandra.db")

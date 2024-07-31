@@ -62,7 +62,7 @@ def process_java_html_file(filepath):
                     next_tr = next_tr.find_next_sibling('tr')
 
 
-directory = "/Users/linzheyuan/Downloads/DisMuTe-Result/pit/util"
+directory = "/Users/linzheyuan/Downloads/DisMuTe-Result/pit/11111"
 process_all_java_html_files(directory)
 print(killed/(killed+alived))
 

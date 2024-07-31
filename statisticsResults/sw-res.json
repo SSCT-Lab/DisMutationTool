@@ -1,3 +1,4 @@
+[
     {
         "id": "GRPCRemoteClient_RCS_1.txt",
         "coverage_tests": [
@@ -143,4 +144,5 @@
         ],
         "kill_tests": [],
         "result": "notKilled"
-    },
+    }
+]

@@ -10,7 +10,7 @@ def calculate_mutant_statistics(mutants):
 
     # 4. 计算 easy-to-kill 变异体的数量
     easy_to_kill_count = sum(1 for mutant in mutants if mutant['coverage_tests'] and len(mutant['kill_tests']) / len(
-        mutant['coverage_tests']) > 0.95)
+        mutant['coverage_tests']) > 0.95 )
     easy_to_kill_ratio = easy_to_kill_count / total_mutants
     print(easy_to_kill_count,end="\t")
 
@@ -30,10 +30,10 @@ def calculate_mutant_statistics(mutants):
     # 3. 计算杀死测试编号数组为其他数组真子集的变异体占比
     subset_count = 0
     for i, mutant_i in enumerate(mutants):
-        if mutant_i['coverage_tests']:  # 排除覆盖测试编号数组为空的变异体
+        if mutant_i['coverage_tests'] and mutant_i['kill_tests']:  # 排除覆盖测试编号数组为空的变异体
             kill_tests_i = set(mutant_i['kill_tests'])
             for j, mutant_j in enumerate(mutants):
-                if i != j and mutant_j['coverage_tests']:  # 排除覆盖测试编号数组为空的变异体
+                if i != j and mutant_j['coverage_tests'] and mutant_j['kill_tests']!=[]:  # 排除覆盖测试编号数组为空的变异体
                     kill_tests_j = set(mutant_j['kill_tests'])
                     if kill_tests_i < kill_tests_j:  # 真子集判断
                         subset_count += 1
@@ -51,7 +51,7 @@ for i in range(0,len(list_of_obj)):
     # 示例变异体数组
     # with open("./res/"+list_of_obj[i]+"-output.json", 'r') as file:
     with open("/Users/linzheyuan/code/DisMutationTool/statisticsResults/"+list_of_obj[i]+"-res.json", 'r') as file:
-        mutants = json.load(file)['results']
+        mutants = json.load(file)
     print(list_of_obj[i]+":\t")
     no_coverage_ratio, duplicate_kill_tests_ratio, subset_ratio, easy_to_kill_count = calculate_mutant_statistics(mutants)
 

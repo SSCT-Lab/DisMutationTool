@@ -38,7 +38,12 @@ def process_html_files(file_details):
 
 # 输入数组，每个元素包含输出文件名和HTML文件夹地址
 file_details = [
-    ["zk-testlist.txt", "/Users/linzheyuan/zk-clover/clover/org/apache/zookeeper"],
+    # ["zk-testlist.txt", "/Users/linzheyuan/zk-clover/clover/org/apache/zookeeper"],
+    # ["rmq-testlist.txt", "/Users/linzheyuan/Downloads/site/clover/org/apache/rocketmq"],
+    #     ["kafka-testlist.txt", "/Users/linzheyuan/Downloads/kafka-clover/html/org/apache/kafka"],
+# ["skywalking-testlist.txt", "/Users/linzheyuan/Downloads/skywalking-clover/org/apache/skywalking"],
+# ["hbase-testlist.txt","/Users/linzheyuan/Downloads/site/hbase-client site/clover/org/apache/hadoop/hbase"]
+["cas-testlist.txt", "/Users/linzheyuan/Downloads/cas-coverage/org/apache/cassandra"],
 ]
 
 process_html_files(file_details)

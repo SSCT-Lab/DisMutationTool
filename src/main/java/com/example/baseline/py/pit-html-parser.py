@@ -7,8 +7,10 @@ test_list = dict()
 id_counter = 1
 mutant_list = dict()
 # directory = "/Users/linzheyuan/Downloads/DisMuTe-Result/pit/rmq-pit-custom-output-dir"
-list_of_obj=["hbase","kafka","rmq","sw","zk"]
-list_of_pit_dirs=["/Users/linzheyuan/Downloads/DisMuTe-Result/pit/hbaseclient-pit-reports",
+list_of_obj=["cas","hbase","kafka","rmq","sw","zk"]
+list_of_pit_dirs=["/Users/linzheyuan/Downloads/DisMuTe-Result/pit/11111",
+        "/Users/linzheyuan/Downloads/DisMuTe-Result/pit/hbaseclient-pit-reports",
+
                   "/Users/linzheyuan/Downloads/DisMuTe-Result/pit/kafka-reports/pitest",
                   "/Users/linzheyuan/Downloads/DisMuTe-Result/pit/rmq-pit-custom-output-dir",
                   "/Users/linzheyuan/Downloads/DisMuTe-Result/pit/skywalking-pit-custom-output-dir",

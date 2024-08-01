@@ -75,6 +75,8 @@ def print_test_coverage_for_mutants(root_dir, coverage_file):
         for file in files:
             if file.endswith('.txt'):
                 file_path = os.path.join(subdir, file)
+                if not continue_process(file_path, 'org.apache.kafka.clients'):
+                    continue
                 with open(file_path, 'r', encoding='utf-8') as f:
                     res = {"id": file, "coverage_tests": [], "kill_tests": [], "result": ""}
                     content = f.read()
@@ -142,6 +144,38 @@ def get_tests_for_class(class_name, file_path):
 
     # 如果没有找到对应的类，返回空列表
     return []
+
+
+
+def continue_process(txt_path: str, package_name: str) -> bool:
+    # package org.apache.kafka.clients
+    # 将文件扩展名从 .txt 改为 .java
+    java_path = os.path.splitext(txt_path)[0] + '.java'
+
+    # 判断 .java 文件是否存在
+    if not os.path.exists(java_path):
+        return False
+
+    # 读取文件内容
+    with open(java_path, 'r') as file:
+        content = file.read()
+
+    # 查找 package 声明
+    package_declaration = None
+    for line in content.splitlines():
+        if line.strip().startswith('package '):
+            package_declaration = line.strip()
+            break
+
+    # 如果没有找到 package 声明，返回 False
+    if not package_declaration:
+        return False
+
+    # 提取 package 名称
+    package_name_in_file = package_declaration.split(' ')[1].rstrip(';')
+
+    # 判断参数中的 package_name 是否包含在 package 名称中
+    return package_name in package_name_in_file
 
 
 def save_json(json_res, coverage_path: str):

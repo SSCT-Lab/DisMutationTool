@@ -146,30 +146,57 @@
     "result": "notKilled"
   },
   {
-    "id": "AlarmServiceGrpc_RCS_1.txt"
+    "id": "AlarmServiceGrpc_RCS_1.txt",
+    "coverage_tests": [],
+    "kill_tests": [],
+    "result": "notKilled"
   },
   {
-    "id": "AlarmServiceGrpc_RCS_2.txt"
+    "id": "AlarmServiceGrpc_RCS_2.txt",
+    "coverage_tests": [],
+    "kill_tests": [],
+    "result": "notKilled"
   },
   {
-    "id": "AlarmServiceGrpc_SCS_1.txt"
+    "id": "AlarmServiceGrpc_SCS_1.txt",
+    "coverage_tests": [],
+    "kill_tests": [],
+    "result": "notKilled"
   },
   {
-    "id": "HealthGrpc_RCS_1.txt"
+    "id": "HealthGrpc_RCS_1.txt",
+    "coverage_tests": [],
+    "kill_tests": [],
+    "result": "notKilled"
   },
   {
-    "id": "HealthGrpc_RCS_2.txt"
+    "id": "HealthGrpc_RCS_2.txt",
+    "coverage_tests": [],
+    "kill_tests": [],
+    "result": "notKilled"
   },
   {
-    "id": "HealthGrpc_SCS_1.txt"
+    "id": "HealthGrpc_SCS_1.txt",
+    "coverage_tests": [],
+    "kill_tests": [],
+    "result": "notKilled"
   },
   {
-    "id": "RemoteServiceGrpc_RCS_1.txt"
+    "id": "RemoteServiceGrpc_RCS_1.txt",
+    "coverage_tests": [],
+    "kill_tests": [],
+    "result": "notKilled"
   },
   {
-    "id": "RemoteServiceGrpc_RCS_2.txt"
+    "id": "RemoteServiceGrpc_RCS_2.txt",
+    "coverage_tests": [],
+    "kill_tests": [],
+    "result": "notKilled"
   },
   {
-    "id": "RemoteServiceGrpc_SCS_1.txt"
+    "id": "RemoteServiceGrpc_SCS_1.txt",
+    "coverage_tests": [],
+    "kill_tests": [],
+    "result": "notKilled"
   }
 ]

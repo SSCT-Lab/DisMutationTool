@@ -1,6 +1,7 @@
 import json
 # list_of_obj=["cas","hbase","kafka","rmq","sw","zk"]
-list_of_obj=["cas-cov","hbase","kafka","rmq","sw","zk"]
+# list_of_obj=["cas-cov","hbase","kafka","rmq","sw","zk"]
+list_of_obj=["rmq"]
 def calculate_mutant_statistics(mutants):
     total_mutants = len(mutants)
 
@@ -49,8 +50,8 @@ def calculate_mutant_statistics(mutants):
 
 for i in range(0,len(list_of_obj)):
     # 示例变异体数组
-    # with open("./res/"+list_of_obj[i]+"-output.json", 'r') as file:
-    with open("/Users/linzheyuan/code/DisMutationTool/statisticsResults/"+list_of_obj[i]+"-res.json", 'r') as file:
+    with open("./res/"+list_of_obj[i]+"-output.json", 'r') as file:
+    # with open("/Users/linzheyuan/code/DisMutationTool/statisticsResults/"+list_of_obj[i]+"-res.json", 'r') as file:
         mutants = json.load(file)['results']
     print(list_of_obj[i]+":\t")
     no_coverage_ratio, duplicate_kill_tests_ratio, subset_ratio, easy_to_kill_count = calculate_mutant_statistics(mutants)

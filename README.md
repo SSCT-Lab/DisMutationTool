@@ -20,7 +20,6 @@ This tool is designed for mutation testing of distributed systems, aiming to ens
 - Java 8 or higher
 - Apache Maven/Ant/Gradle, depends on target system requirements
 - Existing distributed system code and test suite for testing
-- (optional) Docker if you want to run test suites in parallel in docker mode
 
 ### Installation
 
@@ -48,6 +47,19 @@ This tool is designed for mutation testing of distributed systems, aiming to ens
 java jar DisMutationTool-1.0-SNAPSHOT-jar-with-dependencies.jar.jar [your args, for example: --projectPath="/path/to/target/project"]
 ```
 
+### Usage Example
+
+```
+java -jar ./DisMutationTool-1.0-SNAPSHOT-jar-with-dependencies.jar \
+--projectPath=/path/to/zookeeper/apache-zookeeper-3.5.8/zookeeper-server \
+--mutators=RRC,MNT,MNR,RNE,BCS,RCS,NCS,SCS,RTS,RCE,MCT,RCF,RFE \
+--projectType=mvn \
+--srcPattern='.*\/src\/main\/.*\.java' \
+--buildOutputDir=target/classes \
+--outputDir=/path/to/outputs \
+--coveragePath=/path/to/test/coverageFile/zk-testlist.txt \
+```
+
 ### Args
 - projectPath: path to target project.
 - mutators: mutation operators to be used, split in comma, --mutators="RRC,MNT,NCS" for example.
@@ -55,8 +67,13 @@ java jar DisMutationTool-1.0-SNAPSHOT-jar-with-dependencies.jar.jar [your args, 
 - srcPattern: pattern of source code files.
 - buildOutputDir: relative path of build output directory, from where we collect bytecodes and use them to filter equivalent mutants.
 - outputDir: output directory for reports.
-- (optional)dockerfile: dockerfile path if you want to run test suites in docker mode.
-- (optional)projectPathInDocker: path to target project in docker container.
+- (optional) coveragePath: test coverage file to accelerate test process example format:
+```
+ClassName:
+package.name.TestClassA.testmethod1
+package.name.TestClassA.testmethod2
+package.name.TestClassB.testmethod3
+```
 
 ### Notices
 - Make sure test suite of target system is GREEN.

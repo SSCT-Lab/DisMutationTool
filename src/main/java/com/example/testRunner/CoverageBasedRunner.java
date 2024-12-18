@@ -81,7 +81,14 @@ public class CoverageBasedRunner {
                 mutantRunner.run(absolutePath, args.toString());
             }
         } else if (project.getProjectType() == Project.ProjectType.ANT) {
-            // TODO, no ant coverage examples
+            for (Mutant mutant : mutantLs) {
+                StringBuilder args = new StringBuilder();
+                args.append("testSome -Dtest.name=");
+                String originalClassName = FileUtil.getFileName(mutant.getOriginalPath()); // 从path中去掉路径前缀和.java后缀，直接获取文件名
+                logger.info(originalClassName + "\t" + args);
+                MutantRunnerScript mutantRunner = new MutantRunnerScript(mutant, project);
+                mutantRunner.run(absolutePath, args.toString());
+            }
         }
 
 

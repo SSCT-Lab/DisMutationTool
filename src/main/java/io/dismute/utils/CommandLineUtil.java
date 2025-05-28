@@ -63,9 +63,16 @@ public class CommandLineUtil {
             pb.directory(new File(workingDir));
             pb.redirectErrorStream(true);
             Map<String, String> env = pb.environment();
-            env.put("http_proxy", propertiesFile.getProperty("http.proxy"));
-            env.put("https_proxy", propertiesFile.getProperty("https.proxy"));
-            env.put("ALL_PROXY", propertiesFile.getProperty("socks.proxy"));
+            // 如果设置了代理，放入map
+            if( propertiesFile.getProperty("http.proxy").isEmpty()) {
+                env.put("http_proxy", propertiesFile.getProperty("http.proxy"));
+            }
+            if( propertiesFile.getProperty("https.proxy").isEmpty()) {
+                env.put("https_proxy", propertiesFile.getProperty("https.proxy"));
+            }
+            if( propertiesFile.getProperty("socks.proxy").isEmpty()) {
+                env.put("ALL_PROXY", propertiesFile.getProperty("socks.proxy"));
+            }
             pb.inheritIO();
             Process process = pb.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));

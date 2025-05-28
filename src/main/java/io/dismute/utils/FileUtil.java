@@ -36,13 +36,15 @@ public class FileUtil {
         File file = new File(rootDir);
         if (file.isDirectory()) {
             File[] fileLs = file.listFiles();
-            for (File f : fileLs) {
-                if (f.isDirectory()) {
-                    files.addAll(FileUtil.getFilesBasedOnPattern(f.getAbsolutePath(), pattern));
-                } else {
-                    // 如果文件名称（包含路径）符合正则表达式，则加入到列表中
-                    if (f.getName().matches(pattern)) {
-                        files.add(f.getAbsolutePath());
+            if (fileLs != null) {
+                for (File f : fileLs) {
+                    if (f.isDirectory()) {
+                        files.addAll(FileUtil.getFilesBasedOnPattern(f.getAbsolutePath(), pattern));
+                    } else {
+                        // 如果文件名称（包含路径）符合正则表达式，则加入到列表中
+                        if (f.getName().matches(pattern)) {
+                            files.add(f.getAbsolutePath());
+                        }
                     }
                 }
             }
@@ -221,7 +223,7 @@ public class FileUtil {
                 for (Object line : delta.getRevised().getLines()) {
                     logger.info("+ " + line);
                 }
-                logger.info("\n");
+//                logger.info("\n");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

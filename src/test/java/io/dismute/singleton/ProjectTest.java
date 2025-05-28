@@ -153,7 +153,7 @@ public class ProjectTest {
         assert buildOutputDirs.size() == 1;
     }
 
-    @Ignore // 1min12sec on linux, build failed on Mac
+    @Ignore // 1min12sec on linux, may success on MacOS
     @Test
     public void testBuildOutputPatternForKafkaProject() {
         testResourceManager.kafkaSetUp();

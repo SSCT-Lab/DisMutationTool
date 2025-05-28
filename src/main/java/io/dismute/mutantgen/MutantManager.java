@@ -1,5 +1,6 @@
 package io.dismute.mutantgen;
 
+import io.dismute.coverage.CoverageManager;
 import io.dismute.mutator.MutatorBase;
 import io.dismute.singleton.Project;
 import io.dismute.singleton.PropertiesFile;
@@ -23,7 +24,6 @@ public class MutantManager {
 
     private List<Mutant> mutantLs;
     private Map<String, Map<MutatorType, List<Mutant>>> mutantMap;
-    private List<List<Mutant>> filteredMutants; // 各级过滤后的mutant列表
 
     private MutantManager() {
         this.mutantLs = new ArrayList<>();
@@ -73,6 +73,8 @@ public class MutantManager {
                 }
             }
         }
+        // 为所有的mutant添加coverage信息
+        addCoverageInfoToMutants();
 
         // 打印mutant统计信息
         logger.info("Total mutants: {}", mutantLs.size());
@@ -85,4 +87,26 @@ public class MutantManager {
         return mutantLs;
     }
 
+    private void addCoverageInfoToMutants() {
+        if(!Project.getInstance().isCoverage()){
+            return;
+        }
+        logger.info(LogUtil.centerWithSeparator("Adding Coverage Info to Mutants"));
+        CoverageManager coverageManager = CoverageManager.getInstance();
+        for( Mutant mutant : mutantLs) {
+            String srcFileName = mutant.getOriginalName().replace(".java", "");
+            if (coverageManager.getCoverageInfo().containsKey(srcFileName)) {
+                List<String> coveredTestCases = coverageManager.getCoverageInfo().get(srcFileName);
+                mutant.setCoveredTestCases(coveredTestCases);
+            } else {
+                mutant.setCoveredTestCases(Collections.emptyList());
+            }
+        }
+    }
+
+
+    public void setMutants(List<Mutant> mutants) {
+        this.mutantLs = mutants;
+        // 暂时不更新map
+    }
 }

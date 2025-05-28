@@ -30,6 +30,7 @@ public class TestResourceManager {
     private static final String KAFKA_EXTRACTED_DIR_NAME = "kafka-2.4.0";
     private static final String KAFKA_DIR_NAME = "kafka-2.4.0-src";
     // /kafka-2.4.0/kafka-2.4.0-src/
+    public static final String COVERAGE_FILE_NAME = "zk-testlist.txt";
 
     private static volatile TestResourceManager instance;
 

@@ -10,6 +10,7 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -147,6 +148,42 @@ public class TestUtils {
         Project.initialize(argsArray);
 
         logger.info("Kafka Project Initialized");
+    }
+
+    // 生成一个带coverageInfo的zookeeper项目
+    public static void initializeZookeeperProjectWithCoverage(String mutatorTypeStr) {
+        logger.info("Initializing Zookeeper Project with Coverage for DisMute Test");
+        Project.reset();
+
+        String basePath = Paths.get(TestResourceManager.getInstance().getExtractionPath().toString(), "apache-zookeeper-3.5.8", "zookeeper-server").toString();
+        String srcPattern = ".*/src/main/.*\\.java";
+        String buildOutputDirName = "target/classes";
+        String outputDirName = System.getProperty("user.home") + FileSystems.getDefault().getSeparator() + "outputForDisMuteTest";
+        String projectType = "mvn";
+
+        // 获取coverage资源
+        // 使用 ClassLoader 获取资源路径
+        URL resourceUrl = TestUtils.class.getClassLoader().getResource(TestResourceManager.COVERAGE_FILE_NAME);
+        if (resourceUrl == null) {
+            throw new RuntimeException("Resource not found: " + TestResourceManager.COVERAGE_FILE_NAME);
+        }
+        Path coverageFilePath = Paths.get(resourceUrl.getFile());
+        logger.info("Coverage path: {}", coverageFilePath.toString());
+
+
+        String args = "--basePath=" + basePath + "\n" +
+                "--mutators=" + mutatorTypeStr + "\n" +
+                "--projectType=" + projectType + "\n" +
+                "--srcPattern=" + srcPattern + "\n" +
+                "--buildOutputDir=" + buildOutputDirName + "\n" +
+                "--outputDir=" + outputDirName + "\n" +
+                "--coveragePath=" + coverageFilePath.toString();
+
+        String[] argsArray = args.split("\n");
+
+        Project.initialize(argsArray);
+
+        logger.info("Zookeeper Project with Coverage Initialized");
     }
 
 }

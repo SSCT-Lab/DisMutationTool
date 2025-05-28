@@ -42,7 +42,7 @@ public class SyntacticMutantFilter implements MutantFilter {
             // 语法正确的变异体
             filteredMutants.add(mutant);
         }
-
+        logger.info("Syntactic filter completed. Mutant size BEFORE: {}, AFTER: {}", mutants.size(), filteredMutants.size());
         return filteredMutants;  // 可进一步实现过滤逻辑
     }
 }

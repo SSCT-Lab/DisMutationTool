@@ -42,6 +42,8 @@ public class Project {
     public static String ANT_SCRIPT_PATH; // 弃用
     public static String GRADLE_SCRIPT_PATH; // 弃用
 
+    public static BuildToolAdapter buildToolAdapter; // 构建工具适配器
+
 
     // 单例实例（volatile 保证多线程可见性）
     private static volatile Project instance;
@@ -58,6 +60,7 @@ public class Project {
     private final String buildOutputPattern; // build输出目录的正则
     private final boolean isDocker;
     private final boolean isCoverage;
+    private final String coveragePath; // 覆盖率路径（如果有的话）
 
     // dismute的输出相关
     private final String resultOutputPath; // 结果输出根目录
@@ -85,6 +88,7 @@ public class Project {
         this.buildOutputPattern = builder.buildOutputPattern;
         this.isDocker = builder.isDocker;
         this.isCoverage = builder.isCoverage;
+        this.coveragePath = builder.coveragePath;
         // 构造前检查
         if (this.mutatorTypes.isEmpty()) {
             throw new RuntimeException("Mutators cannot be empty");
@@ -152,6 +156,21 @@ public class Project {
         FileUtil.createDirIfNotExist(this.mutantFilteredPath);
         FileUtil.createDirIfNotExist(this.testOutputsPath);
 
+        // 设置构建工具适配器
+        switch (this.projectType) {
+            case MAVEN:
+                buildToolAdapter = new MavenAdapter();
+                break;
+            case ANT:
+                buildToolAdapter = new AntAdapter();
+                break;
+            case GRADLE:
+                buildToolAdapter = new GradleAdapter();
+                break;
+            default:
+                throw new RuntimeException("Unsupported project type");
+        }
+
     }
 
     // 获取单例实例的方法（双重检查锁实现）
@@ -182,9 +201,9 @@ public class Project {
                     logger.info("arg: {} = {}", split[0], split[1]);
                 }
 
-                // TODO docker模式, 覆盖率模式
+                // TODO docker模式
                 boolean isDocker = argMap.containsKey("--dockerfile") || propertiesFile.getProperty("app.docker.enable").equals("true");
-                boolean isCoverage = argMap.containsKey("--coveragePath") || propertiesFile.getProperty("app.coverage.enable").equals("true");
+                boolean isCoverage = argMap.containsKey("--coveragePath") || StringUtils.isNotEmpty(propertiesFile.getProperty("app.coverage.path"));
 
                 String basePath = getConfig("--basePath", "project.base.path", argMap);
                 String mutatorListStr = getConfig("--mutators", "project.mutators", argMap);
@@ -194,6 +213,7 @@ public class Project {
                 String buildOutputDirName = getConfig("--buildOutputDir", "project.build.output.path", argMap); // update：废弃这个参数
                 String buildOutputDirPattern = getConfig("--buildOutputDirPattern", "project.build.output.pattern", argMap);
                 String outputDirName = getConfig("--outputDir", "app.output.path", argMap);
+                String coveragePath = getConfig("--coveragePath", "app.coverage.path", argMap);
 
                 if (StringUtils.isEmpty(basePath)
                         || StringUtils.isEmpty(mutatorListStr)
@@ -214,7 +234,8 @@ public class Project {
                         .setBuildOutputDirPattern(buildOutputDirPattern)
                         .setResultOutputPath(outputDirName)
                         .setDocker(isDocker)
-                        .setCoverage(isCoverage);
+                        .setCoverage(isCoverage)
+                        .setCoveragePath(coveragePath);
 
                 instance = new Project(builder);
                 // TODO docker模式，从序列化文件中读取Project对象，设置fromSerialized为true
@@ -245,18 +266,12 @@ public class Project {
         }
     }
 
-    // 根据项目类型，获取构建工具适配器
+
     public BuildToolAdapter getBuildToolAdapter() {
-        switch (instance.getProjectType()) {
-            case MAVEN:
-                return new MavenAdapter();
-            case ANT:
-                return new AntAdapter();
-            case GRADLE:
-                return new GradleAdapter();
-            default:
-                throw new RuntimeException("Unsupported project type");
+        if(Project.buildToolAdapter == null) {
+            throw new RuntimeException("BuildToolAdapter has not been initialized!");
         }
+        return Project.buildToolAdapter;
     }
 
     @Getter
@@ -274,6 +289,7 @@ public class Project {
         private String buildOutputPattern;
         private boolean isDocker;
         private boolean isCoverage;
+        private String coveragePath; // 覆盖率路径
         private String resultOutputPath;
 
         public ProjectBuilder setBasePath(String basePath) {
@@ -359,6 +375,11 @@ public class Project {
 
         public ProjectBuilder setCoverage(boolean isCoverage) {
             this.isCoverage = isCoverage;
+            return this;
+        }
+
+        public ProjectBuilder setCoveragePath(String coveragePath) {
+            this.coveragePath = coveragePath;
             return this;
         }
 

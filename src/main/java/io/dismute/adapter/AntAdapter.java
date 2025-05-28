@@ -14,9 +14,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class AntAdapter extends BuildToolAdapter {
 
     private static final Logger logger = LogManager.getLogger(AntAdapter.class);
+
+
 
     @Override
     public void cleanAndGenerateClassPath() {
@@ -43,7 +46,7 @@ public class AntAdapter extends BuildToolAdapter {
     }
 
     @Override
-    public void clean() {
+    public int clean() {
         logger.info("AntAdapter clean");
         Project project = Project.getInstance();
         int exitCode = CommandLineUtil.executeCommandAndRedirectOutputs(project.getBasePath(), "ant", "clean");
@@ -51,20 +54,22 @@ public class AntAdapter extends BuildToolAdapter {
             logger.error("Error while run ant clean!");
             throw new RuntimeException("Error while run ant clean!");
         }
+        return exitCode;
     }
 
     @Override
-    public void compilation() {
+    public int compilation() {
         logger.info("AntAdapter compilation");
         Project project = Project.getInstance();
         int exitCode = CommandLineUtil.executeCommandAndRedirectOutputs(project.getBasePath(), "ant", "compile");
         if (exitCode != 0) {
             logger.error("Error while run ant compile!");
         }
+        return exitCode;
     }
 
     @Override
-    public void cleanAndCompilation() {
+    public int cleanAndCompilation() {
         logger.info("AntAdapter cleanAndCompilation");
         Project project = Project.getInstance();
         int exitCode = CommandLineUtil.executeCommandAndRedirectOutputs(project.getBasePath(), "ant", "clean", "build");
@@ -72,11 +77,25 @@ public class AntAdapter extends BuildToolAdapter {
             logger.error("Error while run ant clean compile!");
             throw new RuntimeException("Error while run ant clean compile!");
         }
+        return exitCode;
     }
 
     @Override
-    public void testExecution(Mutant mutant) {
-        System.out.println("Ant testExecution");
+    public int testExecution(Mutant mutant, String... args) {
+        Project project = Project.getInstance();
+        File logFile = new File(project.getTestOutputsPath() + File.separator + FileUtil.getNameWithoutExtension(mutant.getMutatedPath()) + ".log");  // mvn 日志存放在输出文件夹的testOutputs子文件夹中
+        String coveredTestCases = "";
+        if(Project.getInstance().isCoverage()) { // 如果开启了覆盖率测试，如果当前变异体没有覆盖的测试用例，则跳过测试
+            if(mutant.getCoveredTestCases().isEmpty()) {
+                coveredTestCases ="-Dtest.class=none";
+            } else {
+                coveredTestCases = "testSome -Dtest.name=" + String.join(",", mutant.getCoveredTestCases());
+            }
+        }
+        int exitCode = CommandLineUtil.executeCommandAndRedirectOutputsToFileWithTimeout
+                (project.getBasePath(), logFile.getAbsolutePath(), EXECUTION_TIMEOUT, "ant", "clean", "test", coveredTestCases, String.join(" ", args));
+        logger.info("Test process for mutant {} exited with code {}", mutant.getMutatedName(), exitCode);
+        return exitCode;
     }
 
 

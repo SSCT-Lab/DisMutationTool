@@ -2,6 +2,7 @@ package io.dismute.adapter;
 
 import io.dismute.mutantgen.Mutant;
 import io.dismute.singleton.Project;
+import io.dismute.singleton.PropertiesFile;
 import io.dismute.utils.CommandLineUtil;
 import io.dismute.utils.FileUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -14,14 +15,17 @@ public abstract class BuildToolAdapter {
 
     private static final Logger logger = LogManager.getLogger(BuildToolAdapter.class);
 
+    protected static final int EXECUTION_TIMEOUT = Integer.parseInt(PropertiesFile.getInstance().getProperty("execution.timeout.seconds"));
+
+
     // 生成classpath.txt文件，存储在输出目录下
     public abstract void cleanAndGenerateClassPath();
 
     //    void coverage();
-    public abstract void clean();
-    public abstract void compilation();
-    public abstract void cleanAndCompilation();
-    public abstract void testExecution(Mutant mutant);
+    public abstract int clean();
+    public abstract int compilation();
+    public abstract int cleanAndCompilation();
+
 
     /**
      * 增量编译某个变异体对应的.java文件
@@ -59,6 +63,7 @@ public abstract class BuildToolAdapter {
         int exitCode = CommandLineUtil.executeCommandAndRedirectOutputs(
                 compilationBasePath,
                 "javac",
+                "-g",
                 "-d", compilationBasePath,
                 "-cp", fullClasspath,
                 originalName
@@ -66,4 +71,8 @@ public abstract class BuildToolAdapter {
         logger.info("Incremental compilation for mutant {} exited with code {}", mutant.getMutatedName(), exitCode);
         return exitCode == 0;
     }
+
+    // TODO 装载变异体交给engine
+    // 注：该方法不负责装载变异体
+    public abstract int testExecution(Mutant mutant, String... args);
 }

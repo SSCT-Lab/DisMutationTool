@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,8 +21,13 @@ public class Mutant implements Serializable {
     private String originalPath;
     private String originalCopyPath; // 复制到当前选股original文件夹下
     private String mutatedPath;
+    private List<String> coveredTestCases; //覆盖该变异体的测试用例
 //    private String originalBytecodePath;
 //    private String mutatedBytecodePath;
+
+    public String getMutatedNameWithoutExtension() {
+        return mutatedName.replace(".java", "");
+    }
 
     public Mutant(int lineNo, MutatorType mutatorType, String originalPath, String mutatedPath) {
         this.lineNo = lineNo;
@@ -37,5 +44,6 @@ public class Mutant implements Serializable {
 //        if(!new File((this.originalCopyPath)).exists()){
 //            FileUtil.copyFileToTargetDir(originalPath, project.getOriginalPath(), fileName);
 //        }
+        this.coveredTestCases = new ArrayList<>();
     }
 }

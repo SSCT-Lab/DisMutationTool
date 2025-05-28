@@ -101,4 +101,6 @@ public class MavenAdapterTest {
         }
         assert !classFiles.isEmpty();
     }
+
+
 }

@@ -42,6 +42,7 @@ public class IdenticalMutantFilter implements MutantFilter {
                 filteredMutants.add(mutant1);
             }
         }
+        logger.info("Identical filter completed. Mutant size BEFORE: {}, AFTER: {}", mutants.size(), filteredMutants.size());
         return filteredMutants;
     }
 }

@@ -11,8 +11,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class CommandLineUtil {
 
@@ -81,7 +84,10 @@ public class CommandLineUtil {
     }
 
     public static int executeCommandAndRedirectOutputsToFileWithTimeout(String workingDir, String outputFilePath, int timeoutSec, String... command) {
-        logger.info("Executing command with output redirected to FILE. Command: {}. WorkingDir: {}. OutputFile: {}. TimeoutSec: {}", String.join(" ", command), workingDir, outputFilePath, timeoutSec);
+        List<String> commandFiltered = Arrays.stream(command)
+                .filter(s -> s != null && !s.trim().isEmpty())
+                .collect(Collectors.toList());
+        logger.info("Executing command with output redirected to FILE. Command: {}. WorkingDir: {}. OutputFile: {}. TimeoutSec: {}", String.join(" ", commandFiltered), workingDir, outputFilePath, timeoutSec);
 
         // 创建输出文件
         File outputFile = new File(outputFilePath);
@@ -89,7 +95,7 @@ public class CommandLineUtil {
         // 验证工作目录是否存在
         workingDirExists(workingDir);
 
-        ProcessBuilder pb = new ProcessBuilder(command)
+        ProcessBuilder pb = new ProcessBuilder(commandFiltered)
                 .directory(new File(workingDir))
                 .redirectErrorStream(true)
                 .redirectOutput(outputFile);
@@ -167,6 +173,10 @@ public class CommandLineUtil {
             long processDurationSec = (System.currentTimeMillis() - processStartTime) / 1000;
 
             logger.info("Process started at {} exited with code {}. Duration {} seconds", processStartTime, exitCode, processDurationSec);
+
+            // 在输出文件的最后一行写入命令行
+            String commandLine = "Command executed: " + String.join(" ", commandFiltered) + "\n";
+            FileUtils.writeStringToFile(outputFile, commandLine, StandardCharsets.UTF_8, true);
 
             return exitCode;
 

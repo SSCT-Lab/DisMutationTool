@@ -69,15 +69,7 @@ done
 git checkout $DEST_BRANCH || exit 1
 git pull origin $DEST_BRANCH || exit 1
 
-# 6. 删除 main 分支中的 DOCS.md（已被删除）
-git rm -f DOCS.md
-
 # 7. 将文件复制回来
 cp -r $TMP_DIR/* ./
-
-# 8. 添加并提交
-git add .
-git commit -m "🛠 手动从 dev 分支引入所有模块与配置文件变更"
-git push origin $DEST_BRANCH
 
 echo "✅ 拷贝完成并已提交至 $DEST_BRANCH"
